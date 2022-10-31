@@ -27,7 +27,7 @@ namespace Brainstormer
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Window showDevOptions = new Window();
+            DevOptions showDevOptions = new DevOptions();
             showDevOptions.ShowDialog();
         }
     }
