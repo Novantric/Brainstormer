@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Brainstormer"
         mc:Ignorable="d"
-        Title="DevOptions" Height="450" Width="800">
+        Title="DevOptions" Height="400" Width="400">
     <Grid>
-        
+        <CheckBox x:Name="DatabaseTestCheckBox" Content="Database Working?" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Checked="CheckBox_Checked" IsChecked="False" IsEnabled="False"/>
+        <Button Content="Test Connection" HorizontalAlignment="Left" Margin="27,30,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+
     </Grid>
 </Window>

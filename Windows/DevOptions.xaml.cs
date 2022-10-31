@@ -23,5 +23,27 @@ namespace Brainstormer
         {
             InitializeComponent();
         }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
+            
+            
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                String testConnectionStr = Properties.Settings.Default.DatabaseConnectionString;
+                DatabaseTestCheckBox.IsChecked = true;
+            }
+            catch (Exception)
+            {
+                DatabaseTestCheckBox.IsChecked= false;
+                throw;
+            }
+            
+        }
     }
 }
