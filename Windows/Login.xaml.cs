@@ -25,10 +25,20 @@ namespace Brainstormer
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void DevMenuOpen(object sender, RoutedEventArgs e)
         {
             DevOptions showDevOptions = new DevOptions();
             showDevOptions.ShowDialog();
+        }
+
+        private void ExitClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void LoginClick(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
