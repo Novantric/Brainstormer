@@ -33,12 +33,29 @@ namespace Brainstormer
 
         private void ExitClick(object sender, RoutedEventArgs e)
         {
-
+            if (MessageBox.Show("Do you really wanna exit?",
+                    "Exit?", //Window Title
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                Close();
+            }
         }
 
         private void LoginClick(object sender, RoutedEventArgs e)
         {
+            string userType = UserTypeBox.Text;
+            string username = UsernameBox.Text;
+            string password = PasswordBox.Text;
 
+        }
+
+        private void UsernameClicked(object sender, TextChangedEventArgs e)
+        {
+            if (UsernameBox.Text == "Username")
+            {
+                UsernameBox.Clear();
+            }
         }
     }
 }

@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Brainstormer.Databases.DBBackend;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static Brainstormer.Databases.DBBackend.Connection;
 
 namespace Brainstormer
 {
@@ -33,11 +38,29 @@ namespace Brainstormer
                 DatabaseTestCheckBox.IsChecked = false;
                 throw;
             }
+
+            getInstanceOfDBConnection();
+            DevDB.DataContext = getInstanceOfDBConnection().getDataSet("SELECT * FROM User");
+
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
 
         }
+
+        private void DummyDataButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FillDataGrid()
+        {
+            
+
+        }
+
+
+        
     }
 }
