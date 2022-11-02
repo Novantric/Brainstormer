@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
+using static Brainstormer.Databases.DBBackend.Operations;
 
 namespace Brainstormer
 {
@@ -33,12 +35,33 @@ namespace Brainstormer
 
         private void ExitClick(object sender, RoutedEventArgs e)
         {
-
+            if (MessageBox.Show("Do you really wanna exit?",
+                    "Exit?", //Window Title
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                Close();
+            }
         }
 
         private void LoginClick(object sender, RoutedEventArgs e)
         {
+            string userType = UserTypeBox.Text;
+            string username = UsernameBox.Text;
+            string password = PasswordBox.Text;
 
+            //MessageBox.Show(String.Format("Type: {0}\nusername: {1}\npassword: {2}", userType, username, password));
+            login(userType, username, password);
+
+
+        }
+
+        private void UsernameClicked(object sender, TextChangedEventArgs e)
+        {
+            if (UsernameBox.Text == "Username")
+            {
+                UsernameBox.Clear();
+            }
         }
     }
 }

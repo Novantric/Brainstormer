@@ -1,13 +1,21 @@
-﻿<Window x:Class="Brainstormer.DevOptions"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Brainstormer"
+        xmlns:Classes="clr-namespace:Brainstormer.Classes" x:Class="Brainstormer.DevOptions"
         mc:Ignorable="d"
         Title="DevOptions" Height="400" Width="400">
     <Grid>
-        <CheckBox x:Name="DatabaseTestCheckBox" Content="Database Working?" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Checked="CheckBox_Checked" IsChecked="False" IsEnabled="False"/>
+        <StackPanel>
+            <CheckBox x:Name="DatabaseTestCheckBox" Content="Database Working?" HorizontalAlignment="Left" Margin="10,10,0,10" Checked="CheckBox_Checked" IsChecked="False" IsEnabled="False"/>
+            <Button x:Name="DummyDataButton" Content="Generate Test Data" Click="DummyDataButton_Click"/>
+            <Grid>
+                <DataGrid Name="DevDB" />
+            </Grid>
+
+        </StackPanel>
 
     </Grid>
 </Window>
