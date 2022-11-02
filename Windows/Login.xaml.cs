@@ -63,5 +63,13 @@ namespace Brainstormer
                 UsernameBox.Clear();
             }
         }
+
+        private void UsernameClicked(object sender, TextChangedEventArgs e)
+        {
+            if (UsernameBox.Text == "Username")
+            {
+                UsernameBox.Clear();
+            }
+        }
     }
 }
