@@ -14,12 +14,14 @@ namespace Brainstormer.Databases.DBBackend
         {
             Debug.WriteLine("Is Blank check RAN");
 
-            Debug.WriteLine(String.IsNullOrEmpty(var));
+            Debug.WriteLine(string.IsNullOrEmpty(var));
 
-            if ((String.IsNullOrEmpty(var)))
+            if (string.IsNullOrEmpty(var))
             {
                 return true;
+
             }
+
             return false;
         }
         public static bool checkHasSpace(string var)
