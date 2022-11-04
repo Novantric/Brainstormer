@@ -11,10 +11,10 @@
         <StackPanel>
             <CheckBox x:Name="DatabaseTestCheckBox" Content="Database Working?" HorizontalAlignment="Left" Margin="10,10,0,10" Checked="CheckBox_Checked" IsChecked="False" IsEnabled="False"/>
             <Button x:Name="DummyDataButton" Content="Generate Test Data" Click="DummyDataButton_Click"/>
-            <Grid>
-                <DataGrid Name="DevDB" />
-            </Grid>
 
+            <DataGrid Name="DevDB" 
+                 ItemsSource="{Binding Path=RM}"
+                 AutoGenerateColumns="True" />
         </StackPanel>
 
     </Grid>

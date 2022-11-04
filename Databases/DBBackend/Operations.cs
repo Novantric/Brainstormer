@@ -31,13 +31,12 @@ namespace Brainstormer.Databases.DBBackend
             return _instance;
         }
 
-        public static bool login(String role, String username, String password)
+        public static bool login(string username, string password)
         {
-            string[] loginDetails = { role, username, password };
-            if (ValidateData(loginDetails))
+            if (ValidateData(username, password))
             {
-                DataSet loginDataset = Connection.getInstanceOfDBConnection().getDataSet("SELECT Email, Password FROM [dbo].[User] WHERE Email = '" + username +"'");
-                if (checkUserExist(loginDataset, "User"))
+                DataSet loginDataset = Connection.getInstanceOfDBConnection().getDataSet("SELECT Email, Password FROM [dbo].[tblRelationshipManagers] WHERE Email = '" + username + "'", "RM");
+                if (checkUserExist(loginDataset, "RM") == true && checkIsMatch(loginDataset, "RM", password) == true)
                 {
                     return true;
                 }
@@ -46,27 +45,25 @@ namespace Brainstormer.Databases.DBBackend
         }
 
         //Checks if the data has any errors
-        protected static bool ValidateData(string[] values)
+        protected static bool ValidateData(string username, string password)
         {
             Debug.WriteLine("CC RAN");
-            int counter = 0;
-
-            for (int i = 0; i < values.Length; i++)
+            if (checkIsBlank(username) == false && checkHasSpace(username) == false)
             {
-                if (!(checkIsBlank(values[i]) && checkHasSpace(values[i])))
+                if (checkIsBlank(password) == false && checkHasSpace(password) == false)
                 {
-                    counter += 1;
+                    return true;
                 }
-            }
-
-            if (counter == values.Length)
-            {
-                return true;
+                else
+                {
+                    return false;
+                }
             }
             else
             {
                 return false;
-            }            
+            }
+
         }
     }
 }

@@ -46,12 +46,15 @@ namespace Brainstormer
 
         private void LoginClick(object sender, RoutedEventArgs e)
         {
-            string userType = UserTypeBox.Text;
             string username = UsernameBox.Text;
             string password = PasswordBox.Text;
 
             //MessageBox.Show(String.Format("Type: {0}\nusername: {1}\npassword: {2}", userType, username, password));
-            login(userType, username, password);
+            if (login(username, password))
+            {
+                MessageBox.Show("Success");
+            }
+
 
 
         }
@@ -64,12 +67,5 @@ namespace Brainstormer
             }
         }
 
-        private void UsernameClicked(object sender, TextChangedEventArgs e)
-        {
-            if (UsernameBox.Text == "Username")
-            {
-                UsernameBox.Clear();
-            }
-        }
     }
 }

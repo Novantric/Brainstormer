@@ -40,8 +40,9 @@ namespace Brainstormer
             }
 
             getInstanceOfDBConnection();
-            DevDB.DataContext = getInstanceOfDBConnection().getDataSet("SELECT * FROM User");
 
+            DataSet dataContext = getInstanceOfDBConnection().getDataSet("SELECT * FROM [dbo].[tblRelationshipManagers]", "RM");
+            DevDB.DataContext = dataContext;
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -56,11 +57,11 @@ namespace Brainstormer
 
         private void FillDataGrid()
         {
-            
+
 
         }
 
 
-        
+
     }
 }
