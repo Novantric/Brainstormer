@@ -23,5 +23,10 @@ namespace Brainstormer.Windows
         {
             InitializeComponent();
         }
+
+        private void CreateButtonClick(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

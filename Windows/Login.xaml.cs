@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Brainstormer.Windows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -59,17 +60,10 @@ namespace Brainstormer
 
         }
 
-        private void UsernameClicked(object sender, TextChangedEventArgs e)
-        {
-            if (UsernameBox.Text == "Username")
-            {
-                UsernameBox.Clear();
-            }
-        }
-
         private void CreateAccountClicked(object sender, RoutedEventArgs e)
         {
-
+            CreateAccount createAccount = new CreateAccount();
+            createAccount.ShowDialog();
         }
     }
 }

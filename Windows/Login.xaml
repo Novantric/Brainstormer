@@ -28,7 +28,8 @@
                 <Button Content="Login" Click="LoginClick" Height="40"/>
                 <Button Content="Create Account" Click="CreateAccountClicked" Height="32"/>
             </StackPanel>
-            
+
+            <Label Content="Welcome." Foreground="White" Grid.Column="1" Grid.Row="3" HorizontalContentAlignment="Center" FontSize="20"/>
             <Image HorizontalAlignment="Center" Source="/Windows/image-removebg-preview.png" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"/>
 
             <Grid Grid.Row="2" Grid.Column="1">
