@@ -23,7 +23,12 @@
 
             <Button Content="Dev Menu" Click="DevMenuOpen" Grid.Column="2" Grid.Row="0"/>
             <Button Content="Exit" Click="ExitClick" Grid.Column="0" Grid.Row="3"/>
-            <Button Content="Login" Click="LoginClick" Grid.Column="2" Grid.Row="3"/>
+            
+            <StackPanel Grid.Column="2" Grid.Row="3">
+                <Button Content="Login" Click="LoginClick" Height="40"/>
+                <Button Content="Create Account" Click="CreateAccountClicked" Height="32"/>
+            </StackPanel>
+            
             <Image HorizontalAlignment="Center" Source="/Windows/image-removebg-preview.png" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"/>
 
             <Grid Grid.Row="2" Grid.Column="1">

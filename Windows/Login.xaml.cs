@@ -67,5 +67,9 @@ namespace Brainstormer
             }
         }
 
+        private void CreateAccountClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
