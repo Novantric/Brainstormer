@@ -12,31 +12,15 @@ namespace Brainstormer.Databases.DBBackend
 {
     internal class Operations
     {
-        //Obtained from the example code and modified
-        private String DBConnStr = Properties.Settings.Default.DatabaseConnectionString;
-        private static Operations _instance;
-        private SqlConnection DBConnection;
-
-        /// constructor
-        private Operations()
-        {
-            DBConnStr = Properties.Settings.Default.DatabaseConnectionString;
-
-        }
-        public static Operations getInstanceOfDBConnection()
-        {
-            // create the object only if it doesn't exist  
-            if (_instance == null)
-                _instance = new Operations();
-            return _instance;
-        }
-
         public static bool login(string username, string password)
         {
+            string LOGINQUERY = "SELECT Email, Password FROM User WHERE Email = '" + username + "'";
+            string TABLENAME = "User";
+
             if (ValidateData(username, password))
             {
-                DataSet loginDataset = Connection.getInstanceOfDBConnection().getDataSet("SELECT Email, Password FROM [dbo].[tblRelationshipManagers] WHERE Email = '" + username + "'", "RM");
-                if (checkUserExist(loginDataset, "RM") == true && checkIsMatch(loginDataset, "RM", password) == true)
+                DataSet loginDataset = Connection.getInstanceOfDBConnection().getDataSet(LOGINQUERY, "User");
+                if (checkUserExist(loginDataset, TABLENAME) == true && checkIsMatch(loginDataset, TABLENAME, password) == true)
                 {
                     return true;
                 }
@@ -48,16 +32,9 @@ namespace Brainstormer.Databases.DBBackend
         protected static bool ValidateData(string username, string password)
         {
             Debug.WriteLine("CC RAN");
-            if (checkIsBlank(username) == false && checkHasSpace(username) == false)
+            if (checkIsBlank(username) == false && checkHasSpace(username) == false && checkIsBlank(password) == false && checkHasSpace(password) == false)
             {
-                if (checkIsBlank(password) == false && checkHasSpace(password) == false)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
             else
             {

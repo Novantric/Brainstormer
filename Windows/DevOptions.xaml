@@ -14,7 +14,7 @@
 
             <DataGrid Name="DevDB" 
                  ItemsSource="{Binding Path=RM}"
-                 AutoGenerateColumns="True" />
+                 AutoGenerateColumns="True" SelectionChanged="DevDB_SelectionChanged" />
         </StackPanel>
 
     </Grid>

@@ -41,7 +41,7 @@ namespace Brainstormer
 
             getInstanceOfDBConnection();
 
-            DataSet dataContext = getInstanceOfDBConnection().getDataSet("SELECT * FROM [dbo].[tblRelationshipManagers]", "RM");
+            DataSet dataContext = getInstanceOfDBConnection().getDataSet("SELECT * FROM User", "User");
             DevDB.DataContext = dataContext;
         }
 
@@ -61,7 +61,9 @@ namespace Brainstormer
 
         }
 
+        private void DevDB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
-
+        }
     }
 }
