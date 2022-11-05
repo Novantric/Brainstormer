@@ -31,18 +31,18 @@ namespace Brainstormer
             try
             {
                 String testConnectionStr = Properties.Settings.Default.DatabaseConnectionString;
+                SqlConnection connectionDB = new SqlConnection(testConnectionStr);
+                connectionDB.Open();
+                connectionDB.Close();
                 DatabaseTestCheckBox.IsChecked = true;
             }
             catch (Exception)
             {
                 DatabaseTestCheckBox.IsChecked = false;
-                throw;
             }
 
-            getInstanceOfDBConnection();
-
-            DataSet dataContext = getInstanceOfDBConnection().getDataSet("SELECT * FROM User", "User");
-            DevDB.DataContext = dataContext;
+            //DataSet dataContext = getInstanceOfDBConnection().getDataSet("SELECT * FROM User", "User");
+            //DevDB.DataContext = dataContext;
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)

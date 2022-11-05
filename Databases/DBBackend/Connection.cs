@@ -6,19 +6,19 @@ namespace Brainstormer.Databases.DBBackend
     internal class Connection
     {
         //Obtained from the example code and modified
-        private readonly string DBConnStr = Properties.Settings.Default.DatabaseConnectionString;
+        private readonly string connStr = Properties.Settings.Default.DatabaseConnectionString;
         private static Connection? _instance;
-        private SqlConnection DBConnection;
+        private SqlConnection connectionDB;
 
         ///constructor
         private Connection()
         {
-            DBConnection = new SqlConnection(DBConnStr);
-        }
+            connectionDB = new SqlConnection(connStr);
+        }        
 
         public static Connection getInstanceOfDBConnection()
         {
-            // create the object only if it doesn't exist  
+            //create the object only if it doesn't exist  
             if (_instance == null)
                 _instance = new Connection();
             return _instance;
@@ -31,10 +31,10 @@ namespace Brainstormer.Databases.DBBackend
             //create an empty dataset
             DataSet dataSet = new DataSet();
 
-            DBConnection.Open();
-            SqlDataAdapter adapter = new SqlDataAdapter(sqlQuery, DBConnStr);
+            connectionDB.Open();
+            SqlDataAdapter adapter = new SqlDataAdapter(sqlQuery, connStr);
             adapter.Fill(dataSet, tableName);
-            DBConnection.Close();
+            connectionDB.Close();
 
             return dataSet;
         }
