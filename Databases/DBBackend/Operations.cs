@@ -14,7 +14,7 @@ namespace Brainstormer.Databases.DBBackend
     {
         public static bool login(string username, string password)
         {
-            string LOGINQUERY = "SELECT Email, Password FROM User WHERE Email = '" + username + "'";
+            string LOGINQUERY = "SELECT Email, Password FROM [dbo].[User] WHERE Email = '" + username + "'";
             string TABLENAME = "User";
 
             if (ValidateData(username, password))

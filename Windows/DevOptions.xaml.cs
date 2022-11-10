@@ -30,7 +30,7 @@ namespace Brainstormer
 
             try
             {
-                String testConnectionStr = Properties.Settings.Default.DatabaseConnectionString;
+                String testConnectionStr = Connection.getInstanceOfDBConnection().connStr;
                 SqlConnection connectionDB = new SqlConnection(testConnectionStr);
                 connectionDB.Open();
                 connectionDB.Close();
@@ -41,8 +41,8 @@ namespace Brainstormer
                 DatabaseTestCheckBox.IsChecked = false;
             }
 
-            //DataSet dataContext = getInstanceOfDBConnection().getDataSet("SELECT * FROM User", "User");
-            //DevDB.DataContext = dataContext;
+            DataSet dataContext = getInstanceOfDBConnection().getDataSet("SELECT * FROM [dbo].[User]", "User");
+            DevDB.ItemsSource = new DataView(dataContext.Tables["User"]);
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
