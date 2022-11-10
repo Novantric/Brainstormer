@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Brainstormer.Databases.DBBackend;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,30 +28,33 @@ namespace Brainstormer.Windows
 
         private void CreateButtonClick(object sender, RoutedEventArgs e)
         {
-            string username = UsernameBox.Text;
+            string email = UsernameBox.Text;
             string password = PasswordBox.Text;
             string passwordConfirm = PasswordConfirmBox.Text;
             string accountType = AccountTypeBox.Text;
             string firstName = FirstNameBox.Text;
             string lastName = LastNameBox.Text;
-            string PhoneNum = MobNumBox.Text;
+            string phoneNum = MobNumBox.Text;
 
             if (password == passwordConfirm)
             {
-                if (checkIsBlank(username) == false && checkIsBlank(password) == false)
+                if (checkIsBlank(email) == false && checkIsBlank(password) == false)
                 {
-                    if (checkHasSpace(username) == false && checkHasSpace(password) == false && checkHasSpace(firstName) == false && checkHasSpace(lastName) == false && checkHasSpace(PhoneNum) == false)
+                    if (checkHasSpace(email) == false && checkHasSpace(password) == false && checkHasSpace(firstName) == false && checkHasSpace(lastName) == false && checkHasSpace(phoneNum) == false)
                     {
-                        if (checkIsAllInt(PhoneNum) == true && checkIsBlank(PhoneNum) == false)
+                        if (checkIsAllInt(phoneNum) == true && checkIsBlank(phoneNum) == false)
                         {
                             MessageBox.Show("Success + Phone Number!");
+                            AccountOperations.createAccount(accountType, firstName, lastName, email, password, phoneNum);
 
                         }
-                        else if (checkIsBlank(PhoneNum) == true)
+                        else if (checkIsBlank(phoneNum) == true)
                         {
                             MessageBox.Show("Success!");
+                            AccountOperations.createAccount(accountType, firstName, lastName, email, password, "none");
+
                         }
-                        else if (checkIsAllInt(PhoneNum) == false)
+                        else if (checkIsAllInt(phoneNum) == false)
                         {
                             MessageBox.Show("The phone number you entered contains non-number elemends. Get rid of them!");
                         }

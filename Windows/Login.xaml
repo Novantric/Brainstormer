@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Brainstormer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Login" Height="400" Width="500" ResizeMode="NoResize">
     <Grid>
         <Border Background="Black"/>
         <Grid>
@@ -15,38 +15,39 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="3*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="0.5*"/>
             </Grid.RowDefinitions>
 
             <Button Content="Dev Menu" Click="DevMenuOpen" Grid.Column="2" Grid.Row="0"/>
-            <Button Content="Exit" Click="ExitClick" Grid.Column="0" Grid.Row="3"/>
-            
+
             <StackPanel Grid.Column="2" Grid.Row="3">
-                <Button Content="Login" Click="LoginClick" Height="40"/>
-                <Button Content="Create Account" Click="CreateAccountClicked" Height="32"/>
+                <Button Content="Login" Click="LoginClick" Height="35"/>
+                <Button Content="Create Account" Click="CreateAccountClicked" Height="30"/>
             </StackPanel>
 
-            <Label Content="Welcome." Foreground="White" Grid.Column="1" Grid.Row="3" HorizontalContentAlignment="Center" FontSize="20"/>
-            <Image HorizontalAlignment="Center" Source="/Windows/image-removebg-preview.png" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"/>
+            <Label Content="Welcome." Foreground="White" Grid.Column="1" Grid.Row="0" HorizontalContentAlignment="Center" FontSize="20"/>
+            <Image HorizontalAlignment="Left" Source="/Windows/image-removebg-preview.png" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="-144,41,0,-112" Grid.RowSpan="2" Width="830" Opacity="0.5"/>
+            <Button Content="Exit" Click="ExitClick" Grid.Column="0" Grid.Row="3" Margin="10,10,10,10"/>
 
-            <Grid Grid.Row="2" Grid.Column="1">
+            <Grid Grid.Row="1" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="4*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Column="1">
-                    <TextBox x:Name="UsernameBox" Margin="0,0,0,0"/>
-                    <TextBox x:Name="PasswordBox" Margin="0,13,0,0"/>
+                <StackPanel Grid.Column="1" Grid.Row="1">
+                    <TextBox x:Name="PasswordBox" Height="26" />
+                    <TextBox x:Name="UsernameBox" Height="26" />
                 </StackPanel>
-                <StackPanel Grid.Column="0">
-                    <Label Content="Username" Foreground="White"/>
+                <StackPanel Grid.Column="0" Grid.Row="1">
+                    <Label Content="Email" Foreground="White"/>
                     <Label Content="Password" Foreground="White"/>
                 </StackPanel>
 

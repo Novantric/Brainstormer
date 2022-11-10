@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Documents;
 
 namespace Brainstormer.Databases.DBBackend
 {
@@ -69,6 +72,47 @@ namespace Brainstormer.Databases.DBBackend
             {
                 return true;
             }
+            return false;
+        }
+        public static bool checkIsValidAccountType(string input)
+        {
+            Debug.WriteLine("Does this account type exist?");
+            if (input == "Admin" || input == "RM" || input == "Client")
+            {
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("The specified account type does not exist!");
+                return false;
+            }
+        }
+        public static bool checkColumnExists(DataSet currentDataSet, string column)
+        {
+            Debug.WriteLine("Does column '" + column + "' exist?");
+            foreach (DataColumn datcolumn in currentDataSet.Tables[0].Columns)
+            {
+                if (datcolumn.ColumnName == column)
+                {
+                    Debug.WriteLine("Yes");
+                    return true;
+                }
+            }
+            Debug.WriteLine("No!");
+            return false;
+        }
+
+        public static bool checkPKExists(DataSet currentDataSet, int input)
+        {
+            Debug.WriteLine("Does primary key '" + input + "' exist?");
+
+            DataRow[] dataRow = currentDataSet.Tables[0].Select("Id = '" + input + "'");
+            if (dataRow.Length != 0)
+            {
+                Debug.WriteLine("Yes");
+                return true;
+            }
+            Debug.WriteLine("No!");
             return false;
         }
     }

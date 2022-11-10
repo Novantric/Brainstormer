@@ -1,4 +1,6 @@
-﻿using Brainstormer.Windows;
+﻿using Brainstormer.Classes;
+using Brainstormer.Databases.DBBackend;
+using Brainstormer.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
-using static Brainstormer.Databases.DBBackend.Operations;
+using static Brainstormer.Databases.DBBackend.AccountOperations;
 
 namespace Brainstormer
 {
@@ -31,7 +33,7 @@ namespace Brainstormer
         private void DevMenuOpen(object sender, RoutedEventArgs e)
         {
             DevOptions showDevOptions = new DevOptions();
-            showDevOptions.ShowDialog();
+            showDevOptions.Show();
         }
 
         private void ExitClick(object sender, RoutedEventArgs e)
@@ -47,13 +49,17 @@ namespace Brainstormer
 
         private void LoginClick(object sender, RoutedEventArgs e)
         {
-            string username = UsernameBox.Text;
+            string email = UsernameBox.Text;
             string password = PasswordBox.Text;
 
             //MessageBox.Show(String.Format("Type: {0}\nusername: {1}\npassword: {2}", userType, username, password));
-            if (login(username, password))
+            if (login(email, password))
             {
                 MessageBox.Show("Success");
+                string type = "", firstName = "", lastName = "", phoneNum = "";
+                AccountOperations.getUserData(type, firstName, lastName, email, password, phoneNum);
+                
+
             }
 
 

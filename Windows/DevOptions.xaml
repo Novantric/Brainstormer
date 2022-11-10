@@ -6,14 +6,44 @@
         xmlns:local="clr-namespace:Brainstormer"
         xmlns:Classes="clr-namespace:Brainstormer.Classes" x:Class="Brainstormer.DevOptions"
         mc:Ignorable="d"
-        Title="DevOptions" Height="400" Width="400">
+        Title="DevOptions" Height="Auto" Width="600">
     <Grid>
-        <StackPanel>
-            <CheckBox x:Name="DatabaseTestCheckBox" Content="Database Working?" HorizontalAlignment="Left" Margin="10,10,0,10" Checked="CheckBox_Checked" IsChecked="False" IsEnabled="False"/>
-            <Button x:Name="DummyDataButton" Content="Generate Test Data" Click="DummyDataButton_Click"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
 
-            <DataGrid Name="DevDB" AutoGenerateColumns="True" />
-        </StackPanel>
+            </Grid.RowDefinitions>
+
+            <CheckBox x:Name="DatabaseTestCheckBox" Content="Database Working?" HorizontalAlignment="Left" Grid.Row="0" Margin="10,10,0,10" IsChecked="False" IsEnabled="False"/>
+            <Button x:Name="DummyDataButton" Content="Generate User Data" Click="DummyDataButton_Click" Grid.Row="1"/>
+            <Button x:Name="DeleteUserButton" Content="Delete User ID" Click="DeleteUserButton_Click" Grid.Row="1" Grid.Column="1"/>
+            <TextBox x:Name="UserIDBox" Grid.Row="1" Grid.Column="2"/>
+
+            <DataGrid Name="DevDB" AutoGenerateColumns="True" Grid.Row="2" Grid.ColumnSpan="3"/>
+            
+            <Label Content="Column" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center"/>
+            <Label Content="ID" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center"/>
+            <Label Content="Value" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center"/>
+
+            <TextBox x:Name="UserColumnBox" Grid.Row="4" Grid.Column="1"/>
+            <TextBox x:Name="UserIDModBox" Grid.Row="4" Grid.Column="0"/>
+            <TextBox x:Name="UserValueBox" Grid.Row="4" Grid.Column="2"/>
+
+            <Button x:Name="UpdateUserButton" Content="Update" Grid.Row="5" Grid.ColumnSpan="3" Click="UpdateUserButton_Click"/>
+
+
+
+        </Grid>
 
     </Grid>
 </Window>

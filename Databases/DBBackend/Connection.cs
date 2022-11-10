@@ -47,5 +47,15 @@ namespace Brainstormer.Databases.DBBackend
 
             return dataSet;
         }
+
+        public void nonQueryOperation(string query)
+        {
+            SqlConnection connectionDB = new SqlConnection(connStr);
+            SqlCommand command = new SqlCommand(query, connectionDB);
+
+            connectionDB.Open();
+            command.ExecuteNonQuery();
+            connectionDB.Close();
+        }
     }
 }
