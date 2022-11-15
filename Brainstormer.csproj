@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Databases\Database.mdf" />
     <None Remove="Windows\image-removebg-preview.png" />
   </ItemGroup>
 
