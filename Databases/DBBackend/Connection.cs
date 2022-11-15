@@ -10,7 +10,6 @@ namespace Brainstormer.Databases.DBBackend
     {
         //Obtained from the example code and modified
 
-        //@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""C:\Users\whyrl\OneDrive - Anglia Ruskin University\Documents\Year2\Tri1\Software Engineering\myturn\Brainstormer\Databases\Database.mdf"";Integrated Security=True";
         //Connstr works with local paths
         public string connStr;
         private static Connection? _instance;
