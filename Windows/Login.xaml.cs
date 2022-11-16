@@ -1,21 +1,7 @@
-﻿using Brainstormer.Classes;
-using Brainstormer.Databases.DBBackend;
+﻿using Brainstormer.Databases.DBBackend;
 using Brainstormer.Windows;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml.Linq;
 using static Brainstormer.Databases.DBBackend.AccountOperations;
 
 namespace Brainstormer
@@ -58,12 +44,7 @@ namespace Brainstormer
                 MessageBox.Show("Success");
                 string type = "", firstName = "", lastName = "", phoneNum = "";
                 AccountOperations.getUserData(type, firstName, lastName, email, password, phoneNum);
-                
-
             }
-
-
-
         }
 
         private void CreateAccountClicked(object sender, RoutedEventArgs e)
@@ -74,7 +55,7 @@ namespace Brainstormer
 
         private void ShowPasswordButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ShowPasswordButton.Content.ToString() == "Hide")
+            if (ShowPasswordButton.Content.ToString().Equals("Hide"))
             {
                 ShowPasswordButton.Content = "Show";
                 PasswordUnmask.Visibility = Visibility.Hidden;
@@ -83,7 +64,7 @@ namespace Brainstormer
                 PasswordBox.Password = PasswordUnmask.Text;
 
             }
-            else if (ShowPasswordButton.Content.ToString() == "Show")
+            else if (ShowPasswordButton.Content.ToString().Equals("Show"))
             {
                 ShowPasswordButton.Content = "Hide";
                 PasswordUnmask.Visibility = Visibility.Visible;

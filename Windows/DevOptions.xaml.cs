@@ -1,21 +1,8 @@
 ﻿using Brainstormer.Databases.DBBackend;
-using Brainstormer.Windows;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using static Brainstormer.Databases.DBBackend.Connection;
 
 namespace Brainstormer
@@ -32,7 +19,7 @@ namespace Brainstormer
             InitializeComponent();
 
             try
-            {                
+            {
                 SqlConnection connectionDB = new SqlConnection(testConnectionStr);
                 connectionDB.Open();
                 connectionDB.Close();
@@ -100,7 +87,7 @@ namespace Brainstormer
             {
                 MessageBox.Show("Enter an ID!");
             }
-            
+
         }
 
         private void UpdateUserButton_Click(object sender, RoutedEventArgs e)
@@ -113,7 +100,7 @@ namespace Brainstormer
             {
                 if (Checks.checkColumnExists(getInstanceOfDBConnection().getDataSet("SELECT * FROM [dbo].[User]", "User"), columnName))
                 {
-                    if (columnName == "Type")
+                    if (columnName.Equals("Type"))
                     {
                         if (Checks.checkIsValidAccountType(value))
                         {

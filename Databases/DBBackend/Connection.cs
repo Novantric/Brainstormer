@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
 using System.IO;
 
@@ -22,7 +21,7 @@ namespace Brainstormer.Databases.DBBackend
             string path = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, fileName);
             connStr = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""{0}"";Integrated Security = True", path);
             connectionDB = new SqlConnection(connStr);
-        }        
+        }
 
         public static Connection getInstanceOfDBConnection()
         {

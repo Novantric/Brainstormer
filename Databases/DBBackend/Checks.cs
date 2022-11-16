@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
+﻿using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
 
 namespace Brainstormer.Databases.DBBackend
 {
@@ -68,7 +62,7 @@ namespace Brainstormer.Databases.DBBackend
         public static bool checkIsMatch(DataSet currentDataSet, string tableName, string var)
         {
             Debug.WriteLine("Do the passwords match?");
-            if (var.Equals(currentDataSet.Tables[tableName].Rows[0][1].ToString()))
+            if (var.Equals(EncryptDecrypt.Decrypt(currentDataSet.Tables[tableName].Rows[0][1].ToString())))
             {
                 return true;
             }
@@ -77,7 +71,7 @@ namespace Brainstormer.Databases.DBBackend
         public static bool checkIsValidAccountType(string input)
         {
             Debug.WriteLine("Does this account type exist?");
-            if (input == "Admin" || input == "RM" || input == "Client")
+            if (input.Equals("Admin") || input.Equals("RM") || input.Equals("Client"))
             {
                 return true;
             }
