@@ -1,6 +1,5 @@
 ﻿using Brainstormer.Classes;
 using System.Data;
-using System.Data.SqlClient;
 using System.Diagnostics;
 using static Brainstormer.Databases.DBBackend.Checks;
 using static Brainstormer.Databases.DBBackend.Connection;
@@ -41,8 +40,8 @@ namespace Brainstormer.Databases.DBBackend
 
         public static void getUserData(string type, string firstName, string lastName, string email, string password, string phoneNum)
         {
-            string LOGINQUERY = "SELECT Type, FirstName, LastName, PhoneNum FROM [dbo].[User] WHERE Email = '" + email + "' AND Password = '" + password + "'";
-            string TABLENAME = "User";
+            string LOGINQUERY = "SELECT Type, FirstName, LastName, PhoneNum FROM [dbo].[User] WHERE Email = '" + email + "' AND Password = '" + EncryptDecrypt.Encrypt(password) + "'";
+            string TABLENAME = "[dbo].[User]";
 
             DataSet details = Connection.getInstanceOfDBConnection().getDataSet(LOGINQUERY, TABLENAME);
 
@@ -51,12 +50,12 @@ namespace Brainstormer.Databases.DBBackend
             lastName = details.Tables[TABLENAME].Rows[0]["LastName"].ToString();
             phoneNum = details.Tables[TABLENAME].Rows[0]["PhoneNum"].ToString();
 
-            User currentUser = new User(type, firstName, lastName, email, password, phoneNum);
+            User currentUser = new(type, firstName, lastName, email, password, phoneNum);
         }
 
         public static void createAccount(string type, string firstName, string lastName, string email, string password, string phoneNum)
         {
-            string query = $"INSERT INTO [dbo].[User] (Type,FirstName,LastName,Email,Password,PhoneNum) VALUES ('{type}','{firstName}','{lastName}','{email}','{password}','{phoneNum}')";
+            string query = $"INSERT INTO [dbo].[User] (Type,FirstName,LastName,Email,Password,PhoneNum) VALUES ('{type}','{firstName}','{lastName}','{email}','{EncryptDecrypt.Encrypt(password)}','{phoneNum}')";
             Connection.getInstanceOfDBConnection().nonQueryOperation(query);
         }
 
