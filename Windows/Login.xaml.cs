@@ -50,7 +50,7 @@ namespace Brainstormer
         private void LoginClick(object sender, RoutedEventArgs e)
         {
             string email = UsernameBox.Text;
-            string password = PasswordBox.Text;
+            string password = PasswordBox.Password;
 
             //MessageBox.Show(String.Format("Type: {0}\nusername: {1}\npassword: {2}", userType, username, password));
             if (login(email, password))
@@ -70,6 +70,30 @@ namespace Brainstormer
         {
             CreateAccount createAccount = new CreateAccount();
             createAccount.ShowDialog();
+        }
+
+        private void ShowPasswordButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ShowPasswordButton.Content.ToString() == "Hide")
+            {
+                ShowPasswordButton.Content = "Show";
+                PasswordUnmask.Visibility = Visibility.Hidden;
+                PasswordBox.Visibility = Visibility.Visible;
+
+                PasswordBox.Password = PasswordUnmask.Text;
+
+            }
+            else if (ShowPasswordButton.Content.ToString() == "Show")
+            {
+                ShowPasswordButton.Content = "Hide";
+                PasswordUnmask.Visibility = Visibility.Visible;
+                PasswordBox.Visibility = Visibility.Hidden;
+
+                PasswordUnmask.Text = PasswordBox.Password;
+            }
+
+
+
         }
     }
 }

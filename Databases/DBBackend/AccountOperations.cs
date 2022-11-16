@@ -12,11 +12,11 @@ namespace Brainstormer.Databases.DBBackend
         public static bool login(string username, string password)
         {
             string LOGINQUERY = "SELECT Email, Password FROM [dbo].[User] WHERE Email = '" + username + "'";
-            string TABLENAME = "User";
+            string TABLENAME = "[dbo].[User]";
 
             if (ValidateData(username, password))
             {
-                DataSet loginDataset = Connection.getInstanceOfDBConnection().getDataSet(LOGINQUERY, TABLENAME);
+                DataSet loginDataset = getInstanceOfDBConnection().getDataSet(LOGINQUERY, TABLENAME);
                 if (checkUserExist(loginDataset, TABLENAME) == true && checkIsMatch(loginDataset, TABLENAME, password) == true)
                 {
                     return true;
