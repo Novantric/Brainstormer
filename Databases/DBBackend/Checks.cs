@@ -62,7 +62,7 @@ namespace Brainstormer.Databases.DBBackend
         public static bool checkIsMatch(DataSet currentDataSet, string tableName, string var)
         {
             Debug.WriteLine("Do the passwords match?");
-            if (EncryptDecrypt.Decrypt(var).Equals(EncryptDecrypt.Decrypt(currentDataSet.Tables[tableName].Rows[0][1].ToString())))
+            if (var.Equals(EncryptDecrypt.Decrypt(currentDataSet.Tables[tableName].Rows[0][1].ToString())))
             {
                 Debug.WriteLine("Yes!");
                 return true;

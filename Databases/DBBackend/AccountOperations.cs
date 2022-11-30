@@ -42,9 +42,10 @@ namespace Brainstormer.Databases.DBBackend
             }
         }
 
+        //Run after the login has been confirmed
         public static void GetUserData(string type, string firstName, string lastName, string email, string password, string phoneNum)
         {
-            string LOGINQUERY = "SELECT Id, Type, FirstName, LastName, PhoneNum FROM [dbo].[User] WHERE Email = '" + email + "' AND Password = '" + password + "'";
+            string LOGINQUERY = "SELECT Id, Type, FirstName, LastName, PhoneNum FROM [dbo].[User] WHERE Email = '" + email + "' AND Password = '" + EncryptDecrypt.Encrypt(password) + "'";
             string TABLENAME = "[dbo].[User]";
 
             DataSet details = Connection.getInstanceOfDBConnection().getDataSet(LOGINQUERY, TABLENAME);
@@ -60,13 +61,7 @@ namespace Brainstormer.Databases.DBBackend
 
         public static void CreateAccount(string type, string firstName, string lastName, string email, string password, string phoneNum)
         {
-            string query = $"INSERT INTO [dbo].[User] (Type,FirstName,LastName,Email,Password,PhoneNum) VALUES ('{type}','{firstName}','{lastName}','{email}','{password}','{phoneNum}')";
-            Connection.getInstanceOfDBConnection().nonQueryOperation(query);
-        }
-
-        public static void DeleteAccount(int ID)
-        {
-            string query = "DELETE FROM [dbo].[User] WHERE Id = '" + ID + "'";
+            string query = $"INSERT INTO [dbo].[User] (Type,FirstName,LastName,Email,Password,PhoneNum) VALUES ('{type}','{firstName}','{lastName}','{email}','{EncryptDecrypt.Encrypt(password)}','{phoneNum}')";
             Connection.getInstanceOfDBConnection().nonQueryOperation(query);
         }
 
@@ -76,17 +71,5 @@ namespace Brainstormer.Databases.DBBackend
             Connection.getInstanceOfDBConnection().nonQueryOperation(query);
         }
 
-        public static void UpdateEverything(int primaryKey, string type, string firstName, string lastName, string email, string password, string phoneNum)
-        {
-            string query = $"UPDATE [dbo].[User] SET Type = '{type}', FirstName = '{firstName}', LastName = '{lastName}', Email = '{email}', Password = '{password}', PhoneNum = '{phoneNum}' WHERE Id = " + primaryKey;
-            Connection.getInstanceOfDBConnection().nonQueryOperation(query);
-
-            UserType = type;
-            UserFirstName = firstName;
-            UserLastName = lastName;
-            UserEmail = email;
-            UserPassword = password;
-            UserPhoneNum = phoneNum;
-        }
     }
 }

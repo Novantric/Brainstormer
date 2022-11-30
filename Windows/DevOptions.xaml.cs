@@ -1,4 +1,5 @@
-﻿using Brainstormer.Databases.DBBackend;
+﻿using Brainstormer.Classes;
+using Brainstormer.Databases.DBBackend;
 using Brainstormer.Windows;
 using System;
 using System.Data;
@@ -80,7 +81,7 @@ namespace Brainstormer
         {
             if (UserIDBox.Text.Length > 0)
             {
-                AccountOperations.DeleteAccount(Convert.ToInt32(UserIDBox.Text.ToString()));
+                User.DeleteAccount(Convert.ToInt32(UserIDBox.Text.ToString()));
                 refreshDataGrid();
                 UserIDBox.Text = "";
             }

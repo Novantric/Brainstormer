@@ -10,6 +10,7 @@ namespace Brainstormer.Databases.DBBackend
     internal class EncryptDecrypt
     {
         //Using the connection string (which varies) as key doesn't work as it can change.
+        //Considered using the connection string, however using a potentially different path each time would only work if hosted on a server.
         //Credit: https://stackoverflow.com/questions/10168240/encrypting-decrypting-a-string-in-c-sharp
 
         protected static readonly string encryptionKey = "P8eAeSdExXHx8Tj";
