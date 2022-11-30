@@ -1,5 +1,6 @@
 ﻿using Brainstormer.Databases.DBBackend;
 using Brainstormer.Windows;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using static Brainstormer.Databases.DBBackend.AccountOperations;
@@ -39,17 +40,21 @@ namespace Brainstormer
             string password = PasswordBox.Password;
 
             //MessageBox.Show(String.Format("Type: {0}\nusername: {1}\npassword: {2}", userType, username, password));
-            if (login(email, password))
+            if (Login(email, password))
             {
-                MessageBox.Show("Success");
+                Debug.WriteLine("Logged in!");
                 string type = "", firstName = "", lastName = "", phoneNum = "";
-                AccountOperations.getUserData(type, firstName, lastName, email, password, phoneNum);
+                AccountOperations.GetUserData(type, firstName, lastName, email, password, phoneNum);
+
+                HomeMenu showHomeMenu = new HomeMenu();
+                showHomeMenu.Show();
+                Close();
             }
         }
 
         private void CreateAccountClicked(object sender, RoutedEventArgs e)
         {
-            CreateAccount createAccount = new CreateAccount();
+            CreateAccount createAccount = new CreateAccount("Create");
             createAccount.ShowDialog();
         }
 

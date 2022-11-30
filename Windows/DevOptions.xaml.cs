@@ -1,4 +1,5 @@
 ﻿using Brainstormer.Databases.DBBackend;
+using Brainstormer.Windows;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -71,7 +72,7 @@ namespace Brainstormer
             password = "dummy";
             phoneNum = rnd.Next(999999999).ToString() + rnd.Next(99).ToString();
 
-            AccountOperations.createAccount(type, firstName, lastName, email, password, phoneNum);
+            AccountOperations.CreateAccount(type, firstName, lastName, email, password, phoneNum);
             refreshDataGrid();
         }
 
@@ -79,7 +80,7 @@ namespace Brainstormer
         {
             if (UserIDBox.Text.Length > 0)
             {
-                AccountOperations.deleteAccount(Convert.ToInt32(UserIDBox.Text.ToString()));
+                AccountOperations.DeleteAccount(Convert.ToInt32(UserIDBox.Text.ToString()));
                 refreshDataGrid();
                 UserIDBox.Text = "";
             }
@@ -104,13 +105,13 @@ namespace Brainstormer
                     {
                         if (Checks.checkIsValidAccountType(value))
                         {
-                            AccountOperations.updateField(columnName, primaryKey, value);
+                            AccountOperations.UpdateField(columnName, primaryKey, value);
                             UserColumnBox.Text = "";
                         }
                     }
                     else
                     {
-                        AccountOperations.updateField(columnName, primaryKey, value);
+                        AccountOperations.UpdateField(columnName, primaryKey, value);
                     }
                     UserValueBox.Text = "";
                 }
@@ -132,6 +133,17 @@ namespace Brainstormer
 
 
 
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            CreateAccount createAccount = new CreateAccount("Edit");
+            createAccount.ShowDialog();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            refreshDataGrid();
         }
     }
 }

@@ -21,10 +21,12 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
 
             </Grid.RowDefinitions>
 
             <CheckBox x:Name="DatabaseTestCheckBox" Content="Database Working?" HorizontalAlignment="Left" Grid.Row="0" Margin="10,10,0,10" IsChecked="False" IsEnabled="False"/>
+            <Button Content="Refresh Grid" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Click="Button_Click"/>
             <Button x:Name="DummyDataButton" Content="Generate User Data" Click="DummyDataButton_Click" Grid.Row="1"/>
             <Button x:Name="DeleteUserButton" Content="Delete User ID" Click="DeleteUserButton_Click" Grid.Row="1" Grid.Column="1"/>
             <TextBox x:Name="UserIDBox" Grid.Row="1" Grid.Column="2"/>
@@ -40,6 +42,8 @@
             <TextBox x:Name="UserValueBox" Grid.Row="4" Grid.Column="2"/>
 
             <Button x:Name="UpdateUserButton" Content="Update" Grid.Row="5" Grid.ColumnSpan="3" Click="UpdateUserButton_Click"/>
+            <Button x:Name="EditButton" Content="Edit Current User" Grid.Row="6" Grid.ColumnSpan="3" Click="EditButton_Click" />
+
 
 
 
