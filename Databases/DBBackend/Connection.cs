@@ -17,6 +17,8 @@ namespace Brainstormer.Databases.DBBackend
         ///constructor
         private Connection()
         {
+
+            //try brainstore, then another
             string fileName = @"Databases\Brainstore.mdf";
             string path = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, fileName);
             connStr = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""{0}"";Integrated Security = True", path);

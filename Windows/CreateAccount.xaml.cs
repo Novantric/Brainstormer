@@ -1,6 +1,10 @@
-﻿using Brainstormer.Databases.DBBackend;
+﻿using Brainstormer.Classes;
+using Brainstormer.Databases.DBBackend;
 using System.Windows;
 using static Brainstormer.Databases.DBBackend.Checks;
+using static Brainstormer.Classes.User;
+using System;
+using System.Diagnostics;
 
 namespace Brainstormer.Windows
 {
@@ -9,9 +13,34 @@ namespace Brainstormer.Windows
     /// </summary>
     public partial class CreateAccount : Window
     {
-        public CreateAccount()
+        protected string scenario;
+        public CreateAccount(string inScenario)
         {
             InitializeComponent();
+
+
+            switch (inScenario)
+            {
+                case "Create":
+                    this.Title = "Create Account";
+                    titleText.Content = "Create Account";
+                    scenario = "Create";
+                    break;
+                case "Edit":
+                    this.Title = "Edit Account";
+                    titleText.Content = "Edit Account";
+                    UsernameBox.Text = userEmail;
+                    PasswordBox.Text = EncryptDecrypt.Decrypt(userPassword);
+                    AccountTypeBox.Text = userType;
+                    FirstNameBox.Text = userFirstName;
+                    LastNameBox.Text = userLastName;
+                    MobNumBox.Text = userPhoneNum;
+                    scenario = "Edit";
+                    break;
+                default:
+                    break;
+            }
+            scenario = inScenario;
         }
 
         private void CreateButtonClick(object sender, RoutedEventArgs e)
@@ -32,14 +61,36 @@ namespace Brainstormer.Windows
                     {
                         if (checkIsAllInt(phoneNum) == true && checkIsBlank(phoneNum) == false)
                         {
-                            MessageBox.Show("Success + Phone Number!");
-                            AccountOperations.createAccount(accountType, firstName, lastName, email, password, phoneNum);
+                            Debug.WriteLine("Success + Phone Number!");
+                            switch (scenario)
+                            {
+                                case "Create":
+                                    AccountOperations.CreateAccount(accountType, firstName, lastName, email, EncryptDecrypt.Encrypt(password), phoneNum);
+                                    break;
+                                case "Edit":
+                                    AccountOperations.UpdateEverything(Convert.ToInt32(userID), accountType, firstName, lastName, email, EncryptDecrypt.Encrypt(password), phoneNum);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            Close();
 
                         }
                         else if (checkIsBlank(phoneNum) == true)
                         {
-                            MessageBox.Show("Success!");
-                            AccountOperations.createAccount(accountType, firstName, lastName, email, password, "none");
+                            Debug.WriteLine("Success!");
+                            switch (scenario)
+                            {
+                                case "Create":
+                                    AccountOperations.CreateAccount(accountType, firstName, lastName, email, EncryptDecrypt.Encrypt(password), "none");
+                                    break;
+                                case "Edit":
+                                    AccountOperations.UpdateEverything(Convert.ToInt32(userID), accountType, firstName, lastName, email, EncryptDecrypt.Encrypt(password), "none");
+                                    break;
+                                default:
+                                    break;
+                            }
+                            Close();
 
                         }
                         else if (checkIsAllInt(phoneNum) == false)
@@ -61,6 +112,11 @@ namespace Brainstormer.Windows
             {
                 MessageBox.Show("Please enter the correct password!");
             }
+        }
+
+        private void FirstNameBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+
         }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Brainstormer.Windows"
         mc:Ignorable="d"
-        Title="CreateAccount" Height="250" Width="300">
+        Title="Create your Account!" Height="250" Width="300">
     <Grid Background="Black">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -23,19 +23,19 @@
 
         </Grid.RowDefinitions>
 
-        <Label Content="Create Account" Foreground="White" FontSize="18" Grid.Row="0" Grid.ColumnSpan="2" />
+        <Label Content="Create Account" x:Name="titleText" Foreground="White" FontSize="18" Grid.Row="0" Grid.ColumnSpan="2" />
         <Button Content="   +   " Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="3,3,3,3" Click="CreateButtonClick"/>
         
-        <Label Content="*Email Address" Foreground="White" HorizontalAlignment="Left" Grid.Row="1"/>
+        <Label Content="Email Address" Foreground="PaleVioletRed" HorizontalAlignment="Left" Grid.Row="1"/>
         <TextBox x:Name="UsernameBox" Grid.Row="1" Grid.Column="1"/>
-        
-        <Label Content="*Password" DockPanel.Dock="Right" Foreground="White" HorizontalAlignment="Left" Grid.Row="2"/>
+
+        <Label Content="Password" DockPanel.Dock="Right" Foreground="PaleVioletRed" HorizontalAlignment="Left" Grid.Row="2"/>
         <TextBox x:Name="PasswordBox" Grid.Row="2" Grid.Column="1"/>
 
-        <Label Content="*Confirm Password" DockPanel.Dock="Right" Foreground="White" HorizontalAlignment="Left" Grid.Row="3"/>
+        <Label Content="Confirm Password" DockPanel.Dock="Right" Foreground="PaleVioletRed" HorizontalAlignment="Left" Grid.Row="3"/>
         <TextBox x:Name="PasswordConfirmBox" Grid.Row="3" Grid.Column="1"/>
 
-        <Label Content="*AccountType" DockPanel.Dock="Right" Foreground="White" HorizontalAlignment="Left" Grid.Row="4"/>
+        <Label Content="AccountType" DockPanel.Dock="Right" Foreground="PaleVioletRed" HorizontalAlignment="Left" Grid.Row="4"/>
         <ComboBox x:Name="AccountTypeBox" Grid.Row="4" Grid.Column="1" SelectedIndex="1">
             <ComboBoxItem Content = "Client"/>
             <ComboBoxItem Content = "Relationship Manager" />
@@ -43,7 +43,7 @@
         </ComboBox>
 
         <Label Content="First Name" Foreground="White" Grid.Row="5"/>
-        <TextBox x:Name="FirstNameBox" Grid.Row="5" Grid.Column="1"/>
+        <TextBox x:Name="FirstNameBox" Grid.Row="5" Grid.Column="1" TextChanged="FirstNameBox_TextChanged"/>
 
         <Label Content="Last Name" Foreground="White" Grid.Row="6"/>
         <TextBox x:Name="LastNameBox" Grid.Row="6" Grid.Column="1"/>

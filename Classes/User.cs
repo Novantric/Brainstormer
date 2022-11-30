@@ -2,16 +2,12 @@
 {
     public class User //better to choose an appropriate name
     {
-        string Type, FirstName, LastName, Email, Password, PhoneNum;
-
-        public User(string type, string firstName, string lastName, string email, string password, string phoneNum)
-        {
-            Type = type;
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            Password = password;
-            PhoneNum = phoneNum;
-        }
+       public static string? userID;
+       public static string? userType;
+       public static string? userFirstName;
+       public static string? userLastName;
+       public static string? userEmail;
+       public static string? userPassword;
+       public static string? userPhoneNum;
     }
 }
