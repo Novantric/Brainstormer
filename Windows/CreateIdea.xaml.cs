@@ -28,5 +28,10 @@ namespace Brainstormer.Windows
         {
 
         }
+
+        private void RiskRatingChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            RiskLabel.Content = RiskRatingSlider.Value / 2 + "/5"; 
+        }
     }
 }

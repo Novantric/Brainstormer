@@ -8,5 +8,6 @@
         Title="HomeMenu" Height="450" Width="800">
     <Grid>
         
+        <Frame NavigationUIVisibility="Hidden" Source="/Windows/Pages/Settings.xaml" />
     </Grid>
 </Window>

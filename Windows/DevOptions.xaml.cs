@@ -138,13 +138,19 @@ namespace Brainstormer
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            CreateAccount createAccount = new CreateAccount("Edit");
+            CreateAccount createAccount = new("Edit");
             createAccount.ShowDialog();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             refreshDataGrid();
+        }
+
+        private void OpenIdeaWindow(object sender, RoutedEventArgs e)
+        {
+            CreateIdea createidea = new();
+            createidea.ShowDialog();
         }
     }
 }
