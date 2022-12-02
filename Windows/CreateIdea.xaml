@@ -66,6 +66,8 @@
             <Slider x:Name="RiskRatingSlider" Grid.Row="1" Grid.ColumnSpan="2" Maximum="10" Minimum="0" IsSnapToTickEnabled="True" ValueChanged="RiskRatingChanged" SmallChange="1" />
         </Grid>
 
+        <Button Grid.Row="7" Content="Submit" Grid.Column="3" Margin="5,5,5,5" Click="Button_Click"/>
+
         <Expander Foreground="White" Grid.Row="7" Grid.ColumnSpan="3" Header="More Items">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -95,7 +97,8 @@
                     <ComboBoxItem Content="Canada"/>
                 </ComboBox>
 
-                <Calendar x:Name="ExpiryCalendar" Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="3" HorizontalAlignment="Left" Height="200"/>
+                <DatePicker x:Name="ExpiryDatePicker" Text="Expiry" Grid.Row="2" Grid.ColumnSpan="3" />
+
             </Grid>
 
         </Expander>

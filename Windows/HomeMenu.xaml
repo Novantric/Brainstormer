@@ -6,8 +6,47 @@
         xmlns:local="clr-namespace:Brainstormer.Windows"
         mc:Ignorable="d"
         Title="HomeMenu" Height="450" Width="800">
-    <Grid>
+    <Grid Background="Black">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="1*"/>
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+
+
+        </Grid.RowDefinitions>
+        <Label Content="Brainstormer" HorizontalAlignment="Center" Foreground="White" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="1" FontSize="22"/>
+        <Frame x:Name="PageFrame" x:FieldModifier="public" NavigationUIVisibility="Hidden" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" BorderBrush="Gray" BorderThickness="2" Source="/Windows/Pages/Welcome.xaml"/>
+        <Button x:Name="SearchButton" Content="Search" Grid.Column="2" Grid.Row="0" Foreground="White" Background="Black" Margin="25,5,5,5" Click="SearchButton_Click"/>
         
-        <Frame NavigationUIVisibility="Hidden" Source="/Windows/Pages/Settings.xaml" />
+        <StatusBar Grid.Row="3" Grid.ColumnSpan="3" Grid.Column="0" Background="Black" Foreground="White" Visibility="Collapsed">
+            <StatusBarItem>
+                <TextBlock x:Name="InfoBar" Text="Welcome!" Margin="5,0,0,0" FontFamily="Consolas" FontSize="18"/>
+            </StatusBarItem>
+        </StatusBar>
+
+        <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <Label Content="Menu" Foreground="White" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="16" />
+                <Button x:Name="HomeMenuButton" Content="Home" Height="30" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" Click="HomeMenuButton_Click"/>
+                <Button x:Name="CreateIdeaButton" Content="Create Idea" Height="30" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" Click="CreateIdeaButton_Click"/>
+                <Button x:Name="ClientsButton" Content="Clients" Height="30" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" Click="ClientsButton_Click"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1">
+                <Button x:Name="AdminOptionsButton" Content="Admin&#10;Options" Height="40" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" VerticalAlignment="Center"/>
+                <Button x:Name="DevOptionsButton" Content="Developer&#10;Options" Height="40" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" VerticalAlignment="Center" Click="DevOptionsButton_Click"/>
+                <Button x:Name="SettingsButton" Content="Settings" Height="30" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" Click="SettingsButton_Click"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

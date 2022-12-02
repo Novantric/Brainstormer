@@ -28,7 +28,7 @@
             </StackPanel>
 
             <Label Content="Welcome." Foreground="White" Grid.Column="1" Grid.Row="0" HorizontalContentAlignment="Center" FontSize="20"/>
-            <Image HorizontalAlignment="Left" Source="/Windows/image-removebg-preview.png" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="-144,41,0,-112" Grid.RowSpan="2" Width="830" Opacity="0.5"/>
+            <Image HorizontalAlignment="Left" Source="/Windows/image-removebg-preview.png" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="-181,57,0,-128" Grid.RowSpan="2" Width="830" Opacity="0.5"/>
             <Button Content="Exit" Click="ExitClick" Grid.Column="0" Grid.Row="3" Margin="10,10,10,10"/>
 
             <Grid Grid.Row="1" Grid.Column="1">
