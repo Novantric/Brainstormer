@@ -23,7 +23,7 @@
             <Button Content="Dev Menu" Click="DevMenuOpen" Grid.Column="2" Grid.Row="0"/>
 
             <StackPanel Grid.Column="2" Grid.Row="3">
-                <Button Content="Login" Click="LoginClick" Height="35"/>
+                <Button Content="Login" x:Name="LoginButton" Click="LoginClick" Height="35"/>
                 <Button Content="Create Account" Click="CreateAccountClicked" Height="30"/>
             </StackPanel>
 

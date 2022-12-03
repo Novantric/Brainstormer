@@ -2,6 +2,8 @@
 using Brainstormer.Windows;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using static Brainstormer.Databases.DBBackend.AccountOperations;
 
@@ -12,9 +14,20 @@ namespace Brainstormer
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(string[] launchParams)
         {
             InitializeComponent();
+            if (launchParams.Length > 0)
+            {
+                Debug.WriteLine("Parameters Detected!");
+
+                UsernameBox.Text = launchParams[0];
+                PasswordBox.Password = launchParams[1];
+
+                ButtonAutomationPeer peer = new ButtonAutomationPeer(LoginButton);
+                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv.Invoke();
+            }
         }
 
         private void DevMenuOpen(object sender, RoutedEventArgs e)
