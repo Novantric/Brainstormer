@@ -5,11 +5,14 @@ using System.Diagnostics;
 using static Brainstormer.Databases.DBBackend.Checks;
 using static Brainstormer.Databases.DBBackend.Connection;
 using static Brainstormer.Classes.User;
+using System.Windows.Documents;
+using System.Collections.Generic;
 
 namespace Brainstormer.Databases.DBBackend
 {
     internal class AccountOperations
     {
+        private static List<Client> Clients = new();
 
         public static bool Login(string username, string password)
         {
@@ -75,6 +78,20 @@ namespace Brainstormer.Databases.DBBackend
         {
             string query = "UPDATE [dbo].[User] SET " + columnName + " = '" + value + "' WHERE Id = " + primaryKey;
             Connection.getInstanceOfDBConnection().nonQueryOperation(query);
+        }
+
+        public static List<Client> getClients()
+        {
+            string QUERY = "SELECT Id, Type, FirstName, LastName, PhoneNum FROM [dbo].[User] WHERE Type = '" + "Client" + "'";
+            DataTable clientTable = (getInstanceOfDBConnection().getDataSet(QUERY, "[dbo].[User]")).Tables[0];
+
+            Clients.Clear();
+            for (int i = 0; i < clientTable.Rows.Count; i++)
+            {
+                Clients.Add(new Client(clientTable.Rows[i]["Id"].ToString(), clientTable.Rows[i]["Type"].ToString(), clientTable.Rows[i]["LastName"].ToString(), clientTable.Rows[i]["FirstName"].ToString(), clientTable.Rows[i]["Email"].ToString(), clientTable.Rows[i]["PhoneNum"].ToString()));
+            }
+
+            return Clients;
         }
 
     }

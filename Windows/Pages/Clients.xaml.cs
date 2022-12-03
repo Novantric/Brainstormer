@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Brainstormer.Classes;
+using Brainstormer.Databases.DBBackend;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,21 @@ namespace Brainstormer.Windows.Pages
         public Clients()
         {
             InitializeComponent();
+
+            List<Client> clients = AccountOperations.getClients();
+            foreach (Client value in clients)
+            {
+                generateButtons(value.UserID, value.UserFirstName, value.UserLastName, value.UserEmail);
+            }
+        }
+
+        private void generateButtons(string ID, string FirstName, string LastName, string Email)
+        {
+
+
+            Button button = new Button() { Content = "Add", Uid = ID, Background = Brushes.Black, Foreground = Brushes.White };
+            button.Click += addToUserRM;
+
         }
     }
 }

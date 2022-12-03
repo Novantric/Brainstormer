@@ -1,4 +1,5 @@
 ﻿using Brainstormer.Classes;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Windows.Controls;
@@ -14,13 +15,14 @@ namespace Brainstormer.Databases.DBBackend
 
         public static List<Idea> preloadIdeas()
         {
-            string QUERY = "SELECT * FROM[dbo].[Idea]";
+            string QUERY = "SELECT * FROM [dbo].[Idea]";
             string TABLE = "[dbo].[Idea]";
             DataTable ideas = (getInstanceOfDBConnection().getDataSet(QUERY, TABLE)).Tables[0];
 
+            IdeaList.Clear();
             for (int i = 0; i < ideas.Rows.Count; i++)
             {
-                IdeaList.Add(new Idea(ideas.Rows[i]["Id"].ToString(), ideas.Rows[i]["Title"].ToString(), ideas.Rows[i]["AssetType"].ToString(), ideas.Rows[i]["MajorSector"].ToString(), ideas.Rows[i]["MinorSector"].ToString(), ideas.Rows[i]["Reigion"].ToString(), ideas.Rows[i]["Currency"].ToString(), ideas.Rows[i]["RiskRating"].ToString(), ideas.Rows[i]["CreationDate"].ToString(), ideas.Rows[i]["ExpiryDate"].ToString(), ideas.Rows[i]["SuggestedPrice"].ToString(), ideas.Rows[i]["Views"].ToString()));
+                IdeaList.Add(new Idea(ideas.Rows[i]["Id"].ToString(), ideas.Rows[i]["Title"].ToString(), ideas.Rows[i]["AssetType"].ToString(), ideas.Rows[i]["MajorSector"].ToString(), ideas.Rows[i]["MinorSector"].ToString(), ideas.Rows[i]["Reigion"].ToString(), ideas.Rows[i]["Currency"].ToString(), ideas.Rows[i]["RiskRating"].ToString(), ideas.Rows[i]["CreationDate"].ToString(), ideas.Rows[i]["ExpiryDate"].ToString(), ideas.Rows[i]["SuggestedPrice"].ToString(), ideas.Rows[i]["Views"].ToString(), ideas.Rows[i]["UserID"].ToString(), ideas.Rows[i]["Colour"].ToString(), ideas.Rows[i]["Summary"].ToString(), ideas.Rows[i]["Content"].ToString()));
             }
 
             return IdeaList;

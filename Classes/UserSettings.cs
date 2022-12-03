@@ -1,4 +1,5 @@
 ﻿using Brainstormer.Databases.DBBackend;
+using System;
 using System.Data;
 using static Brainstormer.Databases.DBBackend.Connection;
 
@@ -6,12 +7,12 @@ namespace Brainstormer.Classes
 {
     internal class UserSettings
     {
-        public static string? PrefferedRegion { get; private set; }
-        public static string? PrefferedCurrency { get; private set; }
-        public static string? PrefferedMajorSector { get; private set; }
-        public static string? PrefferedMinorSector { get; private set; }
-        public static string? PrefferedProductType { get; private set; }
-        public static string? PrefferedRiskRating { get; private set; }
+        public static string? PrefferedRegion { get; protected set; }
+        public static string? PrefferedCurrency { get; protected set; }
+        public static string? PrefferedMajorSector { get; protected set; }
+        public static string? PrefferedMinorSector { get; protected set; }
+        public static string? PrefferedProductType { get; protected set; }
+        public static string? PrefferedRiskRating { get; protected set; }
 
         public static void loadPreferences()
         {
@@ -29,14 +30,28 @@ namespace Brainstormer.Classes
         }
         public static void savePreferences(string region, string currency, string major, string minor, string product, double risk)
         {
+            string query = ($"UPDATE [dbo].[User_Preferences] SET CurrentRegion = '{region}', PreferredCurrency = '{currency}', PreferredMajorSector = '{major}', PreferredMinorSector = '{minor}', PreferredProductType = '{product}', PreferredRiskRating = '{risk}' WHERE UserID = " + Convert.ToInt32(User.UserID));
+            Connection.getInstanceOfDBConnection().nonQueryOperation(query);
+
             PrefferedRegion = region;
             PrefferedCurrency = currency;
             PrefferedMajorSector = major;
             PrefferedMinorSector = minor;
             PrefferedProductType = product;
-            PrefferedRiskRating = (risk / 2).ToString();
+            PrefferedRiskRating = risk.ToString();
 
-            Connection.getInstanceOfDBConnection().nonQueryOperation(($"UPDATE [dbo].[User_Preferences] SET CurrentRegion = '{PrefferedRegion}', PreferredCurrency = '{PrefferedCurrency}', PreferredMajorSector = '{PrefferedMajorSector}', PreferredMinorSector = '{PrefferedMinorSector}', PreferredProductType = '{PrefferedProductType}', PreferredRiskRating = '{PrefferedRiskRating}' WHERE Id = " + User.UserID));
+
+        }
+        public static void DeletePreferences()
+        {
+            Connection.getInstanceOfDBConnection().nonQueryOperation("DELETE FROM [dbo].[User_Preferences] WHERE UserID = '" + User.UserID + "'");
+
+            PrefferedRegion = "";
+            PrefferedCurrency = "";
+            PrefferedMajorSector = "";
+            PrefferedMinorSector = "";
+            PrefferedProductType = "";
+            PrefferedRiskRating = "";
         }
     }
 }

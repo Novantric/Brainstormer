@@ -1,6 +1,7 @@
 ﻿using Brainstormer.Classes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,8 +24,11 @@ namespace Brainstormer.Windows.Pages
     {
         public Settings()
         {
+            UserSettings.loadPreferences();
+
             InitializeComponent();
             RefreshData();
+            UserIDLabel.Content = "User ID: " + User.UserID;
         }
 
         private void EditAccountButton_Click(object sender, RoutedEventArgs e)
@@ -39,28 +43,16 @@ namespace Brainstormer.Windows.Pages
             MessageBoxResult dialogResult = MessageBox.Show("Are you sure?", "Confirm Delete", MessageBoxButton.YesNo);
             if (dialogResult == MessageBoxResult.Yes)
             {
+                UserSettings.DeletePreferences();
                 User.DeleteAccount(Convert.ToInt32(User.UserID));
+
             }
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (RegionBox.Text.Equals("none") || CurrencyBox.Text.Equals("none") || MajorBox.Text.Equals("none") || MiniorBox.Text.Equals("none") || TypeBox.Text.Equals("None"))
-            {
-                SaveButton.IsEnabled = true;
-            }
-        }
-
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            UserSettings.savePreferences(RegionBox.Text, CurrencyBox.Text, MajorBox.Text, MiniorBox.Text, TypeBox.Text, RiskRatingSliderSettings.Value);
-            RefreshData();
-        }
 
         private void RiskRatingChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             RiskLabel.Content = (RiskRatingSliderSettings.Value / 2) + "/5";
-            SaveButton.IsEnabled = true;
         }
 
         private void RefreshData()
@@ -70,17 +62,24 @@ namespace Brainstormer.Windows.Pages
             MajorBox.Text = UserSettings.PrefferedMajorSector;
             MiniorBox.Text = UserSettings.PrefferedMinorSector;
             TypeBox.Text = UserSettings.PrefferedProductType;
-            switch (UserSettings.PrefferedRiskRating.ToString())
+            switch (UserSettings.PrefferedRiskRating)
             {
                 case "none":
                     RiskRatingSliderSettings.Value = 0;
                     break;
                 default:
-                    RiskRatingSliderSettings.Value = Convert.ToDouble(UserSettings.PrefferedRiskRating.ToString()) * 2;
+                    RiskRatingSliderSettings.Value = Convert.ToDouble(UserSettings.PrefferedRiskRating) * 2;
                     break;
             }
-            UserIDLabel.Content = "User ID: " + User.UserID;
             UserNameLabel.Content = "Email: " + User.UserEmail;
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine("Save button");
+            double risk = RiskRatingSliderSettings.Value / 2;
+            UserSettings.savePreferences(RegionBox.Text, CurrencyBox.Text, MajorBox.Text, MiniorBox.Text, TypeBox.Text, risk);
+            RefreshData();
         }
     }
 }

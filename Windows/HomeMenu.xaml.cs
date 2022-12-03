@@ -9,7 +9,8 @@ namespace Brainstormer.Windows
     /// </summary>
     public partial class HomeMenu : Window
     {
-        public static string? scenario;
+        public static string? operation;
+        public static string? IdeaID;
         public static Frame? navFrame;
         public HomeMenu()
         {
@@ -33,7 +34,7 @@ namespace Brainstormer.Windows
         private void CreateIdeaButton_Click(object sender, RoutedEventArgs e)
         {
             Uri resource = new(@"Windows\Pages\CreateIdeaPage.xaml", System.UriKind.RelativeOrAbsolute);
-            scenario = "none";
+            operation = "none";
             navFrame.Navigate(resource);
         }
 

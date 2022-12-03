@@ -1,4 +1,5 @@
-﻿using Brainstormer.Databases.DBBackend;
+﻿using Brainstormer.Classes;
+using Brainstormer.Databases.DBBackend;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,19 +31,23 @@ namespace Brainstormer.Windows.Pages
         {
             InitializeComponent();
 
-            switch (HomeMenu.scenario)
+            if (HomeMenu.operation == "none")
             {
-                case "none":
-                    Debug.WriteLine("is null");
-                    break;
-                default:
-                    string QUERY = "SELECT * FROM[dbo].[Idea] WHERE Id = '" + HomeMenu.scenario + "'";
-                    string TABLE = "[dbo].[Idea]";
+                Debug.WriteLine("is null");
+            }
+            else if (HomeMenu.operation == "Edit" || HomeMenu.operation == "View")
+            {
+                string QUERY = "SELECT * FROM[dbo].[Idea] WHERE Id = '" + HomeMenu.IdeaID + "'";
+                string TABLE = "[dbo].[Idea]";
 
-                    DataTable ideaInfo = (getInstanceOfDBConnection().getDataSet(QUERY, TABLE)).Tables[0];
+                DataTable ideaInfo = (getInstanceOfDBConnection().getDataSet(QUERY, TABLE)).Tables[0];
 
-                    TitleBox.Text = ideaInfo.Rows[0]["Title"].ToString();
-                    break;
+                TitleBox.Text = ideaInfo.Rows[0]["Title"].ToString();
+
+                if (HomeMenu.operation == "View")
+                {
+                    TitleBox.IsEnabled = false;
+                }
             }
         }
 
@@ -53,7 +58,35 @@ namespace Brainstormer.Windows.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            string title = TitleBox.Text;
+            string type = TypeBox.Text;
+            string summary = SummaryBox.Text;
+            string content = ContentBox.Text;
+            List<string> tags = new(TagsBox.Text.Split(','));
+            string riskRating = (RiskRatingSlider.Value / 2).ToString();
+            string minor = MinorBox.Text;
+            string major = MajorBox.Text;
+            string region = RegionBox.Text;
+            string price = PriceBox.Text;
+            string expiry = ExpiryDatePicker.Text;
+            string creation = DateTime.Today.ToString("d");
+            string currency = CurrencyBox.Text;
+            string colour = ColourBox.Text;
 
+            Idea.CreateIdea(title, type, major, minor, region, currency, riskRating, creation, expiry, price, User.UserID, colour, summary, content);
+
+            DataSet ideaid = getInstanceOfDBConnection().getDataSet($"SELECT Id FROM [dbo].[Idea] WHERE Title = '{title}' AND UserID = '{User.UserID}'", "[dbo].[Idea]");
+            int tempID = (int)ideaid.Tables["[dbo].[Idea]"].Rows[0]["Id"];
+
+            for (int i = 0; i < tags.Count; i++)
+            {
+                string tempTags = $"INSERT INTO [dbo].[Idea_Tags] (IdeaID,Tag) VALUES ({tempID},{tags[i]})";
+                getInstanceOfDBConnection().nonQueryOperation(tempTags);
+            }
+
+
+            Uri resource = new(@"Windows\Pages\Home.xaml", System.UriKind.RelativeOrAbsolute);
+            HomeMenu.navFrame.Navigate(resource);
         }
     }
 }
