@@ -16,7 +16,6 @@ namespace Brainstormer.Windows
             InitializeComponent();
             navFrame = PageFrame;
 
-
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
