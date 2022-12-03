@@ -53,7 +53,8 @@
                 <TextBox x:Name="ContentBox" Grid.Row="0" Grid.RowSpan="2" Text="Content" ScrollViewer.VerticalScrollBarVisibility="Visible" TextWrapping="Wrap" AcceptsReturn="True"/>
             </Grid>
 
-            <TextBox x:Name="TagsBox" Text="Tags" Grid.Row="6" Grid.ColumnSpan="2" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="5,0,5,5"/>
+            <TextBox x:Name="TagsBox" Text="Tags" Grid.Row="6" Grid.ColumnSpan="1" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="5,0,5,5"/>
+            <TextBox x:Name="PriceBox" Text="Asking Price" Grid.Column="1" Grid.Row="6"/>
             <Grid Grid.Row="6" Grid.Column="3" Margin="0,0,5,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
@@ -100,7 +101,16 @@
                         <ComboBoxItem Content="Canada"/>
                     </ComboBox>
 
-                    <DatePicker x:Name="ExpiryDatePicker" Text="Expiry" Grid.Row="2" Grid.ColumnSpan="3" />
+                    <DatePicker x:Name="ExpiryDatePicker" Text="Expiry" Grid.Row="2" Grid.ColumnSpan="2"/>
+                    <ComboBox x:Name="ColourBox" Grid.Column="3" Grid.Row="2" SelectedIndex="6">
+                        <ComboBoxItem Content="Red"/>
+                        <ComboBoxItem Content="Orange"/>
+                        <ComboBoxItem Content="Yellow"/>
+                        <ComboBoxItem Content="Green"/>
+                        <ComboBoxItem Content="Blue"/>
+                        <ComboBoxItem Content="Purple"/>
+                        <ComboBoxItem Content="Black"/>
+                    </ComboBox>
 
                 </Grid>
 

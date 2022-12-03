@@ -13,7 +13,6 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="1*"/>
-
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -21,7 +20,6 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-
             </Grid.RowDefinitions>
 
             <Label Content="Settings" Foreground="White" FontSize="20" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="0"/>
@@ -46,21 +44,21 @@
                     <Label Content="Idea Preferences" Foreground="White" FontSize="18" Grid.Column="0" HorizontalAlignment="Center" Grid.Row="0" Grid.ColumnSpan="2"/>
 
                     <Label Content="Region" Foreground="White" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
-                    <TextBox x:Name="RegionBox" Grid.Row="1" Grid.Column="1" TextChanged="TextBox_TextChanged"/>
+                    <TextBox x:Name="RegionBox" Grid.Row="1" Grid.Column="1"/>
 
                     <Label Content="Preffered Currency" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Foreground="White"/>
-                    <TextBox x:Name="CurrencyBox" Grid.Row="2" Grid.Column="1" TextChanged="TextBox_TextChanged"/>
+                    <TextBox x:Name="CurrencyBox" Grid.Row="2" Grid.Column="1"/>
 
 
                     <Label Content="Preffered Major Sector" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Foreground="White"/>
-                    <TextBox x:Name="MajorBox" Grid.Row="3" Grid.Column="1" TextChanged="TextBox_TextChanged"/>
+                    <TextBox x:Name="MajorBox" Grid.Row="3" Grid.Column="1"/>
 
 
                     <Label Content="Preffered Minor Sector" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" Foreground="White"/>
-                    <TextBox x:Name="MiniorBox" Grid.Row="4" Grid.Column="1" TextChanged="TextBox_TextChanged"/>
+                    <TextBox x:Name="MiniorBox" Grid.Row="4" Grid.Column="1"/>
 
                     <Label Content="Preffered Product Type" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" Foreground="White"/>
-                    <TextBox x:Name="TypeBox" Grid.Row="5" Grid.Column="1" TextChanged="TextBox_TextChanged"/>
+                    <TextBox x:Name="TypeBox" Grid.Row="5" Grid.Column="1" />
 
                     <Label Content="Preffered Risk Rating" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" Foreground="White"/>
 
@@ -79,7 +77,8 @@
                         <Slider x:Name="RiskRatingSliderSettings" Grid.Row="1" Grid.ColumnSpan="2" Maximum="10" Minimum="0" IsSnapToTickEnabled="True" ValueChanged="RiskRatingChanged" SmallChange="1" />
                     </Grid>
 
-                    <Button x:Name="SaveButton" Content="Save" Grid.Row="6" Grid.Column="1" Height="30" HorizontalAlignment="Right" Width="60" Foreground="White" Background="Black" Click="SaveButton_Click" IsEnabled="False"/>
+                    <Button x:Name="SaveButton" Content="Save" Grid.Row="6" Grid.Column="1" Height="30" HorizontalAlignment="Right" Width="60" Foreground="White" Background="Black" Click="SaveButton_Click"/>
+                    
                 </Grid>
             </StackPanel>
             <StackPanel Grid.Row="2" Grid.Column="1">
