@@ -16,7 +16,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Windows.ApplicationModel.Chat;
 
 namespace Brainstormer.Windows.Pages
 {
@@ -29,15 +28,16 @@ namespace Brainstormer.Windows.Pages
 
         public Home()
         {
+            UserSettings.loadPreferences();
             InitializeComponent();
-
             NewIdeaStackPanel.Children.Clear();
             List<Idea> ideas = IdeaOperations.preloadIdeas();
             foreach (Idea value in ideas)
             {
                 generateButtons(Convert.ToInt32(value.IdeaID));
-
             }
+
+
 
         }
 

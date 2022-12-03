@@ -1,5 +1,4 @@
 ﻿using Brainstormer.Databases.DBBackend;
-using Windows.Networking;
 
 namespace Brainstormer.Classes
 {

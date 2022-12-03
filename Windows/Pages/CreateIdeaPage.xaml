@@ -23,9 +23,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+
             </Grid.RowDefinitions>
 
             <Label Content="Create Idea" x:Name="titleText" Foreground="White" FontSize="18" Grid.Row="0" Grid.ColumnSpan="2" />

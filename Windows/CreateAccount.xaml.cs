@@ -30,7 +30,7 @@ namespace Brainstormer.Windows
                     this.Title = "Edit Account";
                     titleText.Content = "Edit Account";
                     UsernameBox.Text = UserEmail;
-                    PasswordBox.Text = EncryptDecrypt.Decrypt(UserPassword);
+                    PasswordBox.Text = UserPassword;
                     AccountTypeBox.Text = UserType;
                     FirstNameBox.Text = UserFirstName;
                     LastNameBox.Text = UserLastName;
