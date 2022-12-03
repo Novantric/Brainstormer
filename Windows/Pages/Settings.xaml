@@ -40,28 +40,46 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
 
                 </Grid.RowDefinitions>
                 <Label Content="Idea Preferences" Foreground="White" FontSize="18" Grid.Column="0" HorizontalAlignment="Center" Grid.Row="0" Grid.ColumnSpan="2"/>
                 
                 <Label Content="Region" Foreground="White" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
-                <TextBox Grid.Row="1" Grid.Column="1"/>
+                <TextBox x:Name="RegionBox" Grid.Row="1" Grid.Column="1" TextChanged="TextBox_TextChanged"/>
 
                 <Label Content="Preffered Currency" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Foreground="White"/>
-                <TextBox Grid.Row="2" Grid.Column="1"/>
+                <TextBox x:Name="CurrencyBox" Grid.Row="2" Grid.Column="1" TextChanged="TextBox_TextChanged"/>
 
 
                 <Label Content="Preffered Major Sector" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Foreground="White"/>
-                <TextBox Grid.Row="3" Grid.Column="1"/>
+                <TextBox x:Name="MajorBox" Grid.Row="3" Grid.Column="1" TextChanged="TextBox_TextChanged"/>
 
 
                 <Label Content="Preffered Minor Sector" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" Foreground="White"/>
-                <TextBox Grid.Row="4" Grid.Column="1"/>
+                <TextBox x:Name="MiniorBox" Grid.Row="4" Grid.Column="1" TextChanged="TextBox_TextChanged"/>
                 
                 <Label Content="Preffered Product Type" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" Foreground="White"/>
-                <TextBox Grid.Row="5" Grid.Column="1"/>
-                
-                
+                <TextBox x:Name="TypeBox" Grid.Row="5" Grid.Column="1" TextChanged="TextBox_TextChanged"/>
+
+                <Label Content="Preffered Risk Rating" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" Foreground="White"/>
+
+                <Grid Grid.Row="6" Grid.Column="1" Width="200" HorizontalAlignment="Left" Margin="0,0,5,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Content="Risk Rating" Foreground="White" FontSize="12" Grid.ColumnSpan="2" Grid.RowSpan="2" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Margin="0,-5,0,0" VerticalContentAlignment="Stretch" />
+                    <Label Content="0/5" x:Name="RiskLabel" Grid.Row="0" Foreground="White" Grid.Column="2" FontSize="12" HorizontalAlignment="Right" Margin="0,-5,0,0"/>
+                    <Slider x:Name="RiskRatingSliderSettings" Grid.Row="1" Grid.ColumnSpan="2" Maximum="10" Minimum="0" IsSnapToTickEnabled="True" ValueChanged="RiskRatingChanged" SmallChange="1" />
+                </Grid>
+
+                <Button x:Name="SaveButton" Content="Save" Grid.Row="6" Grid.Column="1" Height="30" HorizontalAlignment="Right" Width="60" IsEnabled="False" Foreground="White" Background="Black" Click="SaveButton_Click"/>
             </Grid>
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="1">
@@ -82,11 +100,11 @@
                     <RowDefinition Height="Auto"/>
 
                 </Grid.RowDefinitions>
-                <Label Content="User ID" Foreground="White" Grid.Column="0" Grid.Row="1"/>
-                <Label Content="ID" Foreground="White" Grid.Column="1" Grid.Row="1"/>
+                <Label Content="UserName: " x:Name="UserNameLabel" Foreground="White" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Center"/>
+                <Label Content="ID" x:Name="UserIDLabel" Foreground="White" Grid.Column="1" Grid.Row="1" HorizontalContentAlignment="Center"/>
 
-                <Button x:Name="EditAccountButton" Content="Change Account Information" Grid.Column="0" Grid.Row="2"  Foreground="White" Background="Black"/>
-                <Button x:Name="DeleteAccountButton" Content="Delete Account" Grid.Column="1" Grid.Row="2" Foreground="Red" Background="Black"/>
+                <Button x:Name="EditAccountButton" Content="Change Account Information" Grid.Column="0" Grid.Row="2"  Foreground="White" Background="Black" Click="EditAccountButton_Click"/>
+                <Button x:Name="DeleteAccountButton" Content="Delete Account" Grid.Column="1" Grid.Row="2" Foreground="Red" Background="Black" Click="DeleteAccountButton_Click"/>
 
             </Grid>
         </StackPanel>

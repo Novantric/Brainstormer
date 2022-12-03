@@ -36,8 +36,9 @@ namespace Brainstormer.Windows.Pages
             foreach (Idea value in ideas)
             {
                 generateButtons(Convert.ToInt32(value.IdeaID));
-
             }
+
+
 
         }
 

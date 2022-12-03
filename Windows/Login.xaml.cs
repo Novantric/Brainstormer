@@ -17,9 +17,9 @@ namespace Brainstormer
         public MainWindow(string[] launchParams)
         {
             InitializeComponent();
-            if (launchParams.Length > 0)
+            if (launchParams.Length > 0 && launchParams.Length < 3)
             {
-                Debug.WriteLine("Parameters Detected!");
+                Debug.WriteLine("Login Parameters Detected!");
 
                 UsernameBox.Text = launchParams[0];
                 PasswordBox.Password = launchParams[1];

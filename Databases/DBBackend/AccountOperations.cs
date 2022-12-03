@@ -57,12 +57,19 @@ namespace Brainstormer.Databases.DBBackend
             UserEmail = email;
             UserPassword = password;
             UserPhoneNum = details.Tables[TABLENAME].Rows[0]["PhoneNum"].ToString();
+
         }
 
         public static void CreateAccount(string type, string firstName, string lastName, string email, string password, string phoneNum)
         {
             string query = $"INSERT INTO [dbo].[User] (Type,FirstName,LastName,Email,Password,PhoneNum) VALUES ('{type}','{firstName}','{lastName}','{email}','{EncryptDecrypt.Encrypt(password)}','{phoneNum}')";
             Connection.getInstanceOfDBConnection().nonQueryOperation(query);
+
+            DataSet id = Connection.getInstanceOfDBConnection().getDataSet($"SELECT Id FROM [dbo].[User] WHERE Email = '{email}' AND Password = '{EncryptDecrypt.Encrypt(password)}'", "[dbo].[User]");
+            int tempID = (int)id.Tables["[dbo].[User]"].Rows[0]["Id"];
+
+            string preferences = $"INSERT INTO [dbo].[User_Preferences] (PreferredRiskRating,PreferredProductType,PreferredCurrency,PreferredMajorSector,PreferredMinorSector,CurrentRegion,UserID) VALUES (0,'none','none','none','none','none','{tempID}')";
+            Connection.getInstanceOfDBConnection().nonQueryOperation(preferences);
         }
 
         public static void UpdateField(string columnName, int primaryKey, string value)
