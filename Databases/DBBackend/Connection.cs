@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Brainstormer.Databases.DBBackend
 {
@@ -17,12 +20,25 @@ namespace Brainstormer.Databases.DBBackend
         ///constructor
         private Connection()
         {
-
             //try brainstore, then another
-            string fileName = @"Databases\Brainstore.mdf";
-            string path = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, fileName);
-            connStr = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""{0}"";Integrated Security = True", path);
-            connectionDB = new SqlConnection(connStr);
+            string fileName1 = @"Databases\Brainstore.mdf";
+            string fileName2 = @"Databases\Oldestore.mdf";
+
+            string path1 = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, fileName1);
+            string path2 = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, fileName2);
+
+            try
+            {
+                connStr = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""{0}"";Integrated Security = True", path1);
+                connectionDB = new SqlConnection(connStr);
+                Debug.WriteLine("Loaded Brainstore!");
+            }
+            catch (Exception)
+            {
+                connStr = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""{0}"";Integrated Security = True", path2);
+                connectionDB = new SqlConnection(connStr);
+                Debug.WriteLine("Falling back to Oldestore");
+            }
         }
 
         public static Connection getInstanceOfDBConnection()
