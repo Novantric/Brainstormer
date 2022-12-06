@@ -21,12 +21,23 @@ namespace Brainstormer.Databases.DBBackend
         private Connection()
         {
             //try brainstore, then another
-            string fileName1 = @"Databases\Brainstore.mdf";
-            string path1 = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, fileName1);
+            string path1 = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, @"Databases\Brainstore.mdf");
+            string path2 = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, @"Databases\Oldestore.mdf");
 
-            
-            connStr = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""{0}"";Integrated Security = True", path1);
-            connectionDB = new SqlConnection(connStr);
+            try
+            {
+                connStr = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""{0}"";Integrated Security = True", path1);
+                connectionDB = new SqlConnection(connStr);
+                connectionDB.Open();
+                connectionDB.Close();
+                Debug.WriteLine("Connected to Brainstore!");
+            }
+            catch (Exception)
+            {
+                connStr = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""{0}"";Integrated Security = True", path2);
+                connectionDB = new SqlConnection(connStr);
+                Debug.WriteLine("Connected to Oldestore!");
+            }
         }
 
         public static Connection getInstanceOfDBConnection()
@@ -43,20 +54,8 @@ namespace Brainstormer.Databases.DBBackend
         {
             //create an empty dataset
             DataSet dataSet = new DataSet();
-            try
-            {
-                connectionDB.Open();
-                Debug.WriteLine("Connected to Brainstore!");
-            }
-            catch (Exception)
-            {
-                string path2 = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, @"Databases\Oldestore.mdf");
 
-                connStr = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""{0}"";Integrated Security = True", path2);
-                connectionDB = new SqlConnection(connStr);
-                Debug.WriteLine("Connected to Oldestore!");
-                connectionDB.Open();
-            }
+            connectionDB.Open();
             SqlDataAdapter adapter = new SqlDataAdapter(sqlQuery, connStr);
             adapter.Fill(dataSet, tableName);
             connectionDB.Close();

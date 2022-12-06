@@ -80,7 +80,7 @@ namespace Brainstormer.Windows.Pages
 
             for (int i = 0; i < tags.Count; i++)
             {
-                string tempTags = $"INSERT INTO [dbo].[Idea_Tags] (IdeaID,Tag) VALUES ({tempID},{tags[i]})";
+                string tempTags = $"INSERT INTO [dbo].[Idea_Tags] (IdeaID,Tag) VALUES ({tempID},'{tags[i]}')";
                 getInstanceOfDBConnection().nonQueryOperation(tempTags);
             }
 

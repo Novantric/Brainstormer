@@ -28,7 +28,7 @@ namespace Brainstormer.Classes
 
         public static void CreateIdea(string ideaTitle, string ideaType, string ideaMajorSector, string ideaMinorSector, string ideaRegion, string ideaCurrency, string ideaRiskRating, string creationDate, string expiryDate, string suggestedPrice, string creatorID, string colour, string ideaSummary, string ideaContent)
         {
-            string query = $"INSERT INTO [dbo].[Idea] (Title,AssetType,MajorSector,MinorSector,Reigion,Currency,RiskRating,CreationDate,ExpiryDate,SuggestedPrice,Views,UserID,Colour,Summary,Content) VALUES ('{ideaTitle}','{ideaType}','{ideaMajorSector}','{ideaMinorSector}','{ideaRegion}','{ideaCurrency}','{ideaRiskRating}','{creationDate}','{expiryDate}','{suggestedPrice}','{0}','{creatorID},'{colour}','{ideaSummary}','{ideaContent}')";
+            string query = $"INSERT INTO [dbo].[Idea] (Title,AssetType,MajorSector,MinorSector,Reigion,Currency,RiskRating,CreationDate,ExpiryDate,SuggestedPrice,Views,UserID,Colour,Summary,Content) VALUES ('{ideaTitle}','{ideaType}','{ideaMajorSector}','{ideaMinorSector}','{ideaRegion}','{ideaCurrency}','{ideaRiskRating}','{creationDate}','{expiryDate}','{suggestedPrice}','{0}','{creatorID}','{colour}','{ideaSummary}','{ideaContent}')";
             Connection.getInstanceOfDBConnection().nonQueryOperation(query);
         }
     }

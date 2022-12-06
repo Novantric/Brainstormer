@@ -12,7 +12,7 @@ namespace Brainstormer.Databases.DBBackend
 {
     internal class AccountOperations
     {
-        private static List<Client> Clients = new();
+        private static readonly List<Client> Clients = new();
 
         public static bool Login(string username, string password)
         {
@@ -51,7 +51,7 @@ namespace Brainstormer.Databases.DBBackend
             string TABLENAME = "[dbo].[User]";
 
             DataSet details = Connection.getInstanceOfDBConnection().getDataSet(LOGINQUERY, TABLENAME);
-            
+
             UserID = details.Tables[TABLENAME].Rows[0]["Id"].ToString();
             UserType = details.Tables[TABLENAME].Rows[0]["Type"].ToString();
             UserFirstName = details.Tables[TABLENAME].Rows[0]["FirstName"].ToString();
@@ -82,7 +82,7 @@ namespace Brainstormer.Databases.DBBackend
 
         public static List<Client> getClients()
         {
-            string QUERY = "SELECT Id, Type, FirstName, LastName, PhoneNum FROM [dbo].[User] WHERE Type = '" + "Client" + "'";
+            string QUERY = "SELECT Id, Type, Email, FirstName, LastName, PhoneNum FROM [dbo].[User] WHERE Type = 'Client'";
             DataTable clientTable = (getInstanceOfDBConnection().getDataSet(QUERY, "[dbo].[User]")).Tables[0];
 
             Clients.Clear();
