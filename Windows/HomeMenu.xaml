@@ -41,6 +41,8 @@
                 <Button x:Name="HomeMenuButton" Content="Home" Height="30" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" Click="HomeMenuButton_Click"/>
                 <Button x:Name="CreateIdeaButton" Content="Create Idea" Height="30" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" Click="CreateIdeaButton_Click"/>
                 <Button x:Name="ClientsButton" Content="Clients" Height="30" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" Click="ClientsButton_Click"/>
+                <Button x:Name="RelationshipManagersButton" Content="Connected&#10;RM" Height="40" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" Click="RelationshipManagersButton_Click"/>
+
             </StackPanel>
             <StackPanel Grid.Row="1">
                 <Button x:Name="AdminOptionsButton" Content="Admin&#10;Options" Height="40" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" VerticalAlignment="Center"/>

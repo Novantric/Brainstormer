@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -41,74 +42,82 @@ namespace Brainstormer.Windows.Pages
         private void IdeaViewButtonClick(object sender, RoutedEventArgs e)
         {
             int buttonID = Convert.ToInt32((sender as Button).Uid);
-            Debug.WriteLine("Button ID: " + buttonID);
-
-            Uri resource = new(@"Windows\Pages\CreateIdeaPage.xaml", System.UriKind.RelativeOrAbsolute);
-            HomeMenu.operation = "View";
-            HomeMenu.IdeaID = buttonID.ToString();
-            HomeMenu.navFrame.Navigate(resource);
-            
+            ideaButtonClick("View", buttonID);           
         }
+
         private void IdeaEditButtonClick(object sender, RoutedEventArgs e)
         {
             int buttonID = Convert.ToInt32((sender as Button).Uid);
-            Debug.WriteLine("Button ID: " + buttonID);
+            ideaButtonClick("Edit", buttonID);
+        }
+
+        private void ideaButtonClick(string scenario, int ID)
+        {
+            Debug.WriteLine("Button ID: " + ID);
 
             Uri resource = new(@"Windows\Pages\CreateIdeaPage.xaml", System.UriKind.RelativeOrAbsolute);
-            HomeMenu.operation = "Edit";
-            HomeMenu.IdeaID = buttonID.ToString();
+            Idea.loadedIdeaOperation = scenario;
+            Idea.loadedIdeaID = ID;
             HomeMenu.navFrame.Navigate(resource);
-
         }
 
 
         private void generateButtons(Idea ideaObject)
         {
-            Button buttonView = new() { Content = "View", Uid = ideaObject.IdeaID.ToString(), Background = Brushes.Black, Foreground = Brushes.White};
-            buttonView.Click += IdeaViewButtonClick;
-            Thickness margin = buttonView.Margin;
-            margin.Left = 5;
-            buttonView.Margin = margin;
-
-            if (ideaObject.CreatorID.Equals(User.UserID))
+            if (DateTime.Parse(ideaObject.ExpiryDate) <= DateTime.Parse(DateTime.Today.ToString("d")))
             {
-                buttonView.Width = 70;
-                NewIdeaStackPanel.Children.Add(buttonView);
+                Button buttonView = new() { Content = "View", Uid = ideaObject.IdeaID.ToString(), Background = Brushes.Black, Foreground = Brushes.White };
+                buttonView.Click += IdeaViewButtonClick;
+                Thickness margin = buttonView.Margin;
+                margin.Left = 5;
+                buttonView.Margin = margin;
 
-                Button buttonEdit = new() { Content = "Edit", Uid = ideaObject.IdeaID.ToString(), Background = Brushes.Black, Foreground = Brushes.White };
-                buttonEdit.Click += IdeaEditButtonClick;
-                buttonEdit.Width = 70;
+                if (ideaObject.CreatorID.Equals(User.UserID))
+                {
+                    buttonView.Width = 70;
+                    NewIdeaStackPanel.Children.Add(buttonView);
 
-                NewIdeaStackPanel.Children.Add(buttonEdit);
+                    Button buttonEdit = new() { Content = "Edit", Uid = ideaObject.IdeaID.ToString(), Background = Brushes.Black, Foreground = Brushes.White };
+                    buttonEdit.Click += IdeaEditButtonClick;
+                    buttonEdit.Width = 70;
+
+                    NewIdeaStackPanel.Children.Add(buttonEdit);
+                }
+                else
+                {
+                    buttonView.Width = 140;
+                    NewIdeaStackPanel.Children.Add(buttonView);
+                }
+
+
+
+                TextBlock buttonLabel = new() { Text = ideaObject.IdeaTitle, Background = Brushes.DarkGray, Width = 140, FontSize = 12, TextWrapping = TextWrapping.Wrap };
+
+                SolidColorBrush customColour = (SolidColorBrush)new BrushConverter().ConvertFromString(ideaObject.Colour);
+                buttonLabel.Background = customColour;
+                switch (ideaObject.Colour)
+                {
+                    case "Red":
+                    case "Black":
+                    case "Blue":
+                    case "Purple":
+                    case "Green":
+                        Foreground = Brushes.White;
+                        break;
+                    default:
+                        Foreground = Brushes.Black;
+                        break;
+                }
+
+
+                Thickness margin2 = buttonLabel.Margin;
+                margin2.Left = 5;
+                buttonLabel.Margin = margin2;
+
+                IdeaNameStackPanel.Children.Add(buttonLabel);
             }
-            else
-            {
-                buttonView.Width = 140;
-                NewIdeaStackPanel.Children.Add(buttonView);
-            }
-
-
-
-            TextBlock buttonLabel = new() { Text = ideaObject.IdeaTitle, Background = Brushes.DarkGray, Width = 140, FontSize = 12, TextWrapping = TextWrapping.Wrap};
-
-            SolidColorBrush customColour = (SolidColorBrush)new BrushConverter().ConvertFromString(ideaObject.Colour);
-            buttonLabel.Background = customColour;
-            switch (ideaObject.Colour)
-            {
-                case "Red": case "Black": case "Blue": case "Purple": case "Green":
-                    Foreground = Brushes.White;
-                    break;
-                default:
-                    Foreground = Brushes.Black;
-                    break;
-            }
-
-
-            Thickness margin2 = buttonLabel.Margin;
-            margin2.Left = 5;
-            buttonLabel.Margin = margin2;
-
-            IdeaNameStackPanel.Children.Add(buttonLabel);
         }
+
+           
     }
 }

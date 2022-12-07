@@ -30,10 +30,10 @@
         <TextBox x:Name="UsernameBox" Grid.Row="1" Grid.Column="1"/>
 
         <Label Content="Password" DockPanel.Dock="Right" Foreground="PaleVioletRed" HorizontalAlignment="Left" Grid.Row="2"/>
-        <TextBox x:Name="PasswordBox" Grid.Row="2" Grid.Column="1"/>
+        <PasswordBox x:Name="PasswordBox" Grid.Row="2" Grid.Column="1"/>
 
         <Label Content="Confirm Password" DockPanel.Dock="Right" Foreground="PaleVioletRed" HorizontalAlignment="Left" Grid.Row="3"/>
-        <TextBox x:Name="PasswordConfirmBox" Grid.Row="3" Grid.Column="1"/>
+        <PasswordBox x:Name="PasswordConfirmBox" Grid.Row="3" Grid.Column="1"/>
 
         <Label Content="AccountType" DockPanel.Dock="Right" Foreground="PaleVioletRed" HorizontalAlignment="Left" Grid.Row="4"/>
         <ComboBox x:Name="AccountTypeBox" Grid.Row="4" Grid.Column="1" SelectedIndex="1">

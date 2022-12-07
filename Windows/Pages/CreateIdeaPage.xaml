@@ -27,52 +27,6 @@
 
             </Grid.RowDefinitions>
 
-            <Label Content="Create Idea" x:Name="titleText" Foreground="White" FontSize="18" Grid.Row="0" Grid.ColumnSpan="2" />
-            <Label Content="Author" x:Name="Author" Grid.Row="7" Grid.Column="2" HorizontalAlignment="Right" Foreground="White"/>
-
-            <TextBox x:Name="TitleBox"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Title" Margin="5,0,5,5"/>
-            <ComboBox x:Name="TypeBox" Grid.Row="1" Grid.Column="2" SelectedIndex="1" IsEditable="True" IsSynchronizedWithCurrentItem="False" Text="Type" Margin="0,0,5,5"/>
-            <TextBox x:Name="SummaryBox" Text="Summary" Grid.Row="2" Grid.ColumnSpan="3" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="5,0,5,5"/>
-            <Grid Grid.Row="3" Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="5,0,5,5">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="6*"/>
-
-                </Grid.RowDefinitions>
-
-                <Menu Grid.Row="0" Grid.ColumnSpan="2" Visibility="Hidden">
-                    <MenuItem Header="_File">
-                        <MenuItem Header="_Exit" />
-                    </MenuItem>
-                    <MenuItem Header="_Tools">
-                        <MenuItem Header="_Manage users">
-                        </MenuItem>
-                        <MenuItem Header="_Show groups" IsCheckable="True" IsChecked="True" />
-                    </MenuItem>
-                </Menu>
-
-                <TextBox x:Name="ContentBox" Grid.Row="0" Grid.RowSpan="2" Text="Content" ScrollViewer.VerticalScrollBarVisibility="Visible" TextWrapping="Wrap" AcceptsReturn="True"/>
-            </Grid>
-
-            <TextBox x:Name="TagsBox" Text="Tags" Grid.Row="6" Grid.ColumnSpan="1" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="5,0,5,5"/>
-            <TextBox x:Name="PriceBox" Text="Asking Price" Grid.Column="1" Grid.Row="6"/>
-            <Grid Grid.Row="6" Grid.Column="3" Margin="0,0,5,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1*"/>
-                </Grid.RowDefinitions>
-
-                <Label Content="Risk Rating" Foreground="White" FontSize="12" Grid.ColumnSpan="2" Grid.RowSpan="2" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Margin="0,-7,0,0" VerticalContentAlignment="Stretch" />
-                <Label Content="0/5" x:Name="RiskLabel" Grid.Row="0" Foreground="White" Grid.Column="2" FontSize="12" HorizontalAlignment="Right" Margin="0,-7,0,0"/>
-                <Slider x:Name="RiskRatingSlider" Grid.Row="1" Grid.ColumnSpan="2" Maximum="10" Minimum="0" IsSnapToTickEnabled="True" ValueChanged="RiskRatingChanged" SmallChange="1" />
-            </Grid>
-
-            <Button Grid.Row="0" Content="Submit" Grid.Column="2" Click="Button_Click" Margin="205,5,5,5" />
-
             <Expander Foreground="White" Grid.Row="7" Grid.ColumnSpan="3" Header="More Items">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -112,13 +66,59 @@
                         <ComboBoxItem Content="Blue"/>
                         <ComboBoxItem Content="Purple"/>
                         <ComboBoxItem Content="Black"/>
+                        <ComboBoxItem Content="White"/>
                     </ComboBox>
 
                 </Grid>
 
             </Expander>
 
+            <Label Content="Create Idea" x:Name="titleText" Foreground="White" FontSize="18" Grid.Row="0" Grid.ColumnSpan="2" />
+            <Label Content="Author" x:Name="Author" Grid.Row="7" Grid.Column="2" HorizontalAlignment="Right" Foreground="White"/>
+
+            <TextBox x:Name="TitleBox"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Title" Margin="5,0,5,5"/>
+            <ComboBox x:Name="TypeBox" Grid.Row="1" Grid.Column="2" SelectedIndex="1" IsEditable="True" IsSynchronizedWithCurrentItem="False" Text="Type" Margin="0,0,5,5"/>
+            <TextBox x:Name="SummaryBox" Text="Summary" Grid.Row="2" Grid.ColumnSpan="3" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="5,0,5,5"/>
+            <Grid Grid.Row="3" Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="5,0,5,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="6*"/>
+
+                </Grid.RowDefinitions>
+
+                <Menu Grid.Row="0" Grid.ColumnSpan="2" Visibility="Hidden">
+                    <MenuItem Header="_File">
+                        <MenuItem Header="_Exit" />
+                    </MenuItem>
+                    <MenuItem Header="_Tools">
+                        <MenuItem Header="_Manage users"/>
+                        <MenuItem Header="_Show groups" IsCheckable="True" IsChecked="True" />
+                    </MenuItem>
+                </Menu>
+
+                <TextBox x:Name="ContentBox" Grid.Row="0" Grid.RowSpan="2" Text="Content" ScrollViewer.VerticalScrollBarVisibility="Visible" TextWrapping="Wrap" AcceptsReturn="True"/>
+            </Grid>
+
+            <TextBox x:Name="TagsBox" Text="Tags" Grid.Row="6" Grid.ColumnSpan="1" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="5,0,5,5"/>
+            <TextBox x:Name="PriceBox" Text="0" Grid.Column="1" Grid.Row="6" Margin="0,0,0,5"/>
+            <Grid Grid.Row="6" Grid.Column="3" Margin="5,0,5,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="Risk Rating" Foreground="White" FontSize="12" Grid.ColumnSpan="2" Grid.RowSpan="2" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Margin="0,-7,0,0" VerticalContentAlignment="Stretch" />
+                <Label Content="0/5" x:Name="RiskLabel" Grid.Row="0" Foreground="White" Grid.Column="2" FontSize="12" HorizontalAlignment="Right" Margin="0,-7,0,0"/>
+                <Slider x:Name="RiskRatingSlider" Grid.Row="1" Grid.ColumnSpan="2" Maximum="10" Minimum="0" IsSnapToTickEnabled="True" ValueChanged="RiskRatingChanged" SmallChange="1" />
+            </Grid>
+
+            <Button Grid.Row="0" Content="Submit" Grid.Column="2" Click="Button_Click" Margin="205,5,5,5" />
+
         </Grid>
     </ScrollViewer>
-    
+
 </Page>

@@ -30,7 +30,7 @@ namespace Brainstormer.Windows
                     this.Title = "Edit Account";
                     titleText.Content = "Edit Account";
                     UsernameBox.Text = UserEmail;
-                    PasswordBox.Text = UserPassword;
+                    PasswordBox.Password = UserPassword;
                     AccountTypeBox.Text = UserType;
                     FirstNameBox.Text = UserFirstName;
                     LastNameBox.Text = UserLastName;
@@ -46,8 +46,8 @@ namespace Brainstormer.Windows
         private void CreateButtonClick(object sender, RoutedEventArgs e)
         {
             string email = UsernameBox.Text;
-            string password = PasswordBox.Text;
-            string passwordConfirm = PasswordConfirmBox.Text;
+            string password = PasswordBox.Password;
+            string passwordConfirm = PasswordConfirmBox.Password;
             string accountType = AccountTypeBox.Text;
             string firstName = FirstNameBox.Text;
             string lastName = LastNameBox.Text;

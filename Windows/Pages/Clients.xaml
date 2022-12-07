@@ -9,7 +9,32 @@
       Title="Clients">
 
     <Grid Background="Black">
-        <StackPanel x:Name="ClientPanel"/>
-        <StackPanel x:Name="ClientButtonPanel"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label x:Name="TitleLabel" Content="Add Clients" Foreground="White" Grid.Row="0" FontSize="22"/>
+        <Label x:Name="TipLabel" Content="Click to add!" Foreground="White" Grid.Row="0" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <Grid x:Name="ClientGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+            </Grid>
+        </ScrollViewer>
+
+        
     </Grid>
 </Page>
