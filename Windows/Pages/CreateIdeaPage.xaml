@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Brainstormer.Windows.Pages"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CreateIdea">
@@ -86,7 +87,7 @@
                     </Grid.RowDefinitions>
 
                     <TextBox x:Name="MinorBox" Text="Minor" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,5,5,5"/>
-                    <ComboBox x:Name="CurrencyBox" Grid.Row="0" Grid.Column="2" SelectedIndex="1" Text="Currency" Margin="0,0,5,5">
+                    <ComboBox x:Name="CurrencyBox" Grid.Row="0" Grid.Column="2" SelectedIndex="1" Text="Currency" Margin="0,5,5,5">
                         <ComboBoxItem Content="£, GBP"/>
                         <ComboBoxItem Content="$, USD"/>
                         <ComboBoxItem Content="€, EUR"/>
@@ -101,8 +102,9 @@
                         <ComboBoxItem Content="Canada"/>
                     </ComboBox>
 
-                    <DatePicker x:Name="ExpiryDatePicker" Text="Expiry" Grid.Row="2" Grid.ColumnSpan="2"/>
-                    <ComboBox x:Name="ColourBox" Grid.Column="3" Grid.Row="2" SelectedIndex="6">
+                    <Label Grid.Row="2" Grid.Column="0" Content="Expiry Date" Foreground="White" Margin="5,0,0,0"/>
+                    <DatePicker x:Name="ExpiryDatePicker" Text="Expiry" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="80,0,0,0" FirstDayOfWeek="Monday" SelectedDate="{x:Static sys:DateTime.Now}"/>
+                    <ComboBox x:Name="ColourBox" Grid.Column="3" Grid.Row="2" SelectedIndex="6" Margin="0,0,5,5">
                         <ComboBoxItem Content="Red"/>
                         <ComboBoxItem Content="Orange"/>
                         <ComboBoxItem Content="Yellow"/>

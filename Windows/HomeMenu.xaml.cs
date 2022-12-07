@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Brainstormer.Classes;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -18,44 +19,53 @@ namespace Brainstormer.Windows
             navFrame = PageFrame;
 
         }
+        private void loadPage(string PageName)
+        {
+            Uri resource = new(@"Windows\Pages\" + PageName + ".xaml", System.UriKind.RelativeOrAbsolute);
+            navFrame.Navigate(resource);
+        }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            Uri resource = new(@"Windows\Pages\Settings.xaml", System.UriKind.RelativeOrAbsolute);
-            navFrame.Navigate(resource);
+            loadPage("Settings");
+
         }
 
         private void DevOptionsButton_Click(object sender, RoutedEventArgs e)
         {
-            DevOptions showDevOptions = new DevOptions();
+            DevOptions showDevOptions = new();
             showDevOptions.Show();
         }
 
         private void CreateIdeaButton_Click(object sender, RoutedEventArgs e)
         {
-            Uri resource = new(@"Windows\Pages\CreateIdeaPage.xaml", System.UriKind.RelativeOrAbsolute);
             operation = "none";
-            navFrame.Navigate(resource);
+            loadPage("CreateIdeaPage");
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Uri resource = new(@"Windows\Pages\Search.xaml", System.UriKind.RelativeOrAbsolute);
-            navFrame.Navigate(resource);
+            loadPage("Search");
         }
 
         private void HomeMenuButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Uri resource = new(@"Windows\Pages\Home.xaml", System.UriKind.RelativeOrAbsolute);
-            navFrame.Navigate(resource);
-            InfoBar.Text = "Home Menu";
+            loadPage("Home");
         }
 
         private void ClientsButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Uri resource = new(@"Windows\Pages\Clients.xaml", System.UriKind.RelativeOrAbsolute);
-            navFrame.Navigate(resource);
-            InfoBar.Text = "Clients";
+            loadPage("Clients");
+        }
+
+        private void LogoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            string[] temp = { "none" };
+            MainWindow showLogin = new(temp);
+            showLogin.Show();
+            Close();
+            UserSettings.ClearPreferences();
+            User.Logout();
         }
     }
 }

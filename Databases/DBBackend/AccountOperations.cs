@@ -52,13 +52,13 @@ namespace Brainstormer.Databases.DBBackend
 
             DataSet details = Connection.getInstanceOfDBConnection().getDataSet(LOGINQUERY, TABLENAME);
 
-            UserID = details.Tables[TABLENAME].Rows[0]["Id"].ToString();
-            UserType = details.Tables[TABLENAME].Rows[0]["Type"].ToString();
-            UserFirstName = details.Tables[TABLENAME].Rows[0]["FirstName"].ToString();
-            UserLastName = details.Tables[TABLENAME].Rows[0]["LastName"].ToString();
-            UserEmail = email;
-            UserPassword = password;
-            UserPhoneNum = details.Tables[TABLENAME].Rows[0]["PhoneNum"].ToString();
+            LoadData(details.Tables[TABLENAME].Rows[0]["Id"].ToString(),
+                details.Tables[TABLENAME].Rows[0]["Type"].ToString(),
+                details.Tables[TABLENAME].Rows[0]["FirstName"].ToString(),
+                details.Tables[TABLENAME].Rows[0]["LastName"].ToString(),
+                email,
+                password,
+                details.Tables[TABLENAME].Rows[0]["PhoneNum"].ToString());
 
         }
 

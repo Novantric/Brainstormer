@@ -34,7 +34,7 @@ namespace Brainstormer.Windows.Pages
             List<Idea> ideas = IdeaOperations.preloadIdeas();
             foreach (Idea value in ideas)
             {
-                generateButtons(Convert.ToInt32(value.IdeaID), Convert.ToInt32(value.CreatorID), value.IdeaTitle, value.Colour);
+                generateButtons(value);
             }
         }
 
@@ -62,21 +62,20 @@ namespace Brainstormer.Windows.Pages
         }
 
 
-        private void generateButtons(int ideaID, int creatorID, string ideaTitle, string colour)
+        private void generateButtons(Idea ideaObject)
         {
-            Button buttonView = new Button() { Content = "View", Uid = ideaID.ToString(), Background = Brushes.Black, Foreground = Brushes.White};
+            Button buttonView = new() { Content = "View", Uid = ideaObject.IdeaID.ToString(), Background = Brushes.Black, Foreground = Brushes.White};
             buttonView.Click += IdeaViewButtonClick;
+            Thickness margin = buttonView.Margin;
+            margin.Left = 5;
+            buttonView.Margin = margin;
 
-            if (creatorID.ToString() == User.UserID)
+            if (ideaObject.CreatorID.Equals(User.UserID))
             {
                 buttonView.Width = 70;
-                Thickness margin = buttonView.Margin;
-                margin.Left = 5;
-                buttonView.Margin = margin;
                 NewIdeaStackPanel.Children.Add(buttonView);
 
-
-                Button buttonEdit = new Button() { Content = "Edit", Uid = ideaID.ToString(), Background = Brushes.Black, Foreground = Brushes.White };
+                Button buttonEdit = new() { Content = "Edit", Uid = ideaObject.IdeaID.ToString(), Background = Brushes.Black, Foreground = Brushes.White };
                 buttonEdit.Click += IdeaEditButtonClick;
                 buttonEdit.Width = 70;
 
@@ -90,10 +89,19 @@ namespace Brainstormer.Windows.Pages
 
 
 
-            TextBlock buttonLabel = new TextBlock() { Text = ideaTitle, Background = Brushes.DarkGray , Foreground = Brushes.Black, Width = 140, FontSize = 12, TextWrapping = TextWrapping.Wrap};
+            TextBlock buttonLabel = new() { Text = ideaObject.IdeaTitle, Background = Brushes.DarkGray, Width = 140, FontSize = 12, TextWrapping = TextWrapping.Wrap};
 
-            SolidColorBrush customColour = (SolidColorBrush)new BrushConverter().ConvertFromString(colour);
+            SolidColorBrush customColour = (SolidColorBrush)new BrushConverter().ConvertFromString(ideaObject.Colour);
             buttonLabel.Background = customColour;
+            switch (ideaObject.Colour)
+            {
+                case "Red": case "Black": case "Blue": case "Purple": case "Green":
+                    Foreground = Brushes.White;
+                    break;
+                default:
+                    Foreground = Brushes.Black;
+                    break;
+            }
 
 
             Thickness margin2 = buttonLabel.Margin;

@@ -45,7 +45,11 @@ namespace Brainstormer.Classes
         public static void DeletePreferences()
         {
             Connection.getInstanceOfDBConnection().nonQueryOperation("DELETE FROM [dbo].[User_Preferences] WHERE UserID = '" + User.UserID + "'");
+            ClearPreferences();
+        }
 
+        public static void ClearPreferences()
+        {
             PrefferedRegion = "";
             PrefferedCurrency = "";
             PrefferedMajorSector = "";
@@ -53,5 +57,6 @@ namespace Brainstormer.Classes
             PrefferedProductType = "";
             PrefferedRiskRating = "";
         }
+
     }
 }

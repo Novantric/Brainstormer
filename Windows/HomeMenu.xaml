@@ -46,6 +46,8 @@
                 <Button x:Name="AdminOptionsButton" Content="Admin&#10;Options" Height="40" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" VerticalAlignment="Center"/>
                 <Button x:Name="DevOptionsButton" Content="Developer&#10;Options" Height="40" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" VerticalAlignment="Center" Click="DevOptionsButton_Click"/>
                 <Button x:Name="SettingsButton" Content="Settings" Height="30" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" Click="SettingsButton_Click"/>
+                <Button x:Name="LogoutButton" Content="LogOut" Height="30" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" Click="LogoutButton_Click"/>
+
             </StackPanel>
         </Grid>
     </Grid>

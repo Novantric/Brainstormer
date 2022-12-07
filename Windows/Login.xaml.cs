@@ -20,13 +20,15 @@ namespace Brainstormer
             if (launchParams.Length > 0 && launchParams.Length < 3)
             {
                 Debug.WriteLine("Login Parameters Detected!");
+                if (launchParams[0] != "none")
+                {
+                    UsernameBox.Text = launchParams[0];
+                    PasswordBox.Password = launchParams[1];
 
-                UsernameBox.Text = launchParams[0];
-                PasswordBox.Password = launchParams[1];
-
-                ButtonAutomationPeer peer = new ButtonAutomationPeer(LoginButton);
-                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-                invokeProv.Invoke();
+                    ButtonAutomationPeer peer = new ButtonAutomationPeer(LoginButton);
+                    IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                    invokeProv.Invoke();
+                }                
             }
         }
 

@@ -68,7 +68,7 @@ namespace Brainstormer.Windows
                                     AccountOperations.CreateAccount(accountType, firstName, lastName, email, EncryptDecrypt.Encrypt(password), phoneNum);
                                     break;
                                 case "Edit":
-                                    User.UpdateData(Convert.ToInt32(UserID), accountType, firstName, lastName, email, EncryptDecrypt.Encrypt(password), phoneNum);
+                                    User.UpdateData(UserID, accountType, firstName, lastName, email, EncryptDecrypt.Encrypt(password), phoneNum);
                                     break;
                                 default:
                                     break;
@@ -85,7 +85,7 @@ namespace Brainstormer.Windows
                                     AccountOperations.CreateAccount(accountType, firstName, lastName, email, EncryptDecrypt.Encrypt(password), "none");
                                     break;
                                 case "Edit":
-                                    User.UpdateData(Convert.ToInt32(UserID), accountType, firstName, lastName, email, EncryptDecrypt.Encrypt(password), "none");
+                                    User.UpdateData(UserID, accountType, firstName, lastName, email, EncryptDecrypt.Encrypt(password), "none");
                                     break;
                                 default:
                                     break;

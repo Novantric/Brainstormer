@@ -1,22 +1,29 @@
 ﻿using Brainstormer.Databases.DBBackend;
+using System.Net;
 
 namespace Brainstormer.Classes
 {
     public class User //better to choose an appropriate name
     {                       
-        public static string? UserID { get; set; }
-        public static string? UserType { get; set; }
-        public static string? UserFirstName { get; set; }
-        public static string? UserLastName { get; set; }
-        public static string? UserEmail { get; set; }
-        public static string? UserPassword { get; set; }
-        public static string? UserPhoneNum { get; set; }
+        public static string? UserID { get; protected set; }
+        public static string? UserType { get; protected set; }
+        public static string? UserFirstName { get; protected set; }
+        public static string? UserLastName { get; protected set; }
+        public static string? UserEmail { get; protected set; }
+        public static string? UserPassword { get; protected set; }
+        public static string? UserPhoneNum { get; protected set; }
 
-        public static void UpdateData(int primaryKey, string type, string firstName, string lastName, string email, string password, string phoneNum)
+        public static void UpdateData(string ID, string type, string firstName, string lastName, string email, string password, string phoneNum)
         {
-            string query = $"UPDATE [dbo].[User] SET Type = '{type}', FirstName = '{firstName}', LastName = '{lastName}', Email = '{email}', Password = '{password}', PhoneNum = '{phoneNum}' WHERE Id = " + primaryKey;
+            string query = $"UPDATE [dbo].[User] SET Type = '{type}', FirstName = '{firstName}', LastName = '{lastName}', Email = '{email}', Password = '{password}', PhoneNum = '{phoneNum}' WHERE Id = " + ID;
             Connection.getInstanceOfDBConnection().nonQueryOperation(query);
+            LoadData(ID, type, firstName, lastName, email, password, phoneNum);
+            
+        }
 
+        public static void LoadData(string ID, string type, string firstName, string lastName, string email, string password, string phoneNum)
+        {
+            UserID = ID;
             UserType = type;
             UserFirstName = firstName;
             UserLastName = lastName;
@@ -30,6 +37,12 @@ namespace Brainstormer.Classes
             string query = "DELETE FROM [dbo].[User] WHERE Id = '" + ID + "'";
             Connection.getInstanceOfDBConnection().nonQueryOperation(query);
 
+            Logout();
+        }
+
+        public static void Logout()
+        {
+            UserID = "";
             UserType = "";
             UserFirstName = "";
             UserLastName = "";
