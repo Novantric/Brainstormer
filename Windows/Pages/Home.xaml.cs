@@ -33,9 +33,18 @@ namespace Brainstormer.Windows.Pages
             NewIdeaStackPanel.Children.Clear();
             IdeaNameStackPanel.Children.Clear();
             List<Idea> ideas = IdeaOperations.preloadIdeas();
+            //load all ideas to a category
             foreach (Idea value in ideas)
             {
                 generateButtons(value);
+            }
+            Tags.loadTags();
+            for (int i = 0; i < Tags.tagslist.Count; i++)
+            {
+                Label tempTagLabel = new() { Content = "Ideas with the tag '" + Tags.tagslist[i] + "'", Foreground = Brushes.White, FontSize = 20};
+                IdeaCategoriesStackPanel.Children.Add(tempTagLabel);
+                //Array of stackpanels
+                //Check idea for tags and generate them if they match
             }
         }
 
@@ -64,7 +73,7 @@ namespace Brainstormer.Windows.Pages
 
         private void generateButtons(Idea ideaObject)
         {
-            if (DateTime.Parse(ideaObject.ExpiryDate) <= DateTime.Parse(DateTime.Today.ToString("d")))
+            if (DateTime.Compare(ideaObject.ExpiryDate, DateTime.Parse(DateTime.Today.ToString("d"))) <= 0)
             {
                 Button buttonView = new() { Content = "View", Uid = ideaObject.IdeaID.ToString(), Background = Brushes.Black, Foreground = Brushes.White };
                 buttonView.Click += IdeaViewButtonClick;

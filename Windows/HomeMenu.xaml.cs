@@ -23,7 +23,8 @@ namespace Brainstormer.Windows
                     ClientsButton.Visibility = Visibility.Collapsed;
                     CreateIdeaButton.Visibility = Visibility.Collapsed;
                     AdminOptionsButton.Visibility = Visibility.Collapsed;
-                    DevOptionsButton.Visibility = Visibility.Collapsed;                    
+                    DevOptionsButton.Visibility = Visibility.Collapsed;
+                    SavedIdeasButton.Visibility = Visibility.Collapsed;
                     break;
                 case "RM":
                     RelationshipManagersButton.Visibility = Visibility.Collapsed;
@@ -43,7 +44,7 @@ namespace Brainstormer.Windows
             }
         }
 
-        private void loadPage(string PageName)
+        public static void loadPage(string PageName)
         {
             Uri resource = new(@"Windows\Pages\" + PageName + ".xaml", System.UriKind.RelativeOrAbsolute);
             currentPage = PageName;
@@ -100,6 +101,12 @@ namespace Brainstormer.Windows
             User_RM.clientScenario = "Client View";
             loadPage("Clients");
 
+        }
+
+        private void SavedIdeasButton_Click(object sender, RoutedEventArgs e)
+        {
+            User_RM.clientScenario = "Saved Ideas";
+            loadPage("SavedIdeas");
         }
     }
 }

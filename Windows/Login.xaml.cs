@@ -59,7 +59,7 @@ namespace Brainstormer
             {
                 Debug.WriteLine("Logged in!");
                 string type = "", firstName = "", lastName = "", phoneNum = "";
-                AccountOperations.GetUserData(type, firstName, lastName, email, password, phoneNum);
+                AccountOperations.CheckUserData(type, firstName, lastName, email, password, phoneNum);
 
                 HomeMenu showHomeMenu = new HomeMenu();
                 showHomeMenu.Show();

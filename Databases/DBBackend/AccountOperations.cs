@@ -7,6 +7,7 @@ using static Brainstormer.Databases.DBBackend.Connection;
 using static Brainstormer.Classes.User;
 using System.Windows.Documents;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace Brainstormer.Databases.DBBackend
 {
@@ -45,7 +46,7 @@ namespace Brainstormer.Databases.DBBackend
         }
 
         //Run after the login has been confirmed
-        public static void GetUserData(string type, string firstName, string lastName, string email, string password, string phoneNum)
+        public static void CheckUserData(string type, string firstName, string lastName, string email, string password, string phoneNum)
         {
             string LOGINQUERY = "SELECT Id, Type, FirstName, LastName, PhoneNum FROM [dbo].[User] WHERE Email = '" + email + "' AND Password = '" + EncryptDecrypt.Encrypt(password) + "'";
             string TABLENAME = "[dbo].[User]";
@@ -60,6 +61,16 @@ namespace Brainstormer.Databases.DBBackend
                 password,
                 details.Tables[TABLENAME].Rows[0]["PhoneNum"].ToString());
 
+        }
+
+        public static string[] GetUserData(int id)
+        {
+            string QUERY = "SELECT Email, FirstName, LastName, PhoneNum FROM [dbo].[User] WHERE Id = " + id;
+
+            DataTable details = (getInstanceOfDBConnection().getDataSet(QUERY, "[dbo].[User]")).Tables[0];
+
+            string[] result = { details.Rows[0]["Email"].ToString(), details.Rows[0]["FirstName"].ToString(), details.Rows[0]["LastName"].ToString(), details.Rows[0]["PhoneNum"].ToString() };
+            return result;
         }
 
         public static void CreateAccount(string type, string firstName, string lastName, string email, string password, string phoneNum)

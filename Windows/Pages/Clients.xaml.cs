@@ -4,18 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Brainstormer.Windows.Pages
 {
@@ -27,7 +18,6 @@ namespace Brainstormer.Windows.Pages
         public Clients()
         {
             int row = 0, columnn = 0;
-            bool isClicked = false;
             string QUERY = "";
             string TABLE = "[dbo].[User_RM]";
 
@@ -47,14 +37,10 @@ namespace Brainstormer.Windows.Pages
                 {
                     if (rmInfo.Rows[i]["RMID"].ToString().Equals(User.UserID))
                     {
-                        string RMID = rmInfo.Rows[i]["RMID"].ToString();
-                        //CONTINUE HERE LATER
+                        generateRMButtons((int)rmInfo.Rows[i]["RMID"], rmInfo.Rows[i]["FirstName"].ToString(), rmInfo.Rows[i]["LastName"].ToString(), rmInfo.Rows[i]["Email"].ToString(), columnn, row);
+
                     }
-
-
                 }
-
-
             }
             else if (User_RM.clientScenario.Equals("RM View"))
             {
@@ -62,7 +48,7 @@ namespace Brainstormer.Windows.Pages
                 foreach (Client value in clients)
                 {
 
-                    generateButtons(value, columnn, row, isClicked);
+                    generateClientButtons(value, columnn, row);
                     columnn++;
 
                     if (columnn >= 5)
@@ -82,15 +68,30 @@ namespace Brainstormer.Windows.Pages
 
 
         }
-
-        private void generateButtons(Client client, int column, int row, bool isClicked)
+        private void generateRMButtons(int RMID, string FirstName, string LastName, string Email, int columnn, int row)
         {
-            // button.Click += addToUserRM;
+            Button button = new() { Uid = RMID.ToString(), Background = Brushes.Black, Foreground = Brushes.White };
+            button.Content = FirstName + " " + LastName;
 
+            Grid.SetColumn(button, columnn);
+            Grid.SetRow(button, row);
+            button.Click += RMViewButtonClick;
+
+            Thickness margin = button.Margin;
+            margin.Left = 5;
+            button.Margin = margin;
+
+            ClientGrid.Children.Add(button);
+        }
+
+        private void generateClientButtons(Client client, int column, int row)
+        {
             Button button = new Button() { Uid = client.UserID, Background = Brushes.Black, Foreground = Brushes.White };
-            button.Content = client.UserEmail + "\n" + client.UserFirstName + " " + client.UserLastName;
+            button.Content = client.UserFirstName + " " + client.UserLastName;
 
-            if (isClicked)
+
+
+            if (User_RM.getClientIDs().Contains(Convert.ToInt32(client.UserID)))
             {
                 button.Foreground = Brushes.Red;
             }
@@ -106,13 +107,35 @@ namespace Brainstormer.Windows.Pages
             ClientGrid.Children.Add(button);
         }
 
-        private void ClientViewButtonClick(object sender, RoutedEventArgs e)
+
+
+        private void RMViewButtonClick(object sender, RoutedEventArgs e)
         {
             int buttonID = Convert.ToInt32((sender as Button).Uid);
             Debug.WriteLine(buttonID);
-            //Open user info
-            //check if wanted to be saved
-            //save to db
+            UserInfo showInfo = new("RM", buttonID, false);
+            showInfo.ShowDialog();
+        }
+
+        private void ClientViewButtonClick(object sender, RoutedEventArgs e)
+        {
+            int buttonID = Convert.ToInt32((sender as Button).Uid);
+            Brush colourBrush = ((sender as Button).Foreground);
+            string colour = (colourBrush).ToString();
+            Debug.WriteLine(buttonID);
+
+            if (colour == "#FFFF0000")
+            {
+                UserInfo showInfo = new("Client", buttonID, true);
+                showInfo.ShowDialog();
+            }
+            else
+            {
+                UserInfo showInfo = new("Client", buttonID, false);
+                showInfo.ShowDialog();
+            }
+
+            //refresh page
         }
 
         private void increaseRows()

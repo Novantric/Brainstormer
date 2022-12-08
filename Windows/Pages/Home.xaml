@@ -13,18 +13,16 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-
                 </Grid.RowDefinitions>
 
                 <Label Content="Fresh Ideas" Foreground="White" Grid.Row="0" FontSize="20"/>
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden" Grid.Row="1">
-                    <StackPanel>
+                    <StackPanel x:Name="IdeaCategoriesStackPanel">
                         <StackPanel Orientation="Horizontal" x:Name="IdeaNameStackPanel" Height="60"/>
                         <StackPanel Orientation="Horizontal" x:Name="NewIdeaStackPanel" Uid="test" Height="30"/>
                     </StackPanel>

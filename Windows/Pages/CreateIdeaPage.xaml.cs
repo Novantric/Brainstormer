@@ -41,9 +41,7 @@ namespace Brainstormer.Windows.Pages
                 {
                     DisableBoxes();
                     loadData();
-                    //Disable editing
-                    TitleBox.IsEnabled = false;
-
+                    SubmitButton.Content = "Save";
                 }
                 else
                 {
@@ -121,6 +119,7 @@ namespace Brainstormer.Windows.Pages
             ColourBox.IsEnabled = false;
             TagsBox.IsEnabled = false;
             Author.Content = "";
+            SubmitButton.IsEnabled = false;
         }
 
         private void RiskRatingChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -130,7 +129,7 @@ namespace Brainstormer.Windows.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (decimal.TryParse(PriceBox.Text, out decimal price) == false)
+            if (decimal.TryParse(PriceBox.Text, out decimal price) == false || DateTime.Compare(DateTime.Parse(ExpiryDatePicker.Text), DateTime.Today) <= 0)
             {
                 MessageBox.Show("Enter a number into the price!");
                 return;
@@ -147,8 +146,8 @@ namespace Brainstormer.Windows.Pages
             string region = RegionBox.Text;
 
             
-            string expiry = ExpiryDatePicker.Text;
-            string creation = DateTime.Today.ToString("d");
+            DateTime expiry = DateTime.Parse(ExpiryDatePicker.Text);
+            DateTime creation = DateTime.Parse(DateTime.Today.ToString("d"));
             string currency = CurrencyBox.Text;
             string colour = ColourBox.Text;
 

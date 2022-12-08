@@ -42,6 +42,7 @@
                 <Button x:Name="CreateIdeaButton" Content="Create Idea" Height="30" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" Click="CreateIdeaButton_Click"/>
                 <Button x:Name="ClientsButton" Content="Clients" Height="30" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" Click="ClientsButton_Click"/>
                 <Button x:Name="RelationshipManagersButton" Content="Connected&#10;RM" Height="40" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" Click="RelationshipManagersButton_Click"/>
+                <Button x:Name="SavedIdeasButton" Content="Saved&#10;Ideas" Height="40" Background="Black" Foreground="White" BorderThickness="2" Margin="5,0,5,5" Click="SavedIdeasButton_Click"/>
 
             </StackPanel>
             <StackPanel Grid.Row="1">
