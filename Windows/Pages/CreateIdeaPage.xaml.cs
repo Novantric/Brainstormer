@@ -1,4 +1,5 @@
 ﻿using Brainstormer.Classes;
+using Brainstormer.Databases.DBBackend;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -140,7 +141,7 @@ namespace Brainstormer.Windows.Pages
             string currency = CurrencyBox.Text;
             string colour = ColourBox.Text;
 
-            Idea.CreateIdea(title, type, major, minor, region, currency, riskRating, creation, expiry, price, User.UserID, colour, summary, content);
+            IdeaOperations.CreateIdea(title, type, major, minor, region, currency, riskRating, creation, expiry, price, User.UserID, colour, summary, content);
 
             DataSet ideaid = getInstanceOfDBConnection().getDataSet($"SELECT Id FROM [dbo].[Idea] WHERE Title = '{title}' AND UserID = '{User.UserID}'", "[dbo].[Idea]");
             int tempID = (int)ideaid.Tables["[dbo].[Idea]"].Rows[0]["Id"];

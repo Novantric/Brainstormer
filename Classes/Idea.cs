@@ -3,12 +3,14 @@ using System;
 
 namespace Brainstormer.Classes
 {
+    //Handles information regarding the currently loaded idea
     internal class Idea
     {
         public string IdeaID, IdeaTitle, IdeaType, IdeaSummary, IdeaContent, IdeaMajorSector, IdeaMinorSector, IdeaRegion, IdeaCurrency, Views, CreatorID, Colour;
         public decimal IdeaRiskRating, SuggestedPrice;
         public DateTime CreationDate, ExpiryDate;
-        //Used to track what ideas are to be loaded
+
+        //Used to track what idea is to be loaded, and what to do with that information.
         public static int loadedIdeaID;
         public static string? loadedIdeaOperation;
 
@@ -32,10 +34,5 @@ namespace Brainstormer.Classes
             IdeaContent = ideaContent;
         }
 
-        public static void CreateIdea(string ideaTitle, string ideaType, string ideaMajorSector, string ideaMinorSector, string ideaRegion, string ideaCurrency, decimal ideaRiskRating, DateTime creationDate, DateTime expiryDate, decimal suggestedPrice, string creatorID, string colour, string ideaSummary, string ideaContent)
-        {
-            string query = $"INSERT INTO [dbo].[Idea] (Title,AssetType,MajorSector,MinorSector,Reigion,Currency,RiskRating,CreationDate,ExpiryDate,SuggestedPrice,Views,UserID,Colour,Summary,Content) VALUES ('{ideaTitle}','{ideaType}','{ideaMajorSector}','{ideaMinorSector}','{ideaRegion}','{ideaCurrency}',{ideaRiskRating},{DateOnly.FromDateTime(creationDate)},{DateOnly.FromDateTime(expiryDate)},{suggestedPrice},{0},{Convert.ToInt32(creatorID)},'{colour}','{ideaSummary}','{ideaContent}')";
-            Connection.getInstanceOfDBConnection().nonQueryOperation(query);
-        }
     }
 }

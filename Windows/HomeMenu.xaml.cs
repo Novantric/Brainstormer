@@ -87,11 +87,10 @@ namespace Brainstormer.Windows
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
-            //To satisfy the need for launch params
+            //To satisfy the requirement for launch params
             string[] temp = { "none" };
             MainWindow showLogin = new(temp);
             showLogin.Show();
-            UserSettings.ClearPreferences();
             User.Logout();
             Close();
         }

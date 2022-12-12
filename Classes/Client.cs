@@ -1,5 +1,6 @@
 ﻿namespace Brainstormer.Classes
 {
+    //An object class, used to represent a type of user called a Client.
     class Client
     {
         public string UserID, UserType, UserFirstName, UserLastName, UserEmail, UserPhoneNum;

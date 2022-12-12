@@ -5,12 +5,15 @@ using System.Data;
 
 namespace Brainstormer.Classes
 {
+    //Handles information relating to tags.
     internal class Tags
     {
         public Tags() { }
 
-        public static List<String> tagslist = new();
+        //Stores all the tags in the database.
+        public static List<string> tagslist = new();
 
+        //Loads tags into the list above.
         public static void loadTags()
         {
             string QUERY = "SELECT Tag FROM [dbo].[Idea_Tags] GROUP BY Tag";

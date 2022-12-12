@@ -8,8 +8,10 @@ namespace Brainstormer.Databases.DBBackend
 {
     internal class IdeaOperations
     {
-        private static List<Idea> IdeaList = new();
+        //Stores all the idea that are in the database.
+        private static readonly List<Idea> IdeaList = new();
 
+        //loads ideas into the public list above when called.
         public static List<Idea> preloadIdeas()
         {
             string QUERY = "SELECT * FROM [dbo].[Idea]";
@@ -27,6 +29,13 @@ namespace Brainstormer.Databases.DBBackend
             return IdeaList;
         }
 
-
+        //Creates an idea from the information passed in, and adds it to the database.
+        public static void CreateIdea(string ideaTitle, string ideaType, string ideaMajorSector, string ideaMinorSector, string ideaRegion, string ideaCurrency, decimal ideaRiskRating, DateTime creationDate, DateTime expiryDate, decimal suggestedPrice, string creatorID, string colour, string ideaSummary, string ideaContent)
+        {
+            string query = $"INSERT INTO [dbo].[Idea] (Title,AssetType,MajorSector,MinorSector,Reigion,Currency,RiskRating,CreationDate,ExpiryDate,SuggestedPrice,Views,UserID,Colour,Summary,Content) VALUES ('{ideaTitle}','{ideaType}','{ideaMajorSector}','{ideaMinorSector}','{ideaRegion}','{ideaCurrency}',{ideaRiskRating},{DateOnly.FromDateTime(creationDate)},{DateOnly.FromDateTime(expiryDate)},{suggestedPrice},{0},{Convert.ToInt32(creatorID)},'{colour}','{ideaSummary}','{ideaContent}')";
+            Connection.getInstanceOfDBConnection().nonQueryOperation(query);
+        }
     }
+
+
 }
