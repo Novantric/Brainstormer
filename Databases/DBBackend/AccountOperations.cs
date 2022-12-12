@@ -1,13 +1,10 @@
 ﻿using Brainstormer.Classes;
-using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using static Brainstormer.Classes.User;
 using static Brainstormer.Databases.DBBackend.Checks;
 using static Brainstormer.Databases.DBBackend.Connection;
-using static Brainstormer.Classes.User;
-using System.Windows.Documents;
-using System.Collections.Generic;
-using System.Collections;
 
 namespace Brainstormer.Databases.DBBackend
 {
@@ -53,6 +50,8 @@ namespace Brainstormer.Databases.DBBackend
 
             DataSet details = Connection.getInstanceOfDBConnection().getDataSet(LOGINQUERY, TABLENAME);
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8604 // Possible null reference argument.
             LoadData(details.Tables[TABLENAME].Rows[0]["Id"].ToString(),
                 details.Tables[TABLENAME].Rows[0]["Type"].ToString(),
                 details.Tables[TABLENAME].Rows[0]["FirstName"].ToString(),
@@ -60,6 +59,8 @@ namespace Brainstormer.Databases.DBBackend
                 email,
                 password,
                 details.Tables[TABLENAME].Rows[0]["PhoneNum"].ToString());
+#pragma warning restore CS8604 // Possible null reference argument.
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         }
 
@@ -69,7 +70,9 @@ namespace Brainstormer.Databases.DBBackend
 
             DataTable details = (getInstanceOfDBConnection().getDataSet(QUERY, "[dbo].[User]")).Tables[0];
 
+#pragma warning disable CS8601 // Possible null reference assignment.
             string[] result = { details.Rows[0]["Email"].ToString(), details.Rows[0]["FirstName"].ToString(), details.Rows[0]["LastName"].ToString(), details.Rows[0]["PhoneNum"].ToString() };
+#pragma warning restore CS8601 // Possible null reference assignment.
             return result;
         }
 
@@ -99,7 +102,10 @@ namespace Brainstormer.Databases.DBBackend
             Clients.Clear();
             for (int i = 0; i < clientTable.Rows.Count; i++)
             {
-                Clients.Add(new Client(clientTable.Rows[i]["Id"].ToString(), clientTable.Rows[i]["Type"].ToString(), clientTable.Rows[i]["LastName"].ToString(), clientTable.Rows[i]["FirstName"].ToString(), clientTable.Rows[i]["Email"].ToString(), clientTable.Rows[i]["PhoneNum"].ToString()));
+#pragma warning disable CS8604 // Possible null reference argument.
+                Clients.Add(new Client(clientTable.Rows[i]["Id"].ToString(), clientTable.Rows[i]["Type"].ToString(), clientTable.Rows[i]["LastName"]
+                    .ToString(), clientTable.Rows[i]["FirstName"].ToString(), clientTable.Rows[i]["Email"].ToString(), clientTable.Rows[i]["PhoneNum"].ToString()));
+#pragma warning restore CS8604 // Possible null reference argument.
             }
 
             return Clients;

@@ -1,19 +1,5 @@
-﻿using Brainstormer.Windows.Pages;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+﻿using System.Windows;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Brainstormer.Windows
 {
@@ -41,12 +27,12 @@ namespace Brainstormer.Windows
 
         private void RiskRatingChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            RiskLabel.Content = RiskRatingSlider.Value / 2 + "/5"; 
+            RiskLabel.Content = RiskRatingSlider.Value / 2 + "/5";
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
     }
 }

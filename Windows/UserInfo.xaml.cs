@@ -1,22 +1,7 @@
 ﻿using Brainstormer.Classes;
 using Brainstormer.Databases.DBBackend;
-using Brainstormer.Windows.Pages;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Channels;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Brainstormer.Windows
 {
@@ -57,13 +42,13 @@ namespace Brainstormer.Windows
             LastField.Content = userData[2];
             PhoneField.Content = userData[3];
 
-            
+
         }
 
 
         private void SaveUserButton_Click(object sender, RoutedEventArgs e)
         {
-            string buttonContext = ((sender as Button).Content.ToString());
+            string buttonContext = ((Button)sender).Content.ToString();
             if (buttonContext == "Add")
             {
                 User_RM.addClient(userID);

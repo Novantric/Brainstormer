@@ -1,23 +1,11 @@
 ﻿using Brainstormer.Classes;
 using Brainstormer.Databases.DBBackend;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Brainstormer.Windows.Pages
 {
@@ -28,30 +16,23 @@ namespace Brainstormer.Windows.Pages
     {
         public Home()
         {
+            List<Idea> ideas = IdeaOperations.preloadIdeas();
+
             InitializeComponent();
 
-            NewIdeaStackPanel.Children.Clear();
-            IdeaNameStackPanel.Children.Clear();
-            List<Idea> ideas = IdeaOperations.preloadIdeas();
+            //Removes all elements, including the template data in Home.xaml
+            IdeaPanel.Children.Clear();
+
             //load all ideas to a category
-            foreach (Idea value in ideas)
-            {
-                generateButtons(value);
-            }
-            Tags.loadTags();
-            for (int i = 0; i < Tags.tagslist.Count; i++)
-            {
-                Label tempTagLabel = new() { Content = "Ideas with the tag '" + Tags.tagslist[i] + "'", Foreground = Brushes.White, FontSize = 20};
-                IdeaCategoriesStackPanel.Children.Add(tempTagLabel);
-                //Array of stackpanels
-                //Check idea for tags and generate them if they match
-            }
+            loadNewButtons(ideas);
+            loadTagsButtons(ideas);
+
         }
 
         private void IdeaViewButtonClick(object sender, RoutedEventArgs e)
         {
             int buttonID = Convert.ToInt32((sender as Button).Uid);
-            ideaButtonClick("View", buttonID);           
+            ideaButtonClick("View", buttonID);
         }
 
         private void IdeaEditButtonClick(object sender, RoutedEventArgs e)
@@ -71,7 +52,82 @@ namespace Brainstormer.Windows.Pages
         }
 
 
-        private void generateButtons(Idea ideaObject)
+        private void loadNewButtons(List<Idea> ideas)
+        {
+            bool isIdeas = false;
+
+            foreach (Idea value in ideas)
+            {
+                isIdeas = true;
+                StackPanel[] generatedPanels = generateUIElements("Fresh Ideas!", false);
+                generateButtons(value, generatedPanels[1], generatedPanels[0]);
+            }
+
+            if (isIdeas == false)
+            {
+                StackPanel[] generatedPanels = generateUIElements("No Ideas! Go make one!", false);
+            }
+        }
+
+        //Loads data into precreated UI elements
+        private void loadTagsButtons(List<Idea> ideas)
+        {
+            //Load the tags
+            Tags.loadTags();
+
+            //repeat for the amount of tags, limited to a maximum of 3
+            for (int i = 0; i < Tags.tagslist.Count || i == 3; i++)
+            {
+                //Get the ideas that have the current tag
+                List<Idea> ideasWithTag = Tags.getIdeasWithTag(Tags.tagslist[i]);
+
+                StackPanel[] generatedPanels = generateUIElements(Tags.tagslist[i], true);
+
+                //Limit each category to 20 buttons
+                for (int y = 0; y < ideasWithTag.Count || y == 20; y++)
+                {
+                    generateButtons(ideasWithTag[y], generatedPanels[1], generatedPanels[0]);
+                }
+
+            }
+        }
+
+        //Generates UI elements in order to display idea buttons and data
+        private StackPanel[] generateUIElements(string input, bool isTag)
+        {
+
+            //Create a horizontal scrollviewer and add it
+            ScrollViewer tempSV = new ScrollViewer { HorizontalScrollBarVisibility = ScrollBarVisibility.Auto, VerticalScrollBarVisibility = ScrollBarVisibility.Hidden };
+            IdeaPanel.Children.Add(tempSV);
+
+            //create a stackpanel for the elements and add it
+            StackPanel tempParentStackPanel = new() { };
+            tempSV.Content = tempParentStackPanel;
+
+            //create a label and add it
+            Label tempTagLabel = new();
+            if (isTag)
+            {
+                tempTagLabel = new() { Content = "Ideas with the tag '" + input + "'", Foreground = Brushes.White, FontSize = 20 };
+            }
+            else
+            {
+                tempTagLabel = new() { Content = input, Foreground = Brushes.White, FontSize = 20 };
+            }
+            tempParentStackPanel.Children.Add(tempTagLabel);
+
+            //Create the other two stackpanels
+            StackPanel tempNameStackPanel = new() { Height = 60, Orientation = Orientation.Horizontal };
+            StackPanel tempButtonStackPanel = new() { Height = 30, Orientation = Orientation.Horizontal };
+
+            tempParentStackPanel.Children.Add(tempNameStackPanel);
+            tempParentStackPanel.Children.Add(tempButtonStackPanel);
+
+            StackPanel[] result = { tempNameStackPanel, tempButtonStackPanel };
+            return result;
+        }
+
+        private void generateButtons(Idea ideaObject, StackPanel buttonPanel, StackPanel namePanel)
         {
             if (DateTime.Compare(ideaObject.ExpiryDate, DateTime.Parse(DateTime.Today.ToString("d"))) <= 0)
             {
@@ -84,25 +140,23 @@ namespace Brainstormer.Windows.Pages
                 if (ideaObject.CreatorID.Equals(User.UserID))
                 {
                     buttonView.Width = 70;
-                    NewIdeaStackPanel.Children.Add(buttonView);
+                    buttonPanel.Children.Add(buttonView);
 
                     Button buttonEdit = new() { Content = "Edit", Uid = ideaObject.IdeaID.ToString(), Background = Brushes.Black, Foreground = Brushes.White };
                     buttonEdit.Click += IdeaEditButtonClick;
                     buttonEdit.Width = 70;
 
-                    NewIdeaStackPanel.Children.Add(buttonEdit);
+                    buttonPanel.Children.Add(buttonEdit);
                 }
                 else
                 {
                     buttonView.Width = 140;
-                    NewIdeaStackPanel.Children.Add(buttonView);
+                    buttonPanel.Children.Add(buttonView);
                 }
-
-
 
                 TextBlock buttonLabel = new() { Text = ideaObject.IdeaTitle, Background = Brushes.DarkGray, Width = 140, FontSize = 12, TextWrapping = TextWrapping.Wrap };
 
-                SolidColorBrush customColour = (SolidColorBrush)new BrushConverter().ConvertFromString(ideaObject.Colour);
+                SolidColorBrush? customColour = new BrushConverter().ConvertFromString(ideaObject.Colour) as SolidColorBrush;
                 buttonLabel.Background = customColour;
                 switch (ideaObject.Colour)
                 {
@@ -123,10 +177,10 @@ namespace Brainstormer.Windows.Pages
                 margin2.Left = 5;
                 buttonLabel.Margin = margin2;
 
-                IdeaNameStackPanel.Children.Add(buttonLabel);
+                namePanel.Children.Add(buttonLabel);
             }
         }
 
-           
+
     }
 }

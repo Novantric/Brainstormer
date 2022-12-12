@@ -1,10 +1,9 @@
 ﻿using Brainstormer.Classes;
 using Brainstormer.Databases.DBBackend;
-using System.Windows;
-using static Brainstormer.Databases.DBBackend.Checks;
-using static Brainstormer.Classes.User;
-using System;
 using System.Diagnostics;
+using System.Windows;
+using static Brainstormer.Classes.User;
+using static Brainstormer.Databases.DBBackend.Checks;
 
 namespace Brainstormer.Windows
 {

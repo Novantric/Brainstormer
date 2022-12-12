@@ -10,26 +10,18 @@
 
     <Grid Background="Black">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+            <StackPanel x:Name="IdeaPanel">
 
-                <Label Content="Fresh Ideas" Foreground="White" Grid.Row="0" FontSize="20"/>
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden" Grid.Row="1">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden" Grid.Row="0">                    
                     <StackPanel x:Name="IdeaCategoriesStackPanel">
+                        <Label x:Name = "TitleLabel" Content="Fresh Ideas" Foreground="White" FontSize="20"/>
                         <StackPanel Orientation="Horizontal" x:Name="IdeaNameStackPanel" Height="60"/>
                         <StackPanel Orientation="Horizontal" x:Name="NewIdeaStackPanel" Uid="test" Height="30"/>
-                    </StackPanel>
-                    
+                    </StackPanel>                                      
                 </ScrollViewer>
+                
 
-            </Grid>
+            </StackPanel>
         </ScrollViewer>
     </Grid>
 </Page>

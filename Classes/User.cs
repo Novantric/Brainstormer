@@ -1,10 +1,9 @@
 ﻿using Brainstormer.Databases.DBBackend;
-using System.Net;
 
 namespace Brainstormer.Classes
 {
     public class User //better to choose an appropriate name
-    {                       
+    {
         public static string? UserID { get; protected set; }
         public static string? UserType { get; protected set; }
         public static string? UserFirstName { get; protected set; }
@@ -18,7 +17,7 @@ namespace Brainstormer.Classes
             string query = $"UPDATE [dbo].[User] SET Type = '{type}', FirstName = '{firstName}', LastName = '{lastName}', Email = '{email}', Password = '{password}', PhoneNum = '{phoneNum}' WHERE Id = " + ID;
             Connection.getInstanceOfDBConnection().nonQueryOperation(query);
             LoadData(ID, type, firstName, lastName, email, password, phoneNum);
-            
+
         }
 
         public static void LoadData(string ID, string type, string firstName, string lastName, string email, string password, string phoneNum)

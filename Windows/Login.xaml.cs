@@ -26,9 +26,9 @@ namespace Brainstormer
                     PasswordBox.Password = launchParams[1];
 
                     ButtonAutomationPeer peer = new ButtonAutomationPeer(LoginButton);
-                    IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                    IInvokeProvider invokeProv = (IInvokeProvider)peer.GetPattern(PatternInterface.Invoke);
                     invokeProv.Invoke();
-                }                
+                }
             }
         }
 

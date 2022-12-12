@@ -2,7 +2,7 @@
   "profiles": {
     "AutoLogin": {
       "commandName": "Executable",
-      "executablePath": "C:\\Users\\whyrl\\OneDrive - Anglia Ruskin University\\Documents\\Year2\\Tri1\\Software Engineering\\myturn\\Brainstormer\\bin\\Debug\\net5.0-windows\\Brainstormer.exe",
+      "executablePath": "C:\\Users\\whyrl\\OneDrive - Anglia Ruskin University\\Documents\\Year2\\Tri1\\Software Engineering\\myturn\\Brainstormer\\bin\\Debug\\net6.0-windows\\Brainstormer.exe",
       "commandLineArgs": "75414@gmail.com dummy"
     },
     "Normal": {

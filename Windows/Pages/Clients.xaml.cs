@@ -26,12 +26,21 @@ namespace Brainstormer.Windows.Pages
             if (User_RM.clientScenario.Equals("Client View"))
             {
                 TitleLabel.Content = "View Relationship Managers";
-                //Request feature in future?
                 TipLabel.Content = "Click to view!";
 
-                QUERY = "SELECT RMID FROM [dbo].[User_RM] WHERE ClientID = " + User.UserID;
+                //Select the RMs linked to the client
+                QUERY = "SELECT RMID FROM [dbo].[User_RM] WHERE ClientID = " + User.UserID + "GROUP BY ClientID";
                 DataTable rmInfo = (Connection.getInstanceOfDBConnection().getDataSet(QUERY, TABLE)).Tables[0];
-                string QUERYUSER = "SELECT * FROM [dbo].[User]";
+
+                //Alternative way of doing the below
+                //for (int i = 0; i < rmInfo.Rows.Count; i++)
+                //{
+                //    string QUERYUSER = "SELECT * FROM [dbo].[User] WHERE Id = " + rmInfo.Rows[i]["RMID"];
+                //    DataTable rmUserInfo = (Connection.getInstanceOfDBConnection().getDataSet(QUERYUSER, TABLE)).Tables[0];
+
+                //    generateRMButtons((int)rmUserInfo.Rows[i]["RMID"], rmUserInfo.Rows[i]["FirstName"].ToString(), rmUserInfo.Rows[i]["LastName"].ToString(), rmUserInfo.Rows[i]["Email"].ToString(), columnn, row);
+
+                //}
 
                 for (int i = 0; i < rmInfo.Rows.Count; i++)
                 {

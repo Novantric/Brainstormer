@@ -1,22 +1,11 @@
 ﻿using Brainstormer.Classes;
-using Brainstormer.Databases.DBBackend;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using static Brainstormer.Databases.DBBackend.Connection;
 
 
@@ -40,7 +29,7 @@ namespace Brainstormer.Windows.Pages
                 if (Idea.loadedIdeaOperation == "View")
                 {
                     DisableBoxes();
-                    loadData();
+                    LoadData();
                     SubmitButton.Content = "Save";
                 }
                 else
@@ -50,7 +39,7 @@ namespace Brainstormer.Windows.Pages
             }
         }
 
-        private void loadData()
+        private void LoadData()
         {
             string QUERY = "SELECT * FROM[dbo].[Idea] WHERE Id = '" + Idea.loadedIdeaID + "'";
             string TABLE = "[dbo].[Idea]";
@@ -70,11 +59,11 @@ namespace Brainstormer.Windows.Pages
             ExpiryDatePicker.Text = ideaInfo.Rows[0]["ExpiryDate"].ToString();
             ColourBox.Text = ideaInfo.Rows[0]["Colour"].ToString();
 
-            loadAuthor(Convert.ToInt32(ideaInfo.Rows[0]["UserID"]));
-            loadTags(Convert.ToInt32(ideaInfo.Rows[0]["UserID"]));
+            LoadAuthor(Convert.ToInt32(ideaInfo.Rows[0]["UserID"]));
+            LoadTags(Convert.ToInt32(ideaInfo.Rows[0]["UserID"]));
         }
 
-        private void loadAuthor(int UserID)
+        private void LoadAuthor(int UserID)
         {
             string QUERYAUTHOR = "SELECT Email FROM [dbo].[User] WHERE Id = " + UserID;
             string TABLEAUTHOR = "[dbo].[User]";
@@ -82,7 +71,7 @@ namespace Brainstormer.Windows.Pages
             Author.Content = AuthorInfo.Rows[0]["Email"].ToString();
         }
 
-        private void loadTags(int UserID)
+        private void LoadTags(int UserID)
         {
             string QUERYTAGS = "SELECT Tag FROM [dbo].[Idea_Tags] WHERE IdeaID = " + UserID;
             string TABLETAGS = "[dbo].[Idea_Tags]";
@@ -145,7 +134,7 @@ namespace Brainstormer.Windows.Pages
             string major = MajorBox.Text;
             string region = RegionBox.Text;
 
-            
+
             DateTime expiry = DateTime.Parse(ExpiryDatePicker.Text);
             DateTime creation = DateTime.Parse(DateTime.Today.ToString("d"));
             string currency = CurrencyBox.Text;

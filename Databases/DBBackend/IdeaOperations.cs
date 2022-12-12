@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using static Brainstormer.Databases.DBBackend.Checks;
 using static Brainstormer.Databases.DBBackend.Connection;
 
 namespace Brainstormer.Databases.DBBackend
@@ -22,7 +19,9 @@ namespace Brainstormer.Databases.DBBackend
             IdeaList.Clear();
             for (int i = 0; i < ideas.Rows.Count; i++)
             {
+#pragma warning disable CS8604 // Possible null reference argument.
                 IdeaList.Add(new Idea(ideas.Rows[i]["Id"].ToString(), ideas.Rows[i]["Title"].ToString(), ideas.Rows[i]["AssetType"].ToString(), ideas.Rows[i]["MajorSector"].ToString(), ideas.Rows[i]["MinorSector"].ToString(), ideas.Rows[i]["Reigion"].ToString(), ideas.Rows[i]["Currency"].ToString(), Convert.ToInt32(ideas.Rows[i]["RiskRating"]), DateTime.Parse(ideas.Rows[i]["CreationDate"].ToString()), DateTime.Parse(ideas.Rows[i]["ExpiryDate"].ToString()), Convert.ToDecimal(ideas.Rows[i]["SuggestedPrice"].ToString()), ideas.Rows[i]["Views"].ToString(), ideas.Rows[i]["UserID"].ToString(), ideas.Rows[i]["Colour"].ToString(), ideas.Rows[i]["Summary"].ToString(), ideas.Rows[i]["Content"].ToString()));
+#pragma warning restore CS8604 // Possible null reference argument.
             }
 
             return IdeaList;
