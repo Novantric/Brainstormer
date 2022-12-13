@@ -17,7 +17,7 @@ namespace Brainstormer.Classes
         public static void loadTags()
         {
             string QUERY = "SELECT Tag FROM [dbo].[Idea_Tags] GROUP BY Tag";
-            DataTable tagsTable = (Connection.getInstanceOfDBConnection().getDataSet(QUERY, "[dbo].[Idea_Tags]")).Tables[0];
+            DataTable tagsTable = (Connection.GetInstanceOfDBConnection().GetDataSet(QUERY, "[dbo].[Idea_Tags]"));
 
             for (int i = 0; i < tagsTable.Rows.Count; i++)
             {
@@ -33,7 +33,7 @@ namespace Brainstormer.Classes
             List<Idea> idealist = new();
 
             //Load Idea IDs that have the tag name
-            DataTable tagTable = (Connection.getInstanceOfDBConnection().getDataSet(QUERY, "[dbo].[Idea_Tags]")).Tables[0];
+            DataTable tagTable = (Connection.GetInstanceOfDBConnection().GetDataSet(QUERY, "[dbo].[Idea_Tags]"));
 
             //Add the IDs to a list
             for (int i = 0; i < tagTable.Rows.Count; i++)
@@ -47,7 +47,7 @@ namespace Brainstormer.Classes
             {
                 //Query the next idea
                 string QUERYID = "SELECT * FROM [dbo].[Idea] WHERE Id = " + ideaIDlist[i];
-                DataTable ideaTable = (Connection.getInstanceOfDBConnection().getDataSet(QUERYID, "[dbo].[Idea]")).Tables[0];
+                DataTable ideaTable = (Connection.GetInstanceOfDBConnection().GetDataSet(QUERYID, "[dbo].[Idea]"));
 
                 //Add to the list
                 idealist.Add(new Idea(ideaTable.Rows[i]["Id"]

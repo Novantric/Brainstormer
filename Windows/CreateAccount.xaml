@@ -43,7 +43,7 @@
         </ComboBox>
 
         <Label Content="First Name" Foreground="White" Grid.Row="5"/>
-        <TextBox x:Name="FirstNameBox" Grid.Row="5" Grid.Column="1" TextChanged="FirstNameBox_TextChanged"/>
+        <TextBox x:Name="FirstNameBox" Grid.Row="5" Grid.Column="1"/>
 
         <Label Content="Last Name" Foreground="White" Grid.Row="6"/>
         <TextBox x:Name="LastNameBox" Grid.Row="6" Grid.Column="1"/>

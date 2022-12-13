@@ -6,25 +6,26 @@ using System.IO;
 
 namespace Brainstormer.Databases.DBBackend
 {
+    //Handles all communication between the database and the rest of the program. This was obtained from the example code and modified.
+
     internal class Connection
     {
-        //Obtained from the example code and modified
-
-        //Connstr works with local paths
+        //Connection string, public so can be used in other places e.g. EncryptDecrypt
         public string connStr;
         private static Connection? _instance;
-        private SqlConnection connectionDB;
+        private readonly SqlConnection connectionDB;
 
-        ///constructor
+        ///constructor, initialises the connection string
         private Connection()
         {
-            //try brainstore, then another
-            string path1 = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, @"Databases\Brainstore.mdf");
-            string path2 = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, @"Databases\Oldestore.mdf");
-
+            //try Brainstore, then Oldestore
             try
             {
+                //creates the connection string
+                string path1 = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, @"Databases\Brainstore.mdf");
                 connStr = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""{0}"";Integrated Security = True", path1);
+
+                //Creates a new connection and tests it
                 connectionDB = new SqlConnection(connStr);
                 connectionDB.Open();
                 connectionDB.Close();
@@ -32,40 +33,57 @@ namespace Brainstormer.Databases.DBBackend
             }
             catch (Exception)
             {
-                connStr = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""{0}"";Integrated Security = True", path2);
-                connectionDB = new SqlConnection(connStr);
-                Debug.WriteLine("Connected to Oldestore!");
+                try
+                {
+                    string path2 = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName, @"Databases\Oldestore.mdf");
+                    connStr = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""{0}"";Integrated Security = True", path2);
+
+                    connectionDB = new SqlConnection(connStr);
+                    connectionDB.Open();
+                    connectionDB.Close();
+                    Debug.WriteLine("Connected to Oldestore!");
+                }
+                catch (Exception)
+                {
+                    //Allows for the program to connect to an external database if a local one doesn't exist
+                    connStr = "Enter an external connection string here!";
+                    throw;
+                }
             }
         }
 
-        public static Connection getInstanceOfDBConnection()
+        //Every time the database is accessed, create a new instance if there isn't one.
+        //Note: do this with other classes in the future, e.g. the home page display
+        public static Connection GetInstanceOfDBConnection()
         {
-            //create the object only if it doesn't exist  
-            if (_instance == null)
-                _instance = new Connection();
+            _instance ??= new Connection();
             return _instance;
         }
 
-
-        //Returns a data set built based on the query. Used with datagrid views.
-        public DataSet getDataSet(string sqlQuery, string tableName)
+        //Returns a dataTabe of results, used with datagrid views and SELECT statements.
+        public DataTable GetDataSet(string sqlQuery, string tableName)
         {
             //create an empty dataset
-            DataSet dataSet = new DataSet();
+            DataSet dataSet = new();
 
+            //Fill the dataset with data
             connectionDB.Open();
-            SqlDataAdapter adapter = new SqlDataAdapter(sqlQuery, connStr);
+            SqlDataAdapter adapter = new(sqlQuery, connStr);
             adapter.Fill(dataSet, tableName);
             connectionDB.Close();
 
-            return dataSet;
+            //Return the dataset as a table
+            return dataSet.Tables[0];
         }
 
-        public void nonQueryOperation(string query)
+        //Executes SQL commands that aren't SELECT, such as INSERT INTO.
+        public void NonQueryOperation(string query)
         {
-            SqlConnection connectionDB = new SqlConnection(connStr);
-            SqlCommand command = new SqlCommand(query, connectionDB);
+            //Creates the connection
+            SqlConnection connectionDB = new(connStr);
+            SqlCommand command = new(query, connectionDB);
 
+            //Executes the query
             connectionDB.Open();
             command.ExecuteNonQuery();
             connectionDB.Close();

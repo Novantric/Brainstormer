@@ -12,21 +12,25 @@ namespace Brainstormer.Windows
     /// </summary>
     public partial class CreateAccount : Window
     {
+        //Tracks what the window should do, be that create or edit an account.
         protected string scenario;
+        //Parses all the data from UI elements, checks them then creates the new account.
         public CreateAccount(string inScenario)
         {
             InitializeComponent();
 
-
+            //Changes UI elements depending on the sscenario
             switch (inScenario)
             {
                 case "Create":
                     this.Title = "Create Account";
+
                     titleText.Content = "Create Account";
                     scenario = "Create";
                     break;
                 case "Edit":
                     this.Title = "Edit Account";
+
                     titleText.Content = "Edit Account";
                     UsernameBox.Text = UserEmail;
                     PasswordBox.Password = UserPassword;
@@ -34,6 +38,7 @@ namespace Brainstormer.Windows
                     FirstNameBox.Text = UserFirstName;
                     LastNameBox.Text = UserLastName;
                     MobNumBox.Text = UserPhoneNum;
+
                     scenario = "Edit";
                     break;
                 default:
@@ -42,57 +47,57 @@ namespace Brainstormer.Windows
             scenario = inScenario;
         }
 
+        //Loads and validates data from UI elements
         private void CreateButtonClick(object sender, RoutedEventArgs e)
         {
-            string email = UsernameBox.Text;
-            string password = PasswordBox.Password;
-            string passwordConfirm = PasswordConfirmBox.Password;
-            string accountType = AccountTypeBox.Text;
-            string firstName = FirstNameBox.Text;
-            string lastName = LastNameBox.Text;
-            string phoneNum = MobNumBox.Text;
-
-            if (password == passwordConfirm)
+            //If the password boxes match
+            if (PasswordBox.Password == PasswordConfirmBox.Password)
             {
-                if (checkIsBlank(email) == false && checkIsBlank(password) == false)
+                //If the username and password fields aren't blank
+                if (CheckIsBlank(UsernameBox.Text) == false && CheckIsBlank(PasswordBox.Password) == false)
                 {
-                    if (checkHasSpace(email) == false && checkHasSpace(password) == false && checkHasSpace(firstName) == false && checkHasSpace(lastName) == false && checkHasSpace(phoneNum) == false)
+                    //If the boxes don't have spaces
+                    if (CheckHasSpace(UsernameBox.Text) == false && CheckHasSpace(PasswordBox.Password) == false && CheckHasSpace(FirstNameBox.Text) == false && CheckHasSpace(LastNameBox.Text) == false && CheckHasSpace(MobNumBox.Text) == false)
                     {
-                        if (checkIsAllInt(phoneNum) == true && checkIsBlank(phoneNum) == false)
+                        //If the phone number field is all numbers and not blank
+                        if (CheckIsAllInt(MobNumBox.Text) == true && CheckIsBlank(MobNumBox.Text) == false)
                         {
                             Debug.WriteLine("Success + Phone Number!");
+                            //Eiether adds the information or edits the matching database entry
                             switch (scenario)
                             {
                                 case "Create":
-                                    AccountOperations.CreateAccount(accountType, firstName, lastName, email, EncryptDecrypt.Encrypt(password), phoneNum);
+                                    AccountOperations.CreateAccount(AccountTypeBox.Text, FirstNameBox.Text, LastNameBox.Text, UsernameBox.Text, EncryptDecrypt.Encrypt(PasswordBox.Password), MobNumBox.Text);
                                     break;
                                 case "Edit":
-                                    User.UpdateData(UserID, accountType, firstName, lastName, email, EncryptDecrypt.Encrypt(password), phoneNum);
+                                    User.UpdateData(UserID, AccountTypeBox.Text, FirstNameBox.Text, LastNameBox.Text, UsernameBox.Text, EncryptDecrypt.Encrypt(PasswordBox.Password), MobNumBox.Text);
                                     break;
                                 default:
                                     break;
                             }
+                            //Exists the window
                             Close();
-
                         }
-                        else if (checkIsBlank(phoneNum) == true)
+                        //If the phone number box is blank
+                        else if (CheckIsBlank(MobNumBox.Text) == true)
                         {
                             Debug.WriteLine("Success!");
+                            //Eiether adds the information or edits the matching database entry
                             switch (scenario)
                             {
                                 case "Create":
-                                    AccountOperations.CreateAccount(accountType, firstName, lastName, email, EncryptDecrypt.Encrypt(password), "none");
+                                    AccountOperations.CreateAccount(AccountTypeBox.Text, FirstNameBox.Text, LastNameBox.Text, UsernameBox.Text, EncryptDecrypt.Encrypt(PasswordBox.Password), "none");
                                     break;
                                 case "Edit":
-                                    User.UpdateData(UserID, accountType, firstName, lastName, email, EncryptDecrypt.Encrypt(password), "none");
+                                    User.UpdateData(UserID, AccountTypeBox.Text, FirstNameBox.Text, LastNameBox.Text, UsernameBox.Text, EncryptDecrypt.Encrypt(PasswordBox.Password), "none");
                                     break;
                                 default:
                                     break;
                             }
+                            //Exists the window
                             Close();
-
                         }
-                        else if (checkIsAllInt(phoneNum) == false)
+                        else if (CheckIsAllInt(MobNumBox.Text) == false)
                         {
                             MessageBox.Show("The phone number you entered contains non-number elemends. Get rid of them!");
                         }
@@ -111,11 +116,6 @@ namespace Brainstormer.Windows
             {
                 MessageBox.Show("Please enter the correct password!");
             }
-        }
-
-        private void FirstNameBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-
         }
     }
 }

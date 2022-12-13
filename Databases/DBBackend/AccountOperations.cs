@@ -8,97 +8,111 @@ using static Brainstormer.Databases.DBBackend.Connection;
 
 namespace Brainstormer.Databases.DBBackend
 {
+    //Handles operations that involve a user's account, for example logging in.
     internal class AccountOperations
     {
+        //A list of all the clients in the database, only filled when called later.
         private static readonly List<Client> Clients = new();
 
+        //Logs the user in after performing checks.
         public static bool Login(string username, string password)
         {
             string LOGINQUERY = "SELECT Email, Password FROM [dbo].[User] WHERE Email = '" + username + "'";
             string TABLENAME = "[dbo].[User]";
 
+            //If the username and password do not contain invalic chars
             if (ValidateData(username, password))
             {
-                DataSet loginDataset = getInstanceOfDBConnection().getDataSet(LOGINQUERY, TABLENAME);
-                if (checkUserExist(loginDataset, TABLENAME) == true && checkIsMatch(loginDataset, TABLENAME, password) == true)
+                //Query for the username and password
+                DataTable loginDataset = GetInstanceOfDBConnection().GetDataSet(LOGINQUERY, TABLENAME);
+                //If the user exists and the password matches
+                if (CheckUserExist(loginDataset) && CheckIsMatch(loginDataset, password))
                 {
+                    //Tell the calling sub that the information is correct
                     return true;
                 }
             }
             return false;
         }
 
-        //Checks if the data has any errors
+        //Checks if the data has any errors, like spaces
         protected static bool ValidateData(string username, string password)
         {
-            Debug.WriteLine("CC RAN");
-            if (checkIsBlank(username) == false && checkHasSpace(username) == false && checkIsBlank(password) == false && checkHasSpace(password) == false)
+            Debug.WriteLine("Field Validation Ran");
+            if (CheckIsBlank(username) == false && CheckHasSpace(username) == false && CheckIsBlank(password) == false && CheckHasSpace(password) == false)
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
-        //Run after the login has been confirmed
-        public static void CheckUserData(string type, string firstName, string lastName, string email, string password, string phoneNum)
+        //Loads the user information to local storage. Presumes that the correct username and password have been entered.
+        public static void CheckUserData(string email, string password)
         {
             string LOGINQUERY = "SELECT Id, Type, FirstName, LastName, PhoneNum FROM [dbo].[User] WHERE Email = '" + email + "' AND Password = '" + EncryptDecrypt.Encrypt(password) + "'";
             string TABLENAME = "[dbo].[User]";
 
-            DataSet details = Connection.getInstanceOfDBConnection().getDataSet(LOGINQUERY, TABLENAME);
+            DataTable details = GetInstanceOfDBConnection().GetDataSet(LOGINQUERY, TABLENAME);
 
+            //Disables the warning when importing data from a datatable.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
 #pragma warning disable CS8604 // Possible null reference argument.
-            LoadData(details.Tables[TABLENAME].Rows[0]["Id"].ToString(),
-                details.Tables[TABLENAME].Rows[0]["Type"].ToString(),
-                details.Tables[TABLENAME].Rows[0]["FirstName"].ToString(),
-                details.Tables[TABLENAME].Rows[0]["LastName"].ToString(),
+            LoadData(details.Rows[0]["Id"].ToString(),
+                details.Rows[0]["Type"].ToString(),
+                details.Rows[0]["FirstName"].ToString(),
+                details.Rows[0]["LastName"].ToString(),
                 email,
                 password,
-                details.Tables[TABLENAME].Rows[0]["PhoneNum"].ToString());
+                details.Rows[0]["PhoneNum"].ToString());
 #pragma warning restore CS8604 // Possible null reference argument.
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         }
 
+        //Loads a user's data from their ID, used with e.g. tags.
         public static string[] GetUserData(int id)
         {
             string QUERY = "SELECT Email, FirstName, LastName, PhoneNum FROM [dbo].[User] WHERE Id = " + id;
+            DataTable details = (GetInstanceOfDBConnection().GetDataSet(QUERY, "[dbo].[User]"));
 
-            DataTable details = (getInstanceOfDBConnection().getDataSet(QUERY, "[dbo].[User]")).Tables[0];
-
+            //Removes the warning for getting information from a datatable.
 #pragma warning disable CS8601 // Possible null reference assignment.
+            //Saves result to an array for storage efficiency.
             string[] result = { details.Rows[0]["Email"].ToString(), details.Rows[0]["FirstName"].ToString(), details.Rows[0]["LastName"].ToString(), details.Rows[0]["PhoneNum"].ToString() };
 #pragma warning restore CS8601 // Possible null reference assignment.
             return result;
         }
 
+        //Creates an account using the input data, presuming it's been validated.
         public static void CreateAccount(string type, string firstName, string lastName, string email, string password, string phoneNum)
         {
+            //Creates the user account
             string query = $"INSERT INTO [dbo].[User] (Type,FirstName,LastName,Email,Password,PhoneNum) VALUES ('{type}','{firstName}','{lastName}','{email}','{EncryptDecrypt.Encrypt(password)}','{phoneNum}')";
-            Connection.getInstanceOfDBConnection().nonQueryOperation(query);
+            GetInstanceOfDBConnection().NonQueryOperation(query);
 
-            DataSet id = Connection.getInstanceOfDBConnection().getDataSet($"SELECT Id FROM [dbo].[User] WHERE Email = '{email}' AND Password = '{EncryptDecrypt.Encrypt(password)}'", "[dbo].[User]");
-            int tempID = (int)id.Tables["[dbo].[User]"].Rows[0]["Id"];
+            //Gets the user ID of the new account
+            DataTable id = GetInstanceOfDBConnection().GetDataSet($"SELECT Id FROM [dbo].[User] WHERE Email = '{email}' AND Password = '{EncryptDecrypt.Encrypt(password)}'", "[dbo].[User]");
 
-            string preferences = $"INSERT INTO [dbo].[User_Preferences] (PreferredRiskRating,PreferredProductType,PreferredCurrency,PreferredMajorSector,PreferredMinorSector,CurrentRegion,UserID) VALUES (0,'none','none','none','none','none','{tempID}')";
-            Connection.getInstanceOfDBConnection().nonQueryOperation(preferences);
+            //Uses the user ID to create default user Preferences
+            string preferences = $"INSERT INTO [dbo].[User_Preferences] (PreferredRiskRating,PreferredProductType,PreferredCurrency,PreferredMajorSector,PreferredMinorSector,CurrentRegion,UserID) VALUES (0,'none','none','none','none','none','{(int)id.Rows[0]["Id"]}')";
+            GetInstanceOfDBConnection().NonQueryOperation(preferences);
         }
 
+        //Allows for updating user information, when given the exact ID, column and value.
         public static void UpdateField(string columnName, int primaryKey, string value)
         {
             string query = "UPDATE [dbo].[User] SET " + columnName + " = '" + value + "' WHERE Id = " + primaryKey;
-            Connection.getInstanceOfDBConnection().nonQueryOperation(query);
+            GetInstanceOfDBConnection().NonQueryOperation(query);
         }
 
-        public static List<Client> getClients()
+        //Returns a list of all the users that are clients
+        public static List<Client> GetClients()
         {
+            //Gets all the clients
             string QUERY = "SELECT Id, Type, Email, FirstName, LastName, PhoneNum FROM [dbo].[User] WHERE Type = 'Client'";
-            DataTable clientTable = (getInstanceOfDBConnection().getDataSet(QUERY, "[dbo].[User]")).Tables[0];
+            DataTable clientTable = (GetInstanceOfDBConnection().GetDataSet(QUERY, "[dbo].[User]"));
 
+            //Loads the clients into a object list
             Clients.Clear();
             for (int i = 0; i < clientTable.Rows.Count; i++)
             {
@@ -110,6 +124,5 @@ namespace Brainstormer.Databases.DBBackend
 
             return Clients;
         }
-
     }
 }

@@ -10,11 +10,19 @@ namespace Brainstormer.Windows
     /// </summary>
     public partial class UserInfo : Window
     {
+        //Tracks which user is currently loaded
         private readonly int userID;
+        //Tracks the current scenario
+        private readonly string viewScenario;
+
         public UserInfo(string scenario, int userid, bool isAdded)
         {
+            //Sets the current user
             this.userID = userid;
+            this.viewScenario = scenario;
             InitializeComponent();
+
+            //Detect the current scenario and changes the UI accordingly
             switch (scenario)
             {
                 case "Client":
@@ -35,28 +43,33 @@ namespace Brainstormer.Windows
                 default:
                     break;
             }
-            string[] userData = AccountOperations.GetUserData(userid);
 
+            //Gets and fills the user data from the ID, only done this once.
+            string[] userData = AccountOperations.GetUserData(userid);
             EmailField.Content = userData[0];
             FirstField.Content = userData[1];
             LastField.Content = userData[2];
             PhoneField.Content = userData[3];
-
-
         }
 
-
+        //Allows the 
         private void SaveUserButton_Click(object sender, RoutedEventArgs e)
         {
             string buttonContext = ((Button)sender).Content.ToString();
-            if (buttonContext == "Add")
+            //If viewing the user as a client
+            if (viewScenario == "Client")
             {
-                User_RM.addClient(userID);
-            }
-            else
-            {
-                User_RM.removeClient(userID);
-            }
+                //If the button currently says "add"
+                if (buttonContext == "Add")
+                {
+                    User_RM.addClient(userID);
+                }
+                else
+                {
+                    User_RM.removeClient(userID);
+                }
+            }    
+            //Shows comfirmation by closing the window, a toast popup could be used in future
             Close();
         }
     }

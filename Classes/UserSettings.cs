@@ -20,7 +20,7 @@ namespace Brainstormer.Classes
         {
             string QUERY = $"SELECT * FROM [dbo].[User_Preferences] WHERE UserID = '{User.UserID}'";
             string TABLE = "[dbo].[User_Preferences]";
-            DataTable preferences = (getInstanceOfDBConnection().getDataSet(QUERY, TABLE)).Tables[0];
+            DataTable preferences = (GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE));
 
             PrefferedRegion = preferences.Rows[0]["CurrentRegion"].ToString();
             PrefferedCurrency = preferences.Rows[0]["PreferredCurrency"].ToString();
@@ -35,7 +35,7 @@ namespace Brainstormer.Classes
         public static void savePreferences(string region, string currency, string major, string minor, string product, double risk)
         {
             string query = ($"UPDATE [dbo].[User_Preferences] SET CurrentRegion = '{region}', PreferredCurrency = '{currency}', PreferredMajorSector = '{major}', PreferredMinorSector = '{minor}', PreferredProductType = '{product}', PreferredRiskRating = '{risk}' WHERE UserID = " + Convert.ToInt32(User.UserID));
-            Connection.getInstanceOfDBConnection().nonQueryOperation(query);
+            Connection.GetInstanceOfDBConnection().NonQueryOperation(query);
 
             PrefferedRegion = region;
             PrefferedCurrency = currency;
@@ -48,7 +48,7 @@ namespace Brainstormer.Classes
         //Deletes the preferences from the database, then the local storage.
         public static void DeletePreferences()
         {
-            Connection.getInstanceOfDBConnection().nonQueryOperation("DELETE FROM [dbo].[User_Preferences] WHERE UserID = '" + User.UserID + "'");
+            Connection.GetInstanceOfDBConnection().NonQueryOperation("DELETE FROM [dbo].[User_Preferences] WHERE UserID = '" + User.UserID + "'");
             ClearPreferences();
         }
 

@@ -20,14 +20,14 @@ namespace Brainstormer.Classes
             ClientID = clientID;
 
             string QUERY = $"INSERT INTO [dbo].[User_RM] (RMID, ClientID) VALUES ({User.UserID}, {clientID})";
-            Connection.getInstanceOfDBConnection().nonQueryOperation(QUERY);
+            Connection.GetInstanceOfDBConnection().NonQueryOperation(QUERY);
         }
 
         //Returns a list of client IDs, from all the clients in the database.
         public static List<int> getClientIDs()
         {
             string QUERY = "SELECT ClientID FROM [dbo].[User_RM] WHERE RMID = " + User.UserID;
-            DataTable resultsTable = (Connection.getInstanceOfDBConnection().getDataSet(QUERY, "[dbo].[User_RM]")).Tables[0];
+            DataTable resultsTable = (Connection.GetInstanceOfDBConnection().GetDataSet(QUERY, "[dbo].[User_RM]"));
             List<int> results = new();
 
             for (int i = 0; i < resultsTable.Rows.Count; i++)
@@ -41,7 +41,7 @@ namespace Brainstormer.Classes
         public static void removeClient(int clientID)
         {
             string QUERY = "DELETE FROM [dbo].[User_RM] WHERE ClientID = " + clientID + "AND RMID = " + User.UserID;
-            Connection.getInstanceOfDBConnection().nonQueryOperation(QUERY);
+            Connection.GetInstanceOfDBConnection().NonQueryOperation(QUERY);
         }
     }
 }

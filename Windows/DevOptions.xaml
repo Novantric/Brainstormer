@@ -44,9 +44,6 @@
 
             <Button x:Name="UpdateUserButton" Content="Update" Grid.Row="5" Grid.ColumnSpan="3" Click="UpdateUserButton_Click"/>
             <Button x:Name="EditButton" Content="Edit Current User" Grid.Row="6" Grid.ColumnSpan="3" Click="EditButton_Click" />
-            <Button x:Name="IdeaButton" Content="Show Idea creation window" Grid.Row="7" Click="OpenIdeaWindow"/>
-
-
 
         </Grid>
 

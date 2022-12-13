@@ -17,7 +17,7 @@ namespace Brainstormer.Classes
         public static void UpdateData(string ID, string type, string firstName, string lastName, string email, string password, string phoneNum)
         {
             string query = $"UPDATE [dbo].[User] SET Type = '{type}', FirstName = '{firstName}', LastName = '{lastName}', Email = '{email}', Password = '{password}', PhoneNum = '{phoneNum}' WHERE Id = " + ID;
-            Connection.getInstanceOfDBConnection().nonQueryOperation(query);
+            Connection.GetInstanceOfDBConnection().NonQueryOperation(query);
             LoadData(ID, type, firstName, lastName, email, password, phoneNum);
         }
 
@@ -37,7 +37,7 @@ namespace Brainstormer.Classes
         public static void DeleteAccount(int ID)
         {
             string query = "DELETE FROM [dbo].[User] WHERE Id = '" + ID + "'";
-            Connection.getInstanceOfDBConnection().nonQueryOperation(query);
+            Connection.GetInstanceOfDBConnection().NonQueryOperation(query);
 
             Logout();
         }

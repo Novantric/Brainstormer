@@ -16,7 +16,7 @@ namespace Brainstormer.Windows.Pages
     {
         public Home()
         {
-            List<Idea> ideas = IdeaOperations.preloadIdeas();
+            List<Idea> ideas = IdeaOperations.PreloadIdeas();
 
             InitializeComponent();
 
@@ -65,7 +65,7 @@ namespace Brainstormer.Windows.Pages
 
             if (isIdeas == false)
             {
-                StackPanel[] generatedPanels = generateUIElements("No Ideas! Go make one!", false);
+                generateUIElements("No Ideas! Go make one!", false);
             }
         }
 
@@ -76,7 +76,7 @@ namespace Brainstormer.Windows.Pages
             Tags.loadTags();
 
             //repeat for the amount of tags, limited to a maximum of 3
-            for (int i = 0; i < Tags.tagslist.Count || i == 3; i++)
+            for (int i = 0; i < Tags.tagslist.Count - 1 || i == 3; i++)
             {
                 //Get the ideas that have the current tag
                 List<Idea> ideasWithTag = Tags.getIdeasWithTag(Tags.tagslist[i]);
@@ -108,7 +108,7 @@ namespace Brainstormer.Windows.Pages
             Label tempTagLabel = new();
             if (isTag)
             {
-                tempTagLabel = new() { Content = "Ideas with the tag '" + input + "'", Foreground = Brushes.White, FontSize = 20 };
+                tempTagLabel = new() { Content = "Ideas with the tag '" + input.Trim() + "'", Foreground = Brushes.White, FontSize = 20 };
             }
             else
             {

@@ -10,13 +10,18 @@ namespace Brainstormer.Windows
     /// </summary>
     public partial class HomeMenu : Window
     {
+        //Tracks the current page
         public static string currentPage = "Welcome";
+        //Allows other classes to navigate to other pages
         public static Frame? navFrame;
+
         public HomeMenu()
         {
             InitializeComponent();
+            //Links the public and private frames
             navFrame = PageFrame;
 
+            //Changes the visibility of buttons depending on the account type
             switch (User.UserType)
             {
                 case "Client":
@@ -44,19 +49,20 @@ namespace Brainstormer.Windows
             }
         }
 
-        public static void loadPage(string PageName)
+        //Logic for changing the displayed page in navframe
+        public static void LoadPage(string PageName)
         {
-            Uri resource = new(@"Windows\Pages\" + PageName + ".xaml", System.UriKind.RelativeOrAbsolute);
             currentPage = PageName;
-            navFrame.Navigate(resource);
+            //Creates a new URI to the page and navigates to it
+            navFrame.Navigate(new Uri(@"Windows\Pages\" + PageName + ".xaml", System.UriKind.RelativeOrAbsolute));
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            loadPage("Settings");
-
+            LoadPage("Settings");
         }
 
+        //Shows the developer options window
         private void DevOptionsButton_Click(object sender, RoutedEventArgs e)
         {
             DevOptions showDevOptions = new();
@@ -66,31 +72,30 @@ namespace Brainstormer.Windows
         private void CreateIdeaButton_Click(object sender, RoutedEventArgs e)
         {
             Idea.loadedIdeaOperation = "none";
-            loadPage("CreateIdeaPage");
+            LoadPage("CreateIdeaPage");
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            loadPage("Search");
+            LoadPage("Search");
         }
 
         private void HomeMenuButton_Click(object sender, RoutedEventArgs e)
         {
-            loadPage("Home");
+            LoadPage("Home");
         }
 
         private void ClientsButton_Click(object sender, RoutedEventArgs e)
         {
             User_RM.clientScenario = "RM View";
-            loadPage("Clients");
+            LoadPage("Clients");
         }
 
+        //Logs the user out, clears local data and shows the login menu
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
             //To satisfy the requirement for launch params
-            string[] temp = { "none" };
-            MainWindow showLogin = new(temp);
-            showLogin.Show();
+            new MainWindow(new string[] { "none" }).Show();
             User.Logout();
             Close();
         }
@@ -98,14 +103,14 @@ namespace Brainstormer.Windows
         private void RelationshipManagersButton_Click(object sender, RoutedEventArgs e)
         {
             User_RM.clientScenario = "Client View";
-            loadPage("Clients");
+            LoadPage("Clients");
 
         }
 
         private void SavedIdeasButton_Click(object sender, RoutedEventArgs e)
         {
             User_RM.clientScenario = "Saved Ideas";
-            loadPage("SavedIdeas");
+            LoadPage("SavedIdeas");
         }
     }
 }

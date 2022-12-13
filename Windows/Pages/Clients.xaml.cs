@@ -15,51 +15,68 @@ namespace Brainstormer.Windows.Pages
     /// </summary>
     public partial class Clients : Page
     {
+        //Loads all the clients as previews when opened
         public Clients()
         {
-            int row = 0, columnn = 0;
-            string QUERY = "";
-            string TABLE = "[dbo].[User_RM]";
-
             InitializeComponent();
+
+            //Reset the grid
+            int row = 0, columnn = 0;
             ClientGrid.Children.Clear();
+
+            //If the page is being viewed by a client
             if (User_RM.clientScenario.Equals("Client View"))
             {
                 TitleLabel.Content = "View Relationship Managers";
                 TipLabel.Content = "Click to view!";
 
-                //Select the RMs linked to the client
-                QUERY = "SELECT RMID FROM [dbo].[User_RM] WHERE ClientID = " + User.UserID + "GROUP BY ClientID";
-                DataTable rmInfo = (Connection.getInstanceOfDBConnection().getDataSet(QUERY, TABLE)).Tables[0];
+                //Get the RMs linked to the client
+                string QUERY = "SELECT RMID FROM [dbo].[User_RM] WHERE ClientID = " + User.UserID + "GROUP BY ClientID";
+                DataTable rmInfo = (Connection.GetInstanceOfDBConnection().GetDataSet(QUERY, "[dbo].[User_RM]"));
 
                 //Alternative way of doing the below
                 //for (int i = 0; i < rmInfo.Rows.Count; i++)
                 //{
                 //    string QUERYUSER = "SELECT * FROM [dbo].[User] WHERE Id = " + rmInfo.Rows[i]["RMID"];
                 //    DataTable rmUserInfo = (Connection.getInstanceOfDBConnection().getDataSet(QUERYUSER, TABLE)).Tables[0];
-
                 //    generateRMButtons((int)rmUserInfo.Rows[i]["RMID"], rmUserInfo.Rows[i]["FirstName"].ToString(), rmUserInfo.Rows[i]["LastName"].ToString(), rmUserInfo.Rows[i]["Email"].ToString(), columnn, row);
-
                 //}
 
+                //Generate buttons for each RM
                 for (int i = 0; i < rmInfo.Rows.Count; i++)
                 {
+                    //But only if the RM 'owns' the client
                     if (rmInfo.Rows[i]["RMID"].ToString().Equals(User.UserID))
                     {
-                        generateRMButtons((int)rmInfo.Rows[i]["RMID"], rmInfo.Rows[i]["FirstName"].ToString(), rmInfo.Rows[i]["LastName"].ToString(), rmInfo.Rows[i]["Email"].ToString(), columnn, row);
+                        GenerateRMButtons((int)rmInfo.Rows[i]["RMID"], rmInfo.Rows[i]["FirstName"].ToString(), rmInfo.Rows[i]["LastName"].ToString(), columnn, row);
 
+                        //Allows for correct button placement and for the grid to be expanded
+                        columnn++;
+                        if (columnn >= 5)
+                        {
+                            columnn = 0;
+                            row++;
+                        }
+                        if (row >= 5)
+                        {
+                            IncreaseRows();
+                        }
                     }
                 }
             }
+            //If the page is being viewed by a RM
             else if (User_RM.clientScenario.Equals("RM View"))
             {
-                List<Client> clients = AccountOperations.getClients();
+                //Gets the list of clients
+                List<Client> clients = AccountOperations.GetClients();
+
+
                 foreach (Client value in clients)
                 {
+                    GenerateClientButtons(value, columnn, row);
 
-                    generateClientButtons(value, columnn, row);
+                    //Allows for correct button placement and for the grid to be expanded
                     columnn++;
-
                     if (columnn >= 5)
                     {
                         columnn = 0;
@@ -67,24 +84,28 @@ namespace Brainstormer.Windows.Pages
                     }
                     if (row >= 5)
                     {
-                        increaseRows();
+                        IncreaseRows();
                     }
                 }
-
             }
-
-
-
-
         }
-        private void generateRMButtons(int RMID, string FirstName, string LastName, string Email, int columnn, int row)
-        {
-            Button button = new() { Uid = RMID.ToString(), Background = Brushes.Black, Foreground = Brushes.White };
-            button.Content = FirstName + " " + LastName;
 
+        //Generates buttons for the RMs, viewed by a client
+        private void GenerateRMButtons(int RMID, string FirstName, string LastName, int columnn, int row)
+        {
+            //Create a button and assign it a click event
+            Button button = new()
+            {
+                Uid = RMID.ToString(),
+                Background = Brushes.Black,
+                Foreground = Brushes.White,
+                Content = FirstName + " " + LastName                
+            };
+            button.Click += RMViewButtonClick;
+
+            //Change the properties and add the button to the grid
             Grid.SetColumn(button, columnn);
             Grid.SetRow(button, row);
-            button.Click += RMViewButtonClick;
 
             Thickness margin = button.Margin;
             margin.Left = 5;
@@ -93,18 +114,17 @@ namespace Brainstormer.Windows.Pages
             ClientGrid.Children.Add(button);
         }
 
-        private void generateClientButtons(Client client, int column, int row)
+        //Generates buttons for the Clients, viewed by an RM
+        private void GenerateClientButtons(Client client, int column, int row)
         {
-            Button button = new Button() { Uid = client.UserID, Background = Brushes.Black, Foreground = Brushes.White };
-            button.Content = client.UserFirstName + " " + client.UserLastName;
-
-
-
-            if (User_RM.getClientIDs().Contains(Convert.ToInt32(client.UserID)))
+            //Generate a button
+            Button button = new()
             {
-                button.Foreground = Brushes.Red;
-            }
-
+                Uid = client.UserID,
+                Background = Brushes.Black,
+                Foreground = Brushes.White,
+                Content = client.UserFirstName + " " + client.UserLastName
+            };
             Grid.SetColumn(button, column);
             Grid.SetRow(button, row);
             button.Click += ClientViewButtonClick;
@@ -113,44 +133,57 @@ namespace Brainstormer.Windows.Pages
             margin.Left = 5;
             button.Margin = margin;
 
+            //If the client is associated with with the user, display the text in red,
+            if (User_RM.getClientIDs().Contains(Convert.ToInt32(client.UserID)))
+            {
+                button.Foreground = Brushes.Red;
+            }
+
             ClientGrid.Children.Add(button);
         }
 
-
-
+        //Called when an autogenerated button is clicked, used to open a window to show RM data
         private void RMViewButtonClick(object sender, RoutedEventArgs e)
         {
+            //Get the Uid of the button, where the user ID is stored.
             int buttonID = Convert.ToInt32((sender as Button).Uid);
-            Debug.WriteLine(buttonID);
-            UserInfo showInfo = new("RM", buttonID, false);
-            showInfo.ShowDialog();
+            Debug.WriteLine("RM User ID: " + buttonID);
+            //Show the userinfo window, passing in the uid
+            new UserInfo("RM", buttonID, false).ShowDialog();
         }
 
+        //Called when an autogenerated button is clicked, used to open a window to show Client data
         private void ClientViewButtonClick(object sender, RoutedEventArgs e)
         {
+            //Gets the button/user ID and the colour of the button text
             int buttonID = Convert.ToInt32((sender as Button).Uid);
             Brush colourBrush = ((sender as Button).Foreground);
             string colour = (colourBrush).ToString();
-            Debug.WriteLine(buttonID);
 
+            Debug.WriteLine("Client User ID: " + buttonID);
+
+            //If the button text colour is Red
             if (colour == "#FFFF0000")
             {
-                UserInfo showInfo = new("Client", buttonID, true);
-                showInfo.ShowDialog();
+                //Tell UserInfo that the client is added to the RM
+                new UserInfo("Client", buttonID, true).ShowDialog();
             }
             else
             {
-                UserInfo showInfo = new("Client", buttonID, false);
-                showInfo.ShowDialog();
+                new UserInfo("Client", buttonID, false).ShowDialog();
             }
 
-            //refresh page
+            //refresh page, use similar method to Connection.cs?
         }
 
-        private void increaseRows()
+        //Dynamically adds rows the the grid where users are displayed.
+        private void IncreaseRows()
         {
-            RowDefinition row = new();
-            row.Height = new GridLength(80, GridUnitType.Pixel);
+            //Create a row 80 pixels tall
+            RowDefinition row = new()
+            {
+                Height = new GridLength(80, GridUnitType.Pixel)
+            };
             ClientGrid.RowDefinitions.Add(row);
         }
     }

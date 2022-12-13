@@ -17,38 +17,42 @@ namespace Brainstormer.Windows.Pages
     /// </summary>
     public partial class CreateIdea : Page
     {
+        //Loads the current scenario and changes UI elements accordingly
         public CreateIdea()
         {
             InitializeComponent();
 
-            if (Idea.loadedIdeaOperation == "none")
+            //Do different actions depending on if creating, viewing or editing
+            switch (Idea.loadedIdeaOperation)
             {
-                Debug.WriteLine("is null");
-            }
-            else if (Idea.loadedIdeaOperation == "Edit" || Idea.loadedIdeaOperation == "View")
-            {
-                if (Idea.loadedIdeaOperation == "View")
-                {
+                case "none": default:
+                    Debug.WriteLine("is null");
+                    Author.Content = User.UserEmail;
+                    LoadTypes();
+                    break;
+                case "View":
+                    Debug.WriteLine("Viewing!");
                     DisableBoxes();
                     LoadData();
                     SubmitButton.Content = "Save";
-                }
-                else
-                {
-
-                }
+                    break;
+                case "Edit":
+                    Debug.WriteLine("Editing!");
+                    LoadData();
+                    LoadTypes();
+                    break;
             }
         }
 
+        //Loads the currently loaded idea into the UI
         private void LoadData()
         {
-            string QUERY = "SELECT * FROM[dbo].[Idea] WHERE Id = '" + Idea.loadedIdeaID + "'";
-            string TABLE = "[dbo].[Idea]";
-
-            DataTable ideaInfo = (getInstanceOfDBConnection().getDataSet(QUERY, TABLE)).Tables[0];
+            //Get all the iddea data from the 
+            DataTable ideaInfo = (GetInstanceOfDBConnection().GetDataSet("SELECT * FROM[dbo].[Idea] WHERE Id = '" + Idea.loadedIdeaID + "'", "[dbo].[Idea]"));
+            //Setting this once saves resources
+            int userID = Convert.ToInt32(ideaInfo.Rows[0]["UserID"]);
 
             TitleBox.Text = ideaInfo.Rows[0]["Title"].ToString();
-            TypeBox.Text = ideaInfo.Rows[0]["AssetType"].ToString();
             SummaryBox.Text = ideaInfo.Rows[0]["Summary"].ToString();
             ContentBox.Text = ideaInfo.Rows[0]["Content"].ToString();
             PriceBox.Text = ideaInfo.Rows[0]["SuggestedPrice"].ToString();
@@ -57,42 +61,50 @@ namespace Brainstormer.Windows.Pages
             MajorBox.Text = ideaInfo.Rows[0]["MajorSector"].ToString();
             CurrencyBox.Text = ideaInfo.Rows[0]["Currency"].ToString();
             RegionBox.Text = ideaInfo.Rows[0]["Reigion"].ToString();
-            ExpiryDatePicker.Text = ideaInfo.Rows[0]["ExpiryDate"].ToString();
+            ExpiryDatePicker.DisplayDate = DateTime.Parse(ideaInfo.Rows[0]["ExpiryDate"].ToString());
             ColourBox.Text = ideaInfo.Rows[0]["Colour"].ToString();
+            TypeBox.Text= ideaInfo.Rows[0]["AssetType"].ToString();
 
-            LoadAuthor(Convert.ToInt32(ideaInfo.Rows[0]["UserID"]));
-            LoadTags(Convert.ToInt32(ideaInfo.Rows[0]["UserID"]));
+            LoadAuthor(userID);
+            LoadTags(userID);
         }
 
+        //Loads the Email address of the person who created the idea
         private void LoadAuthor(int UserID)
         {
-            string QUERYAUTHOR = "SELECT Email FROM [dbo].[User] WHERE Id = " + UserID;
-            string TABLEAUTHOR = "[dbo].[User]";
-            DataTable AuthorInfo = (getInstanceOfDBConnection().getDataSet(QUERYAUTHOR, TABLEAUTHOR)).Tables[0];
-            Author.Content = AuthorInfo.Rows[0]["Email"].ToString();
+            Author.Content = GetInstanceOfDBConnection().GetDataSet("SELECT Email FROM [dbo].[User] WHERE Id = " + UserID, "[dbo].[User]").Rows[0]["Email"].ToString();
         }
 
+        //Loads all the Tags, and adds them to the textbox
         private void LoadTags(int UserID)
         {
-            string QUERYTAGS = "SELECT Tag FROM [dbo].[Idea_Tags] WHERE IdeaID = " + UserID;
-            string TABLETAGS = "[dbo].[Idea_Tags]";
-            DataTable tags = (getInstanceOfDBConnection().getDataSet(QUERYTAGS, TABLETAGS)).Tables[0];
+            StringBuilder tagBuilder = new();
 
-            List<string> tagList = new();
+            //Get all the tags for an Idea
+            DataTable tags = (GetInstanceOfDBConnection().GetDataSet("SELECT Tag FROM [dbo].[Idea_Tags] WHERE IdeaID = " + UserID, "[dbo].[Idea_Tags]"));
+
+            //Add the tags to a stringbuilder
             for (int i = 0; i < tags.Rows.Count; i++)
             {
-                tagList.Add(tags.Rows[0]["IdeaID"].ToString());
-            }
-
-            StringBuilder tagBuilder = new();
-            foreach (string item in tagList)
-            {
-                tagBuilder.Append(item);
+                tagBuilder.Append(tags.Rows[i]["IdeaID"].ToString());
                 tagBuilder.Append(',');
             }
+
             TagsBox.Text = tagBuilder.ToString();
         }
 
+        //Load all the product types to the box when editing or creating
+        private void LoadTypes()
+        {
+            DataTable TypeInfo = GetInstanceOfDBConnection().GetDataSet("SELECT AssetType FROM [dbo].[Idea] GROUP BY AssetType", "[dbo].[Idea]");
+
+            for (int i = 0; i < TypeInfo.Rows.Count; i++)
+            {
+                TypeBox.Items.Add(TypeInfo.Rows[0]["AssetType"].ToString());
+            }
+        }
+
+        //Disables all the UI elements when viewing
         private void DisableBoxes()
         {
             TitleBox.IsEnabled = false;
@@ -112,45 +124,56 @@ namespace Brainstormer.Windows.Pages
             SubmitButton.IsEnabled = false;
         }
 
+        //Allows the slider to match the text preview
         private void RiskRatingChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            //Allows for displaying decimal values. The actual max slider value is 10, not 5.
             RiskLabel.Content = (RiskRatingSlider.Value / 2) + "/5";
         }
 
+        //Saves the idea. In future, will suppoort editing.
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (decimal.TryParse(PriceBox.Text, out decimal price) == false || DateTime.Compare(DateTime.Parse(ExpiryDatePicker.Text), DateTime.Today) <= 0)
+            //Data validation
+            if (decimal.TryParse(PriceBox.Text, out decimal price) == false)
             {
                 MessageBox.Show("Enter a number into the price!");
                 return;
             }
+            else if(DateTime.Compare(DateTime.Parse(ExpiryDatePicker.Text), DateTime.Today) <= 0)
+            {
+                MessageBox.Show("The expiry date can't be today!");
+                return;
+            }
 
+            string currency = CurrencyBox.Text;
+            string colour = ColourBox.Text;
             string title = TitleBox.Text;
             string type = TypeBox.Text;
             string summary = SummaryBox.Text;
             string content = ContentBox.Text;
-            List<string> tags = new(TagsBox.Text.Split(','));
-            decimal riskRating = (decimal)(RiskRatingSlider.Value / 2);
             string minor = MinorBox.Text;
             string major = MajorBox.Text;
             string region = RegionBox.Text;
 
-
-            DateTime expiry = DateTime.Parse(ExpiryDatePicker.Text);
-            DateTime creation = DateTime.Parse(DateTime.Today.ToString("d"));
-            string currency = CurrencyBox.Text;
-            string colour = ColourBox.Text;
+            //Convert the slider to the correct value
+            decimal riskRating = (decimal)(RiskRatingSlider.Value / 2);
+            //Create a list of the tags
+            List<string> tags = new(TagsBox.Text.Split(','));
+            //Set the date values
+            DateTime expiry = ExpiryDatePicker.DisplayDate;
+            DateTime creation = DateTime.Today.Date;
 
             IdeaOperations.CreateIdea(title, type, major, minor, region, currency, riskRating, creation, expiry, price, User.UserID, colour, summary, content);
 
-            DataSet ideaid = getInstanceOfDBConnection().getDataSet($"SELECT Id FROM [dbo].[Idea] WHERE Title = '{title}' AND UserID = '{User.UserID}'", "[dbo].[Idea]");
-            int tempID = (int)ideaid.Tables["[dbo].[Idea]"].Rows[0]["Id"];
+            DataTable ideaid = GetInstanceOfDBConnection().GetDataSet($"SELECT Id FROM [dbo].[Idea] WHERE Title = '{title}' AND UserID = '{User.UserID}'", "[dbo].[Idea]");
+            int tempID = (int)ideaid.Rows[0]["Id"];
 
             //Save the inputted tags
             for (int i = 0; i < tags.Count; i++)
             {
                 string tempTags = $"INSERT INTO [dbo].[Idea_Tags] (IdeaID,Tag) VALUES ({tempID},'{tags[i]}')";
-                getInstanceOfDBConnection().nonQueryOperation(tempTags);
+                GetInstanceOfDBConnection().NonQueryOperation(tempTags);
             }
 
 

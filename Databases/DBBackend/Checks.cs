@@ -7,7 +7,8 @@ namespace Brainstormer.Databases.DBBackend
 {
     internal class Checks
     {
-        public static bool checkIsBlank(string var)
+        //Checks if the input string has no characters
+        public static bool CheckIsBlank(string var)
         {
             Debug.WriteLine("Is blank?");
 
@@ -22,11 +23,12 @@ namespace Brainstormer.Databases.DBBackend
             return false;
         }
 
-        public static bool checkHasSpace(string var)
+        //Checks if the input string has spaces
+        public static bool CheckHasSpace(string var)
         {
             Debug.WriteLine("Has spaces?");
 
-            if (var.Contains(" ") || var.Contains(" "))
+            if (var.Contains(' '))
             {
                 Debug.WriteLine("Yes!");
                 return true;
@@ -34,7 +36,9 @@ namespace Brainstormer.Databases.DBBackend
             Debug.WriteLine("No!");
             return false;
         }
-        public static bool checkIsAllInt(string var)
+
+        //Checks if the input string is all numbers (e.g. for entering a phone number)
+        public static bool CheckIsAllInt(string var)
         {
             Debug.WriteLine("Is this string all numbers?");
             if (var.All(char.IsDigit))
@@ -46,11 +50,13 @@ namespace Brainstormer.Databases.DBBackend
             return false;
         }
 
-        public static bool checkUserExist(DataSet currentDataSet, string tableName)
+        //Checks if the user Email exists in the database
+        public static bool CheckUserExist(DataTable currentDataTable)
         {
             Debug.WriteLine("Does this user exist in the table?");
 
-            if (currentDataSet.Tables[tableName].Rows.Count == 0)
+            //If the datatable has no rows, the the user doesn't exist
+            if (currentDataTable.Rows.Count == 0)
             {
                 Debug.WriteLine("No!");
                 return false;
@@ -59,10 +65,12 @@ namespace Brainstormer.Databases.DBBackend
             return true;
         }
 
-        public static bool checkIsMatch(DataSet currentDataSet, string tableName, string var)
+        //Checks if the entered password matches with the database
+        public static bool CheckIsMatch(DataTable currentDataTable, string var)
         {
             Debug.WriteLine("Do the passwords match?");
-            if (var.Equals(EncryptDecrypt.Decrypt(currentDataSet.Tables[tableName].Rows[0][1].ToString())))
+            //from the db, load the password, makes it a string and decrypt it
+            if (var.Equals(EncryptDecrypt.Decrypt(currentDataTable.Rows[0][1].ToString())))
             {
                 Debug.WriteLine("Yes!");
                 return true;
@@ -70,7 +78,10 @@ namespace Brainstormer.Databases.DBBackend
             Debug.WriteLine("No!");
             return false;
         }
-        public static bool checkIsValidAccountType(string input)
+
+        //The following are mostly used when editing account data.
+        //Checks if the entered account type is valid, 
+        public static bool CheckIsValidAccountType(string input)
         {
             Debug.WriteLine("Does this account type exist?");
             if (input.Equals("Admin") || input.Equals("RM") || input.Equals("Client"))
@@ -83,10 +94,13 @@ namespace Brainstormer.Databases.DBBackend
                 return false;
             }
         }
-        public static bool checkColumnExists(DataSet currentDataSet, string column)
+
+        //Checks if the entered column name exists
+        public static bool CheckColumnExists(DataTable currentDataTable, string column)
         {
             Debug.WriteLine("Does column '" + column + "' exist?");
-            foreach (DataColumn datcolumn in currentDataSet.Tables[0].Columns)
+            //Checks every column for a match
+            foreach (DataColumn datcolumn in currentDataTable.Columns)
             {
                 if (datcolumn.ColumnName == column)
                 {
@@ -98,18 +112,19 @@ namespace Brainstormer.Databases.DBBackend
             return false;
         }
 
-        public static bool checkPKExists(DataSet currentDataSet, int input)
+        //Checks if the primary key exists in the datatable
+        public static bool CheckPKExists(DataTable currentDataTable, int input)
         {
             Debug.WriteLine("Does primary key '" + input + "' exist?");
 
-            DataRow[] dataRow = currentDataSet.Tables[0].Select("Id = '" + input + "'");
-            if (dataRow.Length != 0)
+            DataRow[] dataRow = currentDataTable.Select("Id = '" + input + "'");
+            if (dataRow.Length == 0)
             {
-                Debug.WriteLine("Yes");
-                return true;
+                Debug.WriteLine("No!");
+                return false;
             }
-            Debug.WriteLine("No!");
-            return false;
+            Debug.WriteLine("Yes");
+            return true;
         }
     }
 }
