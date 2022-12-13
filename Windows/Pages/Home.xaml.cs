@@ -23,7 +23,7 @@ namespace Brainstormer.Windows.Pages
             InitializeComponent();
             //Removes all elements, including the template data in Home.xaml
             IdeaPanel.Children.Clear();
-
+            IdeaPanel.UpdateLayout();
             //load all ideas to a category
             LoadNewButtons(ideas);
             //Load the ideas associated with a tag
@@ -57,9 +57,8 @@ namespace Brainstormer.Windows.Pages
         //Responsible for filling the "Whats new" section with ideas
         private void LoadNewButtons(List<Idea> ideas)
         {
-            List<Idea> SortedList = ideas.OrderBy(o => o.CreationDate).ToList();
-
-            ideas.Sort((x, y) => x.CreationDate.CompareTo(DateOnly.FromDateTime(DateTime.Today.Date)));
+            //Sorts the list so the ideas that expire the soonest are first
+            ideas.Sort((x, y) => x.ExpiryDate.CompareTo(DateOnly.FromDateTime(DateTime.Today.Date)));
 
             //Tracks if there are 0 ideas stored
             if (ideas.Count == 0)
@@ -80,10 +79,10 @@ namespace Brainstormer.Windows.Pages
         private void LoadTagsButtons()
         {
             //Load the tags
-            Tags.loadTags();
+            Tags.LoadTags();
 
             //repeat for the amount of tags, limited to a maximum of 3
-            for (int i = 0; i < Tags.tagslist.Count - 1 || i == 3; i++)
+            for (int i = 0; i < Tags.tagslist.Count || i == 3; i++)
             {
                 //Get the ideas that have the current tag
                 List<Idea> ideasWithTag = Tags.getIdeasWithTag(Tags.tagslist[i]);
@@ -103,7 +102,7 @@ namespace Brainstormer.Windows.Pages
         {
 
             //Create a horizontal scrollviewer and add it
-            ScrollViewer tempSV = new ScrollViewer { HorizontalScrollBarVisibility = ScrollBarVisibility.Auto, VerticalScrollBarVisibility = ScrollBarVisibility.Hidden };
+            ScrollViewer tempSV = new() { HorizontalScrollBarVisibility = ScrollBarVisibility.Auto, VerticalScrollBarVisibility = ScrollBarVisibility.Hidden };
             IdeaPanel.Children.Add(tempSV);
 
             //create a stackpanel for the elements and add it
@@ -133,16 +132,20 @@ namespace Brainstormer.Windows.Pages
             return result;
         }
 
+        //generates buttons and text boxes into the proviced panels
         private void GenerateButtons(Idea ideaObject, StackPanel buttonPanel, StackPanel namePanel)
         {
+            //Doesn't show expired values
             if (ideaObject.ExpiryDate.CompareTo(DateOnly.FromDateTime(DateTime.Today.Date)) >= 0)
             {
+                //Create the button
                 Button buttonView = new() { Content = "View", Uid = ideaObject.IdeaID.ToString(), Background = Brushes.Black, Foreground = Brushes.White };
                 buttonView.Click += IdeaViewButtonClick;
                 Thickness margin = buttonView.Margin;
                 margin.Left = 5;
                 buttonView.Margin = margin;
 
+                //If the current user created the idea, add an edit button
                 if (ideaObject.CreatorID.Equals(User.UserID))
                 {
                     buttonView.Width = 70;
@@ -160,25 +163,17 @@ namespace Brainstormer.Windows.Pages
                     buttonPanel.Children.Add(buttonView);
                 }
 
+                //Add the label
                 TextBlock buttonLabel = new() { Text = ideaObject.IdeaTitle, Background = Brushes.DarkGray, Width = 140, FontSize = 12, TextWrapping = TextWrapping.Wrap };
 
+                //Set the label colours depending on the user's prefernece
                 SolidColorBrush? customColour = new BrushConverter().ConvertFromString(ideaObject.Colour) as SolidColorBrush;
                 buttonLabel.Background = customColour;
-                switch (ideaObject.Colour)
+                Foreground = ideaObject.Colour switch
                 {
-                    case "Red":
-                    case "Black":
-                    case "Blue":
-                    case "Purple":
-                    case "Green":
-                        Foreground = Brushes.White;
-                        break;
-                    default:
-                        Foreground = Brushes.Black;
-                        break;
-                }
-
-
+                    "Red" or "Black" or "Blue" or "Purple" or "Green" => Brushes.White,
+                    _ => Brushes.Black,
+                };
                 Thickness margin2 = buttonLabel.Margin;
                 margin2.Left = 5;
                 buttonLabel.Margin = margin2;
@@ -186,7 +181,5 @@ namespace Brainstormer.Windows.Pages
                 namePanel.Children.Add(buttonLabel);
             }
         }
-
-
     }
 }

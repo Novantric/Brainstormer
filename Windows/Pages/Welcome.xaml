@@ -9,9 +9,18 @@
       Title="Welcome">
 
     <Grid Background="Black">
-        <Image HorizontalAlignment="Center" Source="/Windows/image-removebg-preview.png" Margin="0,176,0,99" Width="202" Opacity="0.5"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
-        <Label Content="Welcome!" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="36" FontWeight="Bold" Margin="0,131,0,0"/>
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="3">
+
+            <Label Content="Welcome!" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="36" FontWeight="Bold" Margin="40,20,40,0"/>
+            <Image Source="/Windows/image-removebg-preview.png" Width="202" Opacity="0.5" Margin="40,20,40,0"/>
+            <Button Content="Home" Foreground="White" Background="Black" Click="HomeButtonClick" Height="60" Width="100" Margin="40,20,40,0"/>
+        </StackPanel>
 
     </Grid>
 </Page>

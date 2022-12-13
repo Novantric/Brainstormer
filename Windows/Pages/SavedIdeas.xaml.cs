@@ -7,6 +7,7 @@ namespace Brainstormer.Windows.Pages
     /// </summary>
     public partial class SavedIdeas : Page
     {
+        //Used to show saved ideas in a similar fashion to Clients
         public SavedIdeas()
         {
             InitializeComponent();

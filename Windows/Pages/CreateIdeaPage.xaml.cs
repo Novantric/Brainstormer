@@ -61,7 +61,7 @@ namespace Brainstormer.Windows.Pages
             MajorBox.Text = ideaInfo.Rows[0]["MajorSector"].ToString();
             CurrencyBox.Text = ideaInfo.Rows[0]["Currency"].ToString();
             RegionBox.Text = ideaInfo.Rows[0]["Reigion"].ToString();
-            ExpiryDatePicker.DisplayDate = DateTime.Parse(ideaInfo.Rows[0]["ExpiryDate"].ToString());
+            ExpiryDatePicker.SelectedDate = DateTime.Parse(ideaInfo.Rows[0]["ExpiryDate"].ToString());
             ColourBox.Text = ideaInfo.Rows[0]["Colour"].ToString();
             TypeBox.Text= ideaInfo.Rows[0]["AssetType"].ToString();
 

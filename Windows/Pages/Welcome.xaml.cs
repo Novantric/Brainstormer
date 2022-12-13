@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 
 namespace Brainstormer.Windows.Pages
 {
@@ -10,6 +11,12 @@ namespace Brainstormer.Windows.Pages
         public Welcome()
         {
             InitializeComponent();
+        }
+
+        //Allows the user to immediately navigate to the home page
+        private void HomeButtonClick(object sender, System.Windows.RoutedEventArgs e)
+        {
+            HomeMenu.navFrame.Navigate(new Uri(@"Windows\Pages\Home.xaml", UriKind.RelativeOrAbsolute));
         }
     }
 }
