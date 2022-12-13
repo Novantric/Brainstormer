@@ -3,6 +3,7 @@ using Brainstormer.Databases.DBBackend;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -14,63 +15,69 @@ namespace Brainstormer.Windows.Pages
     /// </summary>
     public partial class Home : Page
     {
+        //Load ideas
         public Home()
         {
             List<Idea> ideas = IdeaOperations.PreloadIdeas();
 
             InitializeComponent();
-
             //Removes all elements, including the template data in Home.xaml
             IdeaPanel.Children.Clear();
 
             //load all ideas to a category
-            loadNewButtons(ideas);
-            loadTagsButtons(ideas);
-
+            LoadNewButtons(ideas);
+            //Load the ideas associated with a tag
+            LoadTagsButtons();
         }
 
+        //Called when a generated view button is clicked
         private void IdeaViewButtonClick(object sender, RoutedEventArgs e)
         {
-            int buttonID = Convert.ToInt32((sender as Button).Uid);
-            ideaButtonClick("View", buttonID);
+            IdeaButtonClick("View", Convert.ToInt32((sender as Button).Uid));
         }
 
+        //Called when a generated edit button is clicked
         private void IdeaEditButtonClick(object sender, RoutedEventArgs e)
         {
-            int buttonID = Convert.ToInt32((sender as Button).Uid);
-            ideaButtonClick("Edit", buttonID);
+            IdeaButtonClick("Edit", Convert.ToInt32((sender as Button).Uid));
         }
 
-        private void ideaButtonClick(string scenario, int ID)
+        //Tells CreateIdea how to display the current idea
+        private static void IdeaButtonClick(string scenario, int ID)
         {
             Debug.WriteLine("Button ID: " + ID);
 
-            Uri resource = new(@"Windows\Pages\CreateIdeaPage.xaml", System.UriKind.RelativeOrAbsolute);
+            //Update the scenario and idea ID, then launch CreateIdeaPage
             Idea.loadedIdeaOperation = scenario;
             Idea.loadedIdeaID = ID;
-            HomeMenu.navFrame.Navigate(resource);
+
+            HomeMenu.navFrame.Navigate(new Uri(@"Windows\Pages\CreateIdeaPage.xaml", System.UriKind.RelativeOrAbsolute));
         }
 
-
-        private void loadNewButtons(List<Idea> ideas)
+        //Responsible for filling the "Whats new" section with ideas
+        private void LoadNewButtons(List<Idea> ideas)
         {
-            bool isIdeas = false;
+            List<Idea> SortedList = ideas.OrderBy(o => o.CreationDate).ToList();
 
+            ideas.Sort((x, y) => x.CreationDate.CompareTo(DateOnly.FromDateTime(DateTime.Today.Date)));
+
+            //Tracks if there are 0 ideas stored
+            if (ideas.Count == 0)
+            {
+                GenerateUIElements("No Ideas! Go make one!", false);
+                return;
+            }
+
+            StackPanel[] generatedPanels = GenerateUIElements("Fresh Ideas!", false);
             foreach (Idea value in ideas)
             {
-                isIdeas = true;
-                StackPanel[] generatedPanels = generateUIElements("Fresh Ideas!", false);
-                generateButtons(value, generatedPanels[1], generatedPanels[0]);
-            }
-
-            if (isIdeas == false)
-            {
-                generateUIElements("No Ideas! Go make one!", false);
+                //generate buttons for the ideas
+                GenerateButtons(value, generatedPanels[1], generatedPanels[0]);
             }
         }
 
-        //Loads data into precreated UI elements
-        private void loadTagsButtons(List<Idea> ideas)
+        //Loads tag data and generates relevant idea buttons
+        private void LoadTagsButtons()
         {
             //Load the tags
             Tags.loadTags();
@@ -80,20 +87,19 @@ namespace Brainstormer.Windows.Pages
             {
                 //Get the ideas that have the current tag
                 List<Idea> ideasWithTag = Tags.getIdeasWithTag(Tags.tagslist[i]);
-
-                StackPanel[] generatedPanels = generateUIElements(Tags.tagslist[i], true);
+                //Generate stackpanels for the ideas
+                StackPanel[] generatedPanels = GenerateUIElements(Tags.tagslist[i], true);
 
                 //Limit each category to 20 buttons
                 for (int y = 0; y < ideasWithTag.Count || y == 20; y++)
                 {
-                    generateButtons(ideasWithTag[y], generatedPanels[1], generatedPanels[0]);
+                    GenerateButtons(ideasWithTag[y], generatedPanels[1], generatedPanels[0]);
                 }
-
             }
         }
 
         //Generates UI elements in order to display idea buttons and data
-        private StackPanel[] generateUIElements(string input, bool isTag)
+        private StackPanel[] GenerateUIElements(string input, bool isTag)
         {
 
             //Create a horizontal scrollviewer and add it
@@ -127,9 +133,9 @@ namespace Brainstormer.Windows.Pages
             return result;
         }
 
-        private void generateButtons(Idea ideaObject, StackPanel buttonPanel, StackPanel namePanel)
+        private void GenerateButtons(Idea ideaObject, StackPanel buttonPanel, StackPanel namePanel)
         {
-            if (DateTime.Compare(ideaObject.ExpiryDate, DateTime.Parse(DateTime.Today.ToString("d"))) <= 0)
+            if (ideaObject.ExpiryDate.CompareTo(DateOnly.FromDateTime(DateTime.Today.Date)) >= 0)
             {
                 Button buttonView = new() { Content = "View", Uid = ideaObject.IdeaID.ToString(), Background = Brushes.Black, Foreground = Brushes.White };
                 buttonView.Click += IdeaViewButtonClick;

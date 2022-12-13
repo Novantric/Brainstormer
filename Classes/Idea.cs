@@ -8,13 +8,13 @@ namespace Brainstormer.Classes
     {
         public string IdeaID, IdeaTitle, IdeaType, IdeaSummary, IdeaContent, IdeaMajorSector, IdeaMinorSector, IdeaRegion, IdeaCurrency, Views, CreatorID, Colour;
         public decimal IdeaRiskRating, SuggestedPrice;
-        public DateTime CreationDate, ExpiryDate;
+        public DateOnly CreationDate, ExpiryDate;
 
         //Used to track what idea is to be loaded, and what to do with that information.
         public static int loadedIdeaID;
         public static string? loadedIdeaOperation;
 
-        public Idea(string ideaID, string ideaTitle, string ideaType, string ideaMajorSector, string ideaMinorSector, string ideaRegion, string ideaCurrency, decimal ideaRiskRating, DateTime creationDate, DateTime expiryDate, decimal suggestedPrice, string views, string creatorID, string colour, string ideaSummary, string ideaContent)
+        public Idea(string ideaID, string ideaTitle, string ideaType, string ideaMajorSector, string ideaMinorSector, string ideaRegion, string ideaCurrency, decimal ideaRiskRating, DateOnly creationDate, DateOnly expiryDate, decimal suggestedPrice, string views, string creatorID, string colour, string ideaSummary, string ideaContent)
         {
             IdeaID = ideaID;
             IdeaTitle = ideaTitle;
@@ -33,6 +33,5 @@ namespace Brainstormer.Classes
             IdeaSummary = ideaSummary;
             IdeaContent = ideaContent;
         }
-
     }
 }

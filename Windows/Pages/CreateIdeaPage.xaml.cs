@@ -140,50 +140,40 @@ namespace Brainstormer.Windows.Pages
                 MessageBox.Show("Enter a number into the price!");
                 return;
             }
-            else if(DateTime.Compare(DateTime.Parse(ExpiryDatePicker.Text), DateTime.Today) <= 0)
+            else if (ExpiryDatePicker.SelectedDate.Value.Date.CompareTo(DateTime.Today.Date) <= 0)
             {
                 MessageBox.Show("The expiry date can't be today!");
                 return;
             }
-
-            string currency = CurrencyBox.Text;
-            string colour = ColourBox.Text;
-            string title = TitleBox.Text;
-            string type = TypeBox.Text;
-            string summary = SummaryBox.Text;
-            string content = ContentBox.Text;
-            string minor = MinorBox.Text;
-            string major = MajorBox.Text;
-            string region = RegionBox.Text;
 
             //Convert the slider to the correct value
             decimal riskRating = (decimal)(RiskRatingSlider.Value / 2);
             //Create a list of the tags
             List<string> tags = new(TagsBox.Text.Split(','));
             //Set the date values
-            DateTime expiry = ExpiryDatePicker.DisplayDate;
-            DateTime creation = DateTime.Today.Date;
+            DateOnly expiry = DateOnly.FromDateTime(ExpiryDatePicker.SelectedDate.Value.Date);
+            DateOnly creation = DateOnly.FromDateTime(DateTime.Today.Date);
 
-            IdeaOperations.CreateIdea(title, type, major, minor, region, currency, riskRating, creation, expiry, price, User.UserID, colour, summary, content);
+            IdeaOperations.CreateIdea(TitleBox.Text, TypeBox.Text, MajorBox.Text, MinorBox.Text, RegionBox.Text, CurrencyBox.Text, riskRating, creation, expiry, price, User.UserID, ColourBox.Text, SummaryBox.Text, ContentBox.Text);
 
-            DataTable ideaid = GetInstanceOfDBConnection().GetDataSet($"SELECT Id FROM [dbo].[Idea] WHERE Title = '{title}' AND UserID = '{User.UserID}'", "[dbo].[Idea]");
-            int tempID = (int)ideaid.Rows[0]["Id"];
+            //Load the Id of the tag that was just created
+            DataTable ideaid = GetInstanceOfDBConnection().GetDataSet($"SELECT Id FROM [dbo].[Idea] WHERE Title = '{TitleBox.Text}' AND UserID = '{User.UserID}'", "[dbo].[Idea]");
+            int newIdeaID = (int)ideaid.Rows[0]["Id"];
 
-            //Save the inputted tags
+            //Save the entered tags
             for (int i = 0; i < tags.Count; i++)
             {
-                string tempTags = $"INSERT INTO [dbo].[Idea_Tags] (IdeaID,Tag) VALUES ({tempID},'{tags[i]}')";
+                string tempTags = $"INSERT INTO [dbo].[Idea_Tags] (IdeaID,Tag) VALUES ({newIdeaID},'{tags[i]}')";
                 GetInstanceOfDBConnection().NonQueryOperation(tempTags);
             }
 
-
             ReturnToMenu();
         }
-
+        
+        //Navigate back to the main menu
         private static void ReturnToMenu()
         {
-            Uri resource = new(@"Windows\Pages\Home.xaml", System.UriKind.RelativeOrAbsolute);
-            HomeMenu.navFrame.Navigate(resource);
+            HomeMenu.navFrame.Navigate(new Uri(@"Windows\Pages\Home.xaml", UriKind.RelativeOrAbsolute));
         }
     }
 }

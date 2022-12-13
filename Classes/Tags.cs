@@ -43,7 +43,7 @@ namespace Brainstormer.Classes
 
 
             //Add each matching idea to the list
-            for (int i = 0; i < ideaIDlist.Count; i++)
+            for (int i = 0; i < ideaIDlist.Count - 1; i++)
             {
                 //Query the next idea
                 string QUERYID = "SELECT * FROM [dbo].[Idea] WHERE Id = " + ideaIDlist[i];
@@ -53,8 +53,8 @@ namespace Brainstormer.Classes
                 idealist.Add(new Idea(ideaTable.Rows[i]["Id"]
                     .ToString(), ideaTable.Rows[i]["Title"].ToString(), ideaTable.Rows[i]["AssetType"].ToString(), ideaTable.Rows[i]["MajorSector"]
                     .ToString(), ideaTable.Rows[i]["MinorSector"].ToString(), ideaTable.Rows[i]["Reigion"].ToString(), ideaTable.Rows[i]["Currency"]
-                    .ToString(), Convert.ToInt32(ideaTable.Rows[i]["RiskRating"]), DateTime.Parse(ideaTable.Rows[i]["CreationDate"]
-                    .ToString()), DateTime.Parse(ideaTable.Rows[i]["ExpiryDate"].ToString()), Convert.ToDecimal(ideaTable.Rows[i]["SuggestedPrice"].ToString()), ideaTable.Rows[i]["Views"]
+                    .ToString(), Convert.ToInt32(ideaTable.Rows[i]["RiskRating"]), DateOnly.Parse(ideaTable.Rows[i]["CreationDate"]
+                    .ToString()), DateOnly.Parse(ideaTable.Rows[i]["ExpiryDate"].ToString()), Convert.ToDecimal(ideaTable.Rows[i]["SuggestedPrice"].ToString()), ideaTable.Rows[i]["Views"]
                     .ToString(), ideaTable.Rows[i]["UserID"].ToString(), ideaTable.Rows[i]["Colour"].ToString(), ideaTable.Rows[i]["Summary"].ToString(), ideaTable.Rows[i]["Content"].ToString()));
             }
 

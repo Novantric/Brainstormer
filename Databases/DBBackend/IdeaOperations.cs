@@ -1,6 +1,7 @@
 ﻿using Brainstormer.Classes;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using static Brainstormer.Databases.DBBackend.Connection;
 
@@ -14,22 +15,38 @@ namespace Brainstormer.Databases.DBBackend
         {
             //Stores all the ideas that are in the database.
             List<Idea> ideaList = new();
-            string QUERY = "SELECT * FROM [dbo].[Idea]";
-            string TABLE = "[dbo].[Idea]";
+            DataTable table = GetInstanceOfDBConnection().GetDataSet("SELECT * FROM [dbo].[Idea]", "[dbo].[Idea]");
 
             //Each idea is loaded into the list.
-            for (int i = 0; i < GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows.Count; i++)
+            for (int i = 0; i < table.Rows.Count; i++)
             {
-                ideaList.Add(new Idea(GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows[i]["Id"].ToString(), GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows[i]["Title"].ToString(), GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows[i]["AssetType"].ToString(), GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows[i]["MajorSector"].ToString(), GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows[i]["MinorSector"].ToString(), GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows[i]["Reigion"].ToString(), GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows[i]["Currency"].ToString(), Convert.ToInt32(GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows[i]["RiskRating"]), DateTime.Parse(GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows[i]["CreationDate"].ToString()), DateTime.Parse(GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows[i]["ExpiryDate"].ToString()), Convert.ToDecimal(GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows[i]["SuggestedPrice"].ToString()), GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows[i]["Views"].ToString(), GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows[i]["UserID"].ToString(), GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows[i]["Colour"].ToString(), GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows[i]["Summary"].ToString(), GetInstanceOfDBConnection().GetDataSet(QUERY, TABLE).Rows[i]["Content"].ToString()));
+                ideaList.Add(new Idea(
+                    ideaID: table.Rows[i]["Id"].ToString(),
+                    ideaTitle: table.Rows[i]["Title"].ToString(),
+                    ideaType: table.Rows[i]["AssetType"].ToString(),
+                    ideaMajorSector: table.Rows[i]["MajorSector"].ToString(),
+                    ideaMinorSector: table.Rows[i]["MinorSector"].ToString(),
+                    ideaRegion: table.Rows[i]["Reigion"].ToString(),
+                    ideaCurrency: table.Rows[i]["Currency"].ToString(),
+                    ideaRiskRating: Convert.ToInt32(table.Rows[i]["RiskRating"]),
+                    creationDate: DateOnly.FromDateTime(DateTime.Parse(table.Rows[i]["CreationDate"].ToString())),
+                    expiryDate: DateOnly.FromDateTime(DateTime.Parse(table.Rows[i]["ExpiryDate"].ToString())),
+                    suggestedPrice: Convert.ToDecimal(table.Rows[i]["SuggestedPrice"]),
+                    views: table.Rows[i]["Views"].ToString(),
+                    creatorID: table.Rows[i]["UserID"].ToString(),
+                    colour: table.Rows[i]["Colour"].ToString(),
+                    ideaSummary: table.Rows[i]["Summary"].ToString(),
+                    ideaContent: table.Rows[i]["Content"].ToString()));
             }
 
-            return ideaList;
+
+                return ideaList;
         }
 
         //Creates an idea from the information passed in, and adds it to the database.
-        public static void CreateIdea(string ideaTitle, string ideaType, string ideaMajorSector, string ideaMinorSector, string ideaRegion, string ideaCurrency, decimal ideaRiskRating, DateTime creationDate, DateTime expiryDate, decimal suggestedPrice, string creatorID, string colour, string ideaSummary, string ideaContent)
+        public static void CreateIdea(string ideaTitle, string ideaType, string ideaMajorSector, string ideaMinorSector, string ideaRegion, string ideaCurrency, decimal ideaRiskRating, DateOnly creationDate, DateOnly expiryDate, decimal suggestedPrice, string creatorID, string colour, string ideaSummary, string ideaContent)
         {
-            string query = $"INSERT INTO [dbo].[Idea] (Title,AssetType,MajorSector,MinorSector,Reigion,Currency,RiskRating,CreationDate,ExpiryDate,SuggestedPrice,Views,UserID,Colour,Summary,Content) VALUES ('{ideaTitle}','{ideaType}','{ideaMajorSector}','{ideaMinorSector}','{ideaRegion}','{ideaCurrency}',{ideaRiskRating},{DateOnly.FromDateTime(creationDate)},{DateOnly.FromDateTime(expiryDate)},{suggestedPrice},{0},{Convert.ToInt32(creatorID)},'{colour}','{ideaSummary}','{ideaContent}')";
+            string query = $"INSERT INTO [dbo].[Idea] (Title,AssetType,MajorSector,MinorSector,Reigion,Currency,RiskRating,CreationDate,ExpiryDate,SuggestedPrice,Views,UserID,Colour,Summary,Content) VALUES ('{ideaTitle}','{ideaType}','{ideaMajorSector}','{ideaMinorSector}','{ideaRegion}','{ideaCurrency}',{ideaRiskRating}, CONVERT(DATE, '{creationDate.ToString().Replace("/", "-")}', 3), CONVERT(DATE, '{expiryDate.ToString().Replace("/", "-")}', 3),{suggestedPrice},{0},{Convert.ToInt32(creatorID)},'{colour}','{ideaSummary}','{ideaContent}')";
             GetInstanceOfDBConnection().NonQueryOperation(query);
         }
     }
