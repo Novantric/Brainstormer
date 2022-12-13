@@ -47,7 +47,7 @@ namespace Brainstormer.Windows.Pages
         //Loads the currently loaded idea into the UI
         private void LoadData()
         {
-            //Get all the iddea data from the 
+            //Get all the idea data from the 
             DataTable ideaInfo = (GetInstanceOfDBConnection().GetDataSet("SELECT * FROM[dbo].[Idea] WHERE Id = '" + Idea.loadedIdeaID + "'", "[dbo].[Idea]"));
             //Setting this once saves resources
             int userID = Convert.ToInt32(ideaInfo.Rows[0]["UserID"]);
@@ -66,7 +66,7 @@ namespace Brainstormer.Windows.Pages
             TypeBox.Text= ideaInfo.Rows[0]["AssetType"].ToString();
 
             LoadAuthor(userID);
-            LoadTags(userID);
+            LoadTags(Idea.loadedIdeaID);
         }
 
         //Loads the Email address of the person who created the idea
@@ -76,18 +76,23 @@ namespace Brainstormer.Windows.Pages
         }
 
         //Loads all the Tags, and adds them to the textbox
-        private void LoadTags(int UserID)
+        private void LoadTags(int ideaID)
         {
             StringBuilder tagBuilder = new();
 
             //Get all the tags for an Idea
-            DataTable tags = (GetInstanceOfDBConnection().GetDataSet("SELECT Tag FROM [dbo].[Idea_Tags] WHERE IdeaID = " + UserID, "[dbo].[Idea_Tags]"));
+            DataTable tags = (GetInstanceOfDBConnection().GetDataSet("SELECT Tag FROM [dbo].[Idea_Tags] WHERE IdeaID = " + ideaID + " GROUP BY Tag", "[dbo].[Idea_Tags]"));
 
             //Add the tags to a stringbuilder
             for (int i = 0; i < tags.Rows.Count; i++)
             {
-                tagBuilder.Append(tags.Rows[i]["IdeaID"].ToString());
-                tagBuilder.Append(',');
+                tagBuilder.Append(tags.Rows[i]["Tag"].ToString().Trim());
+
+                //Only append a comma if not the last tag
+                if (i + 1 != tags.Rows.Count)
+                {
+                    tagBuilder.Append(',');
+                }
             }
 
             TagsBox.Text = tagBuilder.ToString();

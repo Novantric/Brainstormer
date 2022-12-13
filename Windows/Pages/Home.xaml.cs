@@ -58,7 +58,7 @@ namespace Brainstormer.Windows.Pages
         private void LoadNewButtons(List<Idea> ideas)
         {
             //Sorts the list so the ideas that expire the soonest are first
-            ideas.Sort((x, y) => x.ExpiryDate.CompareTo(DateOnly.FromDateTime(DateTime.Today.Date)));
+            ideas.Sort((x, y) => DateOnly.FromDateTime(DateTime.Today.Date).CompareTo(x.ExpiryDate));
 
             //Tracks if there are 0 ideas stored
             if (ideas.Count == 0)
@@ -86,6 +86,8 @@ namespace Brainstormer.Windows.Pages
             {
                 //Get the ideas that have the current tag
                 List<Idea> ideasWithTag = Tags.getIdeasWithTag(Tags.tagslist[i]);
+                //Sort by name alphabetically
+                ideasWithTag = ideasWithTag.OrderBy(o => o.IdeaTitle).ToList();
                 //Generate stackpanels for the ideas
                 StackPanel[] generatedPanels = GenerateUIElements(Tags.tagslist[i], true);
 

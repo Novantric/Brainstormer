@@ -81,11 +81,10 @@ namespace Brainstormer.Databases.DBBackend
         {
             //Creates the connection
             SqlConnection connectionDB = new(connStr);
-            SqlCommand command = new(query, connectionDB);
 
             //Executes the query
             connectionDB.Open();
-            command.ExecuteNonQuery();
+            new SqlCommand(query, connectionDB).ExecuteNonQuery();
             connectionDB.Close();
         }
     }

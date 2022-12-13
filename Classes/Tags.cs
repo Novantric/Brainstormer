@@ -44,19 +44,19 @@ namespace Brainstormer.Classes
 
 
             //Add each matching idea to the list
-            for (int i = 0; i < ideaIDlist.Count ; i++)
+            for (int i = 0; i < ideaIDlist.Count; i++)
             {
                 //Query the next idea
                 string QUERYID = "SELECT * FROM [dbo].[Idea] WHERE Id = " + ideaIDlist[i];
                 DataTable ideaTable = (Connection.GetInstanceOfDBConnection().GetDataSet(QUERYID, "[dbo].[Idea]"));
 
                 //Add to the list
-                idealist.Add(new Idea(ideaTable.Rows[i]["Id"]
-                    .ToString(), ideaTable.Rows[i]["Title"].ToString(), ideaTable.Rows[i]["AssetType"].ToString(), ideaTable.Rows[i]["MajorSector"]
-                    .ToString(), ideaTable.Rows[i]["MinorSector"].ToString(), ideaTable.Rows[i]["Reigion"].ToString(), ideaTable.Rows[i]["Currency"]
-                    .ToString(), Convert.ToInt32(ideaTable.Rows[i]["RiskRating"]), DateOnly.FromDateTime(DateTime.Parse(ideaTable.Rows[i]["CreationDate"].ToString())), DateOnly.FromDateTime(DateTime.Parse(ideaTable.Rows[i]["ExpiryDate"].ToString())),
-                    Convert.ToDecimal(ideaTable.Rows[i]["SuggestedPrice"].ToString()), ideaTable.Rows[i]["Views"].ToString(),
-                    ideaTable.Rows[i]["UserID"].ToString(), ideaTable.Rows[i]["Colour"].ToString(), ideaTable.Rows[i]["Summary"].ToString(), ideaTable.Rows[i]["Content"].ToString()));
+                idealist.Add(new Idea(ideaTable.Rows[0]["Id"]
+                    .ToString(), ideaTable.Rows[0]["Title"].ToString(), ideaTable.Rows[0]["AssetType"].ToString(), ideaTable.Rows[0]["MajorSector"]
+                    .ToString(), ideaTable.Rows[0]["MinorSector"].ToString(), ideaTable.Rows[0]["Reigion"].ToString(), ideaTable.Rows[0]["Currency"]
+                    .ToString(), Convert.ToInt32(ideaTable.Rows[0]["RiskRating"]), DateOnly.FromDateTime(DateTime.Parse(ideaTable.Rows[0]["CreationDate"].ToString())), DateOnly.FromDateTime(DateTime.Parse(ideaTable.Rows[0]["ExpiryDate"].ToString())),
+                    Convert.ToDecimal(ideaTable.Rows[0]["SuggestedPrice"].ToString()), ideaTable.Rows[0]["Views"].ToString(),
+                    ideaTable.Rows[0]["UserID"].ToString(), ideaTable.Rows[0]["Colour"].ToString(), ideaTable.Rows[0]["Summary"].ToString(), ideaTable.Rows[0]["Content"].ToString()));
             }
 
             return idealist;
