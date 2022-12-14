@@ -194,7 +194,7 @@ namespace Brainstormer.Windows.Pages
                 //Set the label colours depending on the user's prefernece
                 SolidColorBrush? customColour = new BrushConverter().ConvertFromString(ideaObject.Colour) as SolidColorBrush;
                 buttonLabel.Background = customColour;
-                Foreground = ideaObject.Colour switch
+                buttonLabel.Foreground = ideaObject.Colour switch
                 {
                     "Red" or "Black" or "Blue" or "Purple" or "Green" => Brushes.White,
                     _ => Brushes.Black,
