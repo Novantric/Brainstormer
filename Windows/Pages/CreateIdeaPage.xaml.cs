@@ -144,6 +144,7 @@ namespace Brainstormer.Windows.Pages
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             //Data validation
+#pragma warning disable CS8629 // Nullable value type may be null.
             if (decimal.TryParse(PriceBox.Text, out decimal price) == false)
             {
                 MessageBox.Show("Enter a number into the price!");
@@ -154,7 +155,9 @@ namespace Brainstormer.Windows.Pages
                 MessageBox.Show("The expiry date can't be today!");
                 return;
             }
+#pragma warning restore CS8629 // Nullable value type may be null.
 
+            int newIdeaID = 0;
             //Convert the slider to the correct value
             decimal riskRating = (decimal)(RiskRatingSlider.Value / 2);
             //Create a list of the tags
@@ -169,14 +172,8 @@ namespace Brainstormer.Windows.Pages
 
                 //Load the Id of the tag that was just created
                 DataTable ideaid = GetInstanceOfDBConnection().GetDataSet($"SELECT Id FROM [dbo].[Idea] WHERE Title = '{TitleBox.Text}' AND UserID = '{User.UserID}'", "[dbo].[Idea]");
-                int newIdeaID = (int)ideaid.Rows[0]["Id"];
+                newIdeaID = (int)ideaid.Rows[0]["Id"];
 
-                //Save the entered tags
-                for (int i = 0; i < tags.Count; i++)
-                {
-                    string tempTags = $"INSERT INTO [dbo].[Idea_Tags] (IdeaID,Tag) VALUES ({newIdeaID},'{tags[i]}')";
-                    GetInstanceOfDBConnection().NonQueryOperation(tempTags);
-                }
             }
             else if (Idea.loadedIdeaOperation.Equals("Edit"))
             {
@@ -184,17 +181,15 @@ namespace Brainstormer.Windows.Pages
 
                 //Delete the old tags
                 Tags.DeleteTags(Idea.loadedIdeaID);
-
-                //Save the entered tags
-                for (int i = 0; i < tags.Count; i++)
-                {
-                    string tempTags = $"INSERT INTO [dbo].[Idea_Tags] (IdeaID,Tag) VALUES ({Idea.loadedIdeaID},'{tags[i]}')";
-                    GetInstanceOfDBConnection().NonQueryOperation(tempTags);
-                }
+                newIdeaID = Idea.loadedIdeaID;
             }
 
-
-
+            //Save the entered tags
+            for (int i = 0; i < tags.Count; i++)
+            {
+                string tempTags = $"INSERT INTO [dbo].[Idea_Tags] (IdeaID,Tag) VALUES ({newIdeaID},'{tags[i]}')";
+                GetInstanceOfDBConnection().NonQueryOperation(tempTags);
+            }
             ReturnToMenu();
         }
         

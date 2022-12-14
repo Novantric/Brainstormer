@@ -82,10 +82,10 @@ namespace Brainstormer.Windows.Pages
             Tags.LoadTags();
 
             //repeat for the amount of tags, limited to a maximum of 3
-            for (int i = 0; i < Tags.tagslist.Count || i == 3; i++)
+            for (int i = 0; i < Tags.tagslist.Count; i++)
             {
                 //Get the ideas that have the current tag
-                List<Idea> ideasWithTag = Tags.getIdeasWithTag(Tags.tagslist[i]);
+                List<Idea> ideasWithTag = Tags.GetIdeasWithTag(Tags.tagslist[i]);
                 //Sort by name alphabetically
                 ideasWithTag = ideasWithTag.OrderBy(o => o.IdeaTitle).ToList();
                 //Generate stackpanels for the ideas
@@ -95,6 +95,12 @@ namespace Brainstormer.Windows.Pages
                 for (int y = 0; y < ideasWithTag.Count || y == 20; y++)
                 {
                     GenerateButtons(ideasWithTag[y], generatedPanels[1], generatedPanels[0]);
+                }
+
+                //Break the loop whem 3 tags have been generated
+                if (i == 2)
+                {
+                    break;
                 }
             }
         }

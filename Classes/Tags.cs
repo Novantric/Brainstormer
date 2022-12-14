@@ -16,7 +16,8 @@ namespace Brainstormer.Classes
         //Loads tags into the list above.
         public static void LoadTags()
         {
-            string QUERY = "SELECT Tag FROM [dbo].[Idea_Tags] GROUP BY Tag";
+            //Order and group tags by the number of occurences
+            string QUERY = "SELECT Tag FROM [dbo].[Idea_Tags] GROUP BY Tag ORDER BY count(*) DESC";
             DataTable tagsTable = Connection.GetInstanceOfDBConnection().GetDataSet(QUERY, "[dbo].[Idea_Tags]");
 
             tagslist.Clear();
@@ -27,7 +28,7 @@ namespace Brainstormer.Classes
         }
 
         //Gets all the ideas with a specified tag 
-        public static List<Idea> getIdeasWithTag(string tagName)
+        public static List<Idea> GetIdeasWithTag(string tagName)
         {
             string QUERY = "SELECT IdeaID FROM [dbo].[Idea_Tags] WHERE Tag = '" + tagName + "' GROUP BY IdeaID";
             List<string> ideaIDlist = new();
