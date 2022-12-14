@@ -16,7 +16,7 @@ namespace Brainstormer.Classes
         public static string? PrefferedRiskRating { get; protected set; }
 
         //Loads preferences from the database.
-        public static void loadPreferences()
+        public static void LoadPreferences()
         {
             string QUERY = $"SELECT * FROM [dbo].[User_Preferences] WHERE UserID = '{User.UserID}'";
             string TABLE = "[dbo].[User_Preferences]";
@@ -32,7 +32,7 @@ namespace Brainstormer.Classes
         }
         
         //Saves the input to the database.
-        public static void savePreferences(string region, string currency, string major, string minor, string product, double risk)
+        public static void SavePreferences(string region, string currency, string major, string minor, string product, double risk)
         {
             string query = ($"UPDATE [dbo].[User_Preferences] SET CurrentRegion = '{region}', PreferredCurrency = '{currency}', PreferredMajorSector = '{major}', PreferredMinorSector = '{minor}', PreferredProductType = '{product}', PreferredRiskRating = '{risk}' WHERE UserID = " + Convert.ToInt32(User.UserID));
             Connection.GetInstanceOfDBConnection().NonQueryOperation(query);
@@ -48,7 +48,7 @@ namespace Brainstormer.Classes
         //Deletes the preferences from the database, then the local storage.
         public static void DeletePreferences()
         {
-            Connection.GetInstanceOfDBConnection().NonQueryOperation("DELETE FROM [dbo].[User_Preferences] WHERE UserID = '" + User.UserID + "'");
+            Connection.GetInstanceOfDBConnection().NonQueryOperation("DELETE FROM [dbo].[User_Preferences] WHERE UserID = " + User.UserID);
             ClearPreferences();
         }
 

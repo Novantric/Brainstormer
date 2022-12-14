@@ -116,7 +116,7 @@
                 <Slider x:Name="RiskRatingSlider" Grid.Row="1" Grid.ColumnSpan="2" Maximum="10" Minimum="0" IsSnapToTickEnabled="True" ValueChanged="RiskRatingChanged" SmallChange="1" />
             </Grid>
 
-            <Button Grid.Row="0" x:Name="SubmitButton" Content="Submit" Grid.Column="2" Click="Button_Click" Width="50" Margin="205,5,5,5" Foreground="White" Background="Black"/>
+            <Button Grid.Row="0" Grid.Column="2" x:Name="SubmitButton" HorizontalAlignment="Right" Content="Submit" Click="Button_Click"  Foreground="White" Background="Black" Margin="0,5,5,5"/>
 
         </Grid>
     </ScrollViewer>

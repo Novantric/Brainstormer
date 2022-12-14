@@ -49,5 +49,12 @@ namespace Brainstormer.Databases.DBBackend
             string query = $"INSERT INTO [dbo].[Idea] (Title,AssetType,MajorSector,MinorSector,Reigion,Currency,RiskRating,CreationDate,ExpiryDate,SuggestedPrice,Views,UserID,Colour,Summary,Content) VALUES ('{ideaTitle}','{ideaType}','{ideaMajorSector}','{ideaMinorSector}','{ideaRegion}','{ideaCurrency}',{ideaRiskRating}, CONVERT(DATE, '{creationDate.ToString().Replace("/", "-")}', 3), CONVERT(DATE, '{expiryDate.ToString().Replace("/", "-")}', 3),{suggestedPrice},{0},{Convert.ToInt32(creatorID)},'{colour}','{ideaSummary}','{ideaContent}')";
             GetInstanceOfDBConnection().NonQueryOperation(query);
         }
+
+        //Updates the currently loaded idea
+        public static void UpdateIdea(string ideaTitle, string ideaType, string ideaMajorSector, string ideaMinorSector, string ideaRegion, string ideaCurrency, decimal ideaRiskRating, DateOnly creationDate, DateOnly expiryDate, decimal suggestedPrice, string colour, string ideaSummary, string ideaContent)
+        {
+            string query = $"UPDATE [dbo].[Idea] SET Title = '{ideaTitle}', MajorSector = '{ideaMajorSector}', AssetType = '{ideaType}', Currency = '{ideaCurrency}' , MinorSector = '{ideaMinorSector}', Reigion = '{ideaRegion}', RiskRating = {ideaRiskRating}, CreationDate = CONVERT(DATE, '{creationDate.ToString().Replace("/", "-")}', 3), ExpiryDate = CONVERT(DATE, '{expiryDate.ToString().Replace("/", "-")}', 3), SuggestedPrice = {suggestedPrice}, Colour = '{colour}', Summary = '{ideaSummary}', Content = '{ideaContent}' WHERE Id = {Idea.loadedIdeaID}";
+            Connection.GetInstanceOfDBConnection().NonQueryOperation(query);
+        }
     }
 }

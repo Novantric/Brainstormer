@@ -61,5 +61,11 @@ namespace Brainstormer.Classes
 
             return idealist;
         }
+
+        //Deletes all tags with the matching ideaID
+        public static void DeleteTags(int ideaID)
+        {
+            Connection.GetInstanceOfDBConnection().NonQueryOperation("DELETE FROM [dbo].[Idea_Tags] WHERE IdeaID = " + ideaID);
+        }
     }
 }

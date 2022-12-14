@@ -22,6 +22,7 @@ namespace Brainstormer.Windows.Pages
         {
             InitializeComponent();
 
+            SubmitButton.Visibility = Visibility.Visible;
             //Do different actions depending on if creating, viewing or editing
             switch (Idea.loadedIdeaOperation)
             {
@@ -32,12 +33,15 @@ namespace Brainstormer.Windows.Pages
                     break;
                 case "View":
                     Debug.WriteLine("Viewing!");
+                    titleText.Content = "Viewing an idea";
                     DisableBoxes();
                     LoadData();
-                    SubmitButton.Content = "Save";
+                    SubmitButton.Visibility = Visibility.Collapsed;
                     break;
                 case "Edit":
                     Debug.WriteLine("Editing!");
+                    SubmitButton.Content = "Save";
+                    titleText.Content = "Editing an idea";
                     LoadData();
                     LoadTypes();
                     break;
@@ -159,18 +163,37 @@ namespace Brainstormer.Windows.Pages
             DateOnly expiry = DateOnly.FromDateTime(ExpiryDatePicker.SelectedDate.Value.Date);
             DateOnly creation = DateOnly.FromDateTime(DateTime.Today.Date);
 
-            IdeaOperations.CreateIdea(TitleBox.Text, TypeBox.Text, MajorBox.Text, MinorBox.Text, RegionBox.Text, CurrencyBox.Text, riskRating, creation, expiry, price, User.UserID, ColourBox.Text, SummaryBox.Text, ContentBox.Text);
-
-            //Load the Id of the tag that was just created
-            DataTable ideaid = GetInstanceOfDBConnection().GetDataSet($"SELECT Id FROM [dbo].[Idea] WHERE Title = '{TitleBox.Text}' AND UserID = '{User.UserID}'", "[dbo].[Idea]");
-            int newIdeaID = (int)ideaid.Rows[0]["Id"];
-
-            //Save the entered tags
-            for (int i = 0; i < tags.Count; i++)
+            if (Idea.loadedIdeaOperation.Equals("none"))
             {
-                string tempTags = $"INSERT INTO [dbo].[Idea_Tags] (IdeaID,Tag) VALUES ({newIdeaID},'{tags[i]}')";
-                GetInstanceOfDBConnection().NonQueryOperation(tempTags);
+                IdeaOperations.CreateIdea(TitleBox.Text, TypeBox.Text, MajorBox.Text, MinorBox.Text, RegionBox.Text, CurrencyBox.Text, riskRating, creation, expiry, price, User.UserID, ColourBox.Text, SummaryBox.Text, ContentBox.Text);
+
+                //Load the Id of the tag that was just created
+                DataTable ideaid = GetInstanceOfDBConnection().GetDataSet($"SELECT Id FROM [dbo].[Idea] WHERE Title = '{TitleBox.Text}' AND UserID = '{User.UserID}'", "[dbo].[Idea]");
+                int newIdeaID = (int)ideaid.Rows[0]["Id"];
+
+                //Save the entered tags
+                for (int i = 0; i < tags.Count; i++)
+                {
+                    string tempTags = $"INSERT INTO [dbo].[Idea_Tags] (IdeaID,Tag) VALUES ({newIdeaID},'{tags[i]}')";
+                    GetInstanceOfDBConnection().NonQueryOperation(tempTags);
+                }
             }
+            else if (Idea.loadedIdeaOperation.Equals("Edit"))
+            {
+                IdeaOperations.UpdateIdea(TitleBox.Text, TypeBox.Text, MajorBox.Text, MinorBox.Text, RegionBox.Text, CurrencyBox.Text, riskRating, creation, expiry, price, ColourBox.Text, SummaryBox.Text, ContentBox.Text);
+
+                //Delete the old tags
+                Tags.DeleteTags(Idea.loadedIdeaID);
+
+                //Save the entered tags
+                for (int i = 0; i < tags.Count; i++)
+                {
+                    string tempTags = $"INSERT INTO [dbo].[Idea_Tags] (IdeaID,Tag) VALUES ({Idea.loadedIdeaID},'{tags[i]}')";
+                    GetInstanceOfDBConnection().NonQueryOperation(tempTags);
+                }
+            }
+
+
 
             ReturnToMenu();
         }

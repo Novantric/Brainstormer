@@ -14,7 +14,7 @@ namespace Brainstormer.Windows.Pages
         //load the user's preferences and ID
         public Settings()
         {
-            UserSettings.loadPreferences();
+            UserSettings.LoadPreferences();
 
             InitializeComponent();
             RefreshData();
@@ -67,7 +67,7 @@ namespace Brainstormer.Windows.Pages
         {
             Debug.WriteLine("Save button");
             double risk = RiskRatingSliderSettings.Value / 2;
-            UserSettings.savePreferences(RegionBox.Text, CurrencyBox.Text, MajorBox.Text, MiniorBox.Text, TypeBox.Text, risk);
+            UserSettings.SavePreferences(RegionBox.Text, CurrencyBox.Text, MajorBox.Text, MiniorBox.Text, TypeBox.Text, risk);
             RefreshData();
         }
     }
