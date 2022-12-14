@@ -31,24 +31,19 @@ namespace Brainstormer.Windows.Pages
                 TipLabel.Content = "Click to view!";
 
                 //Get the RMs linked to the client
-                string QUERY = "SELECT RMID FROM [dbo].[User_RM] WHERE ClientID = " + User.UserID + "GROUP BY ClientID";
+                string QUERY = "SELECT RMID, ClientID FROM [dbo].[User_RM] WHERE ClientID = " + User.UserID;
                 DataTable rmInfo = (Connection.GetInstanceOfDBConnection().GetDataSet(QUERY, "[dbo].[User_RM]"));
-
-                //Alternative way of doing the below
-                //for (int i = 0; i < rmInfo.Rows.Count; i++)
-                //{
-                //    string QUERYUSER = "SELECT * FROM [dbo].[User] WHERE Id = " + rmInfo.Rows[i]["RMID"];
-                //    DataTable rmUserInfo = (Connection.getInstanceOfDBConnection().getDataSet(QUERYUSER, TABLE)).Tables[0];
-                //    generateRMButtons((int)rmUserInfo.Rows[i]["RMID"], rmUserInfo.Rows[i]["FirstName"].ToString(), rmUserInfo.Rows[i]["LastName"].ToString(), rmUserInfo.Rows[i]["Email"].ToString(), columnn, row);
-                //}
 
                 //Generate buttons for each RM
                 for (int i = 0; i < rmInfo.Rows.Count; i++)
                 {
-                    //But only if the RM 'owns' the client
-                    if (rmInfo.Rows[i]["RMID"].ToString().Equals(User.UserID))
+                    //Double check if the RM 'owns' the client
+                    if (rmInfo.Rows[i]["ClientID"].ToString().Equals(User.UserID))
                     {
-                        GenerateRMButtons((int)rmInfo.Rows[i]["RMID"], rmInfo.Rows[i]["FirstName"].ToString(), rmInfo.Rows[i]["LastName"].ToString(), columnn, row);
+                        string QUERYUSER = "SELECT * FROM [dbo].[User] WHERE Id = " + rmInfo.Rows[i]["RMID"];
+                        DataTable rmUserInfo = Connection.GetInstanceOfDBConnection().GetDataSet(QUERYUSER, "[dbo].[User]");
+
+                        GenerateRMButtons((int)rmUserInfo.Rows[0]["Id"], rmUserInfo.Rows[0]["FirstName"].ToString(), rmUserInfo.Rows[0]["LastName"].ToString(), columnn, row);
 
                         //Allows for correct button placement and for the grid to be expanded
                         columnn++;
