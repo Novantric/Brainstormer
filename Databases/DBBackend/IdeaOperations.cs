@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Windows.Documents;
 using static Brainstormer.Databases.DBBackend.Connection;
 
 namespace Brainstormer.Databases.DBBackend
@@ -38,9 +39,7 @@ namespace Brainstormer.Databases.DBBackend
                     ideaSummary: table.Rows[i]["Summary"].ToString(),
                     ideaContent: table.Rows[i]["Content"].ToString()));
             }
-
-
-                return ideaList;
+            return ideaList;
         }
 
         //Creates an idea from the information passed in, and adds it to the database.
@@ -54,7 +53,16 @@ namespace Brainstormer.Databases.DBBackend
         public static void UpdateIdea(string ideaTitle, string ideaType, string ideaMajorSector, string ideaMinorSector, string ideaRegion, string ideaCurrency, decimal ideaRiskRating, DateOnly creationDate, DateOnly expiryDate, decimal suggestedPrice, string colour, string ideaSummary, string ideaContent)
         {
             string query = $"UPDATE [dbo].[Idea] SET Title = '{ideaTitle}', MajorSector = '{ideaMajorSector}', AssetType = '{ideaType}', Currency = '{ideaCurrency}' , MinorSector = '{ideaMinorSector}', Reigion = '{ideaRegion}', RiskRating = {ideaRiskRating}, CreationDate = CONVERT(DATE, '{creationDate.ToString().Replace("/", "-")}', 3), ExpiryDate = CONVERT(DATE, '{expiryDate.ToString().Replace("/", "-")}', 3), SuggestedPrice = {suggestedPrice}, Colour = '{colour}', Summary = '{ideaSummary}', Content = '{ideaContent}' WHERE Id = {Idea.loadedIdeaID}";
-            Connection.GetInstanceOfDBConnection().NonQueryOperation(query);
+            GetInstanceOfDBConnection().NonQueryOperation(query);
+        }
+
+        public static void AddView(int ideaID)
+        {
+            DataTable viewsTable = GetInstanceOfDBConnection().GetDataSet($"SELECT Views FROM [dbo].[Idea] WHERE Id = {ideaID}" , "[dbo].[Idea]");
+            int oldView = (int)viewsTable.Rows[0]["Views"];
+
+            string query = $"UPDATE [dbo].[Idea] SET Views = {oldView + 1} WHERE Id = {ideaID}";
+            GetInstanceOfDBConnection().NonQueryOperation(query);
         }
     }
 }

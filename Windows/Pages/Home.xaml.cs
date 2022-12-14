@@ -26,6 +26,8 @@ namespace Brainstormer.Windows.Pages
             IdeaPanel.UpdateLayout();
             //load all ideas to a category
             LoadNewButtons(ideas);
+            //Loads the most opoular ideas
+            LoadPopularButtons(ideas);
             //Load the ideas associated with a tag
             LoadTagsButtons();
         }
@@ -33,7 +35,9 @@ namespace Brainstormer.Windows.Pages
         //Called when a generated view button is clicked
         private void IdeaViewButtonClick(object sender, RoutedEventArgs e)
         {
-            IdeaButtonClick("View", Convert.ToInt32((sender as Button).Uid));
+            int uid = Convert.ToInt32((sender as Button).Uid);
+            IdeaOperations.AddView(uid);
+            IdeaButtonClick("View",uid);
         }
 
         //Called when a generated edit button is clicked
@@ -68,6 +72,19 @@ namespace Brainstormer.Windows.Pages
             }
 
             StackPanel[] generatedPanels = GenerateUIElements("Fresh Ideas!", false);
+            foreach (Idea value in ideas)
+            {
+                //generate buttons for the ideas
+                GenerateButtons(value, generatedPanels[1], generatedPanels[0]);
+            }
+        }
+
+        private void LoadPopularButtons(List<Idea> ideas)
+        {
+            //Sorts the list so the ideas that expire the soonest are first
+            ideas.Sort((x, y) => y.Views.CompareTo(x.Views));
+
+            StackPanel[] generatedPanels = GenerateUIElements("Popular Ideas", false);
             foreach (Idea value in ideas)
             {
                 //generate buttons for the ideas
